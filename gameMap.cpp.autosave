@@ -1,0 +1,94 @@
+#include"gamemap.h"
+enum GridState{blank=0,wall,enemy};
+gameMap::gameMap(int row,int col,int stateMap[20][20]):row(row),col(col){
+    for(int i=1;i<=row;i++)
+        for(int j=1;j<=col;j++)
+        {
+            Map[i][j]=new grid(j,i,stateMap[i][j]);
+        }
+}
+QStack<grid *>gameMap:: search(grid *start,grid*end){
+   QVector<grid*>openlist;
+   QVector<grid*>closelist;
+            
+            openlist.push_back(start);
+            
+            //只要链表不为空，就重复这个寻路的过程
+            while(!openlist.empty()) {
+                
+                //找到 openlist中 F值最小的那个 方格（节点）
+                int currentindex=findMinGrid(openlist);
+                grid* currentgrid=openlist[currentindex];
+                closelist.push_back(openlist[currentindex]);
+                //从 openlist中删除找到的那个  F值 最小的那个节点
+                openlist.erase(openlist.end()+currentindex);
+                QVector<grid*> neighbors=findNeighbors(openlist[currentindex], openlist, closelist);
+                
+                //对合法可用的邻居节点进行初始化，并加入到  openlist中
+                for(auto v : neighbors) {
+                    if(!openlist.contains(v)) {
+                        v->init(currentgrid,end);
+                        openlist.push_back(v);
+                    }
+                }
+                
+                //邻居节点加入  openlist 后，判断openlist中，是否包含  终点节点，如果包含终点，直接返回并退出。
+                for(auto v : openlist) {
+                    if((v->getx()==end->getx()) && (v->gety()==end->getf())) {
+                        break;
+                    }
+                }
+            }
+           grid *tempgrid=end;
+           QStack<grid*>path;
+           while(tempgrid->)
+           
+}
+QVector<grid *>gameMap::findNeighbors(grid* node,QVector<grid*>openlist,QVector<grid*>closelist){
+    QVector<grid *>neighbors;
+    if(check(node->getx()+1,node->gety(),openlist,closelist))
+        neighbors.push_back(new grid(node->getx()+1,node->gety(),Map[node->gety()][node->getx()+1]->getstate()));
+    if(check(node->getx()-1,node->gety(),openlist,closelist))
+        neighbors.push_back(new grid(node->getx()-1,node->gety(),Map[node->gety()][node->getx()-1]->getstate()));
+    if(check(node->getx(),node->gety()+1,openlist,closelist))
+        neighbors.push_back(new grid(node->getx()+1,node->gety(),Map[node->gety()+1][node->getx()]->getstate()));
+    if(check(node->getx(),node->gety()-1,openlist,closelist))
+        neighbors.push_back(new grid(node->getx()+1,node->gety(),Map[node->gety()-1][node->getx()]->getstate()));
+    return neighbors;
+}
+bool gameMap::check(int x,int y,QVector<grid*>openlist,QVector<grid*>closelist){
+    if(x>col||x<0)
+        return false;
+    if(y>row||y<0)
+        return false;
+    if(Map[y][x]->getstate()==wall||Map[y][x]->getstate()==enemy)
+        return false;
+    if(iscontain(openlist,x,y))
+        return false;
+    if(iscontain(closelist,x,y))
+        return false;
+    return true;
+}
+bool gameMap::iscontain(QVector<grid*>list,int x,int y){
+    for(auto v:list)
+    {
+        if(v->getx()==x&&v->gety()==y)
+            return true;
+    }
+        return false;
+}
+int gameMap::findMinGrid(QVector<grid*>openlist){
+    if(openlist.empty())
+        return -1;
+    grid * tempgrid=openlist[0];
+    int index=0;
+    for(int i=0;i<openlist.size();i++)
+    {
+        if(tempgrid->getf()>openlist[i]->getf())
+        {
+            tempgrid=openlist[i];
+            index=i;
+        }
+    }
+    return index;
+}
