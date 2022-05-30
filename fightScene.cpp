@@ -14,8 +14,8 @@ void fightScene::paintEvent(QPaintEvent *){
     QPainter painter(this);
     painter.drawPixmap(0,0,QPixmap(":/res/1200px-Bg_banama_1.png"));
     painter.drawPixmap(target.x(),target.y(),QPixmap(":/res/target.png"));
-     painter.drawPixmap(thirdship->getlocation().x()-thirdship->getTachie().width()/2,thirdship->getlocation().y()-thirdship->getTachie().height()/2,thirdship->getTachie());
-         painter.drawPixmap(secondship->getlocation().x()-secondship->getTachie().width()/2,secondship->getlocation().y()-secondship->getTachie().height()/2,secondship->getTachie());
+    painter.drawPixmap(thirdship->getlocation().x()-thirdship->getTachie().width()/2,thirdship->getlocation().y()-thirdship->getTachie().height()/2,thirdship->getTachie());
+    painter.drawPixmap(secondship->getlocation().x()-secondship->getTachie().width()/2,secondship->getlocation().y()-secondship->getTachie().height()/2,secondship->getTachie());
     painter.drawPixmap(firstship->getlocation().x()-firstship->getTachie().width()/2,firstship->getlocation().y()-firstship->getTachie().height()/2,firstship->getTachie());
     for(int i=0;i<cannonball.size();i++)
     {
@@ -39,9 +39,9 @@ void fightScene::init(){
     navalgunButton=new skillButton(this,navalgun,"jianpao",2);
     navalgunButton->move(1100,570);
 
-            updateTimer=new QTimer(this);
-            if(!updateTimer->isActive())
-                    updateTimer->start(40);
+    updateTimer=new QTimer(this);
+    if(!updateTimer->isActive())
+        updateTimer->start(40);
     //自律按钮初始化
     operationbutton=new operationButton(this);
     autoOpTimer=0;
@@ -56,25 +56,25 @@ void fightScene::init(){
     pause->move(1200-pausepix->width(),0);
     pause->setStyleSheet("QPushButton{border-image: url(:/res/pause.png);}");
     connect(pause,&QPushButton::pressed,this,&fightScene::callquitmessage);
-    
+
     //角色初始化
-    
-    
-delete plane;
-delete  torpedoes;
-delete  navalgun;
-delete pausepix;
-  target=QPoint(300,337);
-  firstship=new frontWarShip(1,1,1,10,40,1,1,QPixmap(":/res/Portland.png"),QPoint(300,337),&target);
-  secondship=new frontWarShip(1,1,1,8,30,1,1,QPixmap(":/res/Helena.png"),QPoint(300,337),&firstship->getlocation());
-  thirdship=new frontWarShip(1,1,1,6,25,1,1,QPixmap(":/res/Santiago.png"),QPoint(300,337),&secondship->getlocation());
-   update();
+
+
+    delete plane;
+    delete  torpedoes;
+    delete  navalgun;
+    delete pausepix;
+    target=QPoint(300,337);
+    firstship=new frontWarShip(1,1,1,10,40,1,1,QPixmap(":/res/Portland.png"),QPoint(300,337),&target);
+    secondship=new frontWarShip(1,1,1,8,30,1,1,QPixmap(":/res/Helena.png"),QPoint(300,337),&firstship->getlocation());
+    thirdship=new frontWarShip(1,1,1,6,25,1,1,QPixmap(":/res/Santiago.png"),QPoint(300,337),&secondship->getlocation());
+    update();
 
 }
 void fightScene::callquitmessage(){
     updateTimer->stop();
-quitmessagebox->exec();
-updateTimer->start(40);
+    quitmessagebox->exec();
+    updateTimer->start(40);
 }
 fightScene::~fightScene(){
     delete quitmessagebox;
@@ -88,14 +88,14 @@ fightScene::~fightScene(){
 void fightScene::keyPressEvent(QKeyEvent *event)
 {
     if(event->key()== Qt::Key_Escape)
-      {
-callquitmessage();
-     }
+    {
+        callquitmessage();
+    }
 
     if(!event->isAutoRepeat())
         pressedKeys.insert(event->key());
     if(!updateTimer->isActive())
-            updateTimer->start(40);
+        updateTimer->start(40);
 }
 
 void fightScene::keyReleaseEvent(QKeyEvent *event)
@@ -114,30 +114,30 @@ void fightScene::updatetarger(int x, int y)
     else if(x>600)
         target.setX(600);
     else
-    target.setX(x);
+        target.setX(x);
     if(y<0)
         target.setY(0);
     else if(y>675)
         target.setX(675);
     else
-    target.setY(y);
+        target.setY(y);
 }
 void fightScene::playGame()
 {
-        QTime randtime;
-        randtime = QTime::currentTime();
-        qsrand(randtime.msec()+randtime.second()*1000);
+    QTime randtime;
+    randtime = QTime::currentTime();
+    qsrand(randtime.msec()+randtime.second()*1000);
     connect(updateTimer,&QTimer::timeout,[=](){
         qApp->processEvents();
         keyPress();
         if(!updateTimer->isActive())
-                updateTimer->start(40);
+            updateTimer->start(40);
         if(!operationbutton->getOpState())
         {
             autoOpTimer++;
             static int a=120,b=280;
             if(!(autoOpTimer%40))
-              {
+            {
                 a=120+qrand()%100;
                 b=280+qrand()%30;
             }
@@ -145,7 +145,7 @@ void fightScene::playGame()
             target.setX(300+a*cos(autoOpTimer/(150/pi)));
             target.setY(337+b*sin(autoOpTimer/(150/pi)));
             if(autoOpTimer>300)
-            autoOpTimer=0;
+                autoOpTimer=0;
         }
         firstship->move();
         secondship->move();
@@ -155,48 +155,48 @@ void fightScene::playGame()
     });
 }
 void fightScene::keyPress(){
-QMouseEvent* press=new QMouseEvent(QEvent::MouseButtonPress,QPoint(0,0),Qt::LeftButton,Qt::LeftButton,Qt::NoModifier);
-if(pressedKeys.isEmpty()){
-    updateTimer->stop();
-    return;}
+    QMouseEvent* press=new QMouseEvent(QEvent::MouseButtonPress,QPoint(0,0),Qt::LeftButton,Qt::LeftButton,Qt::NoModifier);
+    if(pressedKeys.isEmpty()){
+        updateTimer->stop();
+        return;}
 
-for(int key:pressedKeys)
-{ switch (key) {
-    case Qt::Key_Q:
-        QApplication::postEvent(operationbutton,press);
-        break;
-case Qt::Key_E:
-    QApplication::postEvent(planeButton,press);
-    break;
-case Qt::Key_R:
-    QApplication::postEvent(torpedoesButton,press);
-    break;
-case Qt::Key_T:
-    QApplication::postEvent(navalgunButton,press);
-    break;
-case Qt::Key_W:
-    updatetarger(target.x(),target.y()-12);
-    break;
-case Qt::Key_S:
-    updatetarger(target.x(),target.y()+12);
-    break;
-case Qt::Key_A:
-    updatetarger(target.x()-12,target.y());
-    break;
-case Qt::Key_D:
-    updatetarger(target.x()+12,target.y());
-    break;
-}  
-}
+    for(int key:pressedKeys)
+    { switch (key) {
+            case Qt::Key_Q:
+                QApplication::postEvent(operationbutton,press);
+                break;
+            case Qt::Key_E:
+                QApplication::postEvent(planeButton,press);
+                break;
+            case Qt::Key_R:
+                QApplication::postEvent(torpedoesButton,press);
+                break;
+            case Qt::Key_T:
+                QApplication::postEvent(navalgunButton,press);
+                break;
+            case Qt::Key_W:
+                updatetarger(target.x(),target.y()-12);
+                break;
+            case Qt::Key_S:
+                updatetarger(target.x(),target.y()+12);
+                break;
+            case Qt::Key_A:
+                updatetarger(target.x()-12,target.y());
+                break;
+            case Qt::Key_D:
+                updatetarger(target.x()+12,target.y());
+                break;
+        }
+    }
 }
 
 void fightScene::mouseMoveEvent(QMouseEvent *event)
 {
     if(event->buttons()==Qt::LeftButton)
-   {if(event->pos().x()<=600)
-    {updatetarger(event->pos().x(),event->pos().y());
-    if(!updateTimer->isActive())
-            updateTimer->start(40);}}
+    {if(event->pos().x()<=600)
+        {updatetarger(event->pos().x(),event->pos().y());
+            if(!updateTimer->isActive())
+                updateTimer->start(40);}}
 }
 
 void fightScene::shoot(){
@@ -209,24 +209,24 @@ void fightScene::shoot(){
     }
     if(firstship->shoot())
     {
-       cannonball.push_back( new cannonBall(firstship->getlocation().x(),firstship->getlocation().y()+10,1,-pi/9));
-       cannonball.push_back( new cannonBall(firstship->getlocation().x(),firstship->getlocation().y()-10,1,-pi/9));
+        cannonball.push_back( new cannonBall(firstship->getlocation().x(),firstship->getlocation().y()+10,1,-pi/9));
+        cannonball.push_back( new cannonBall(firstship->getlocation().x(),firstship->getlocation().y()-10,1,-pi/9));
     }
     if(secondship->shoot())
     {
-       cannonball.push_back( new cannonBall(secondship->getlocation().x(),secondship->getlocation().y()+10,1,pi/9));
-       cannonball.push_back( new cannonBall(secondship->getlocation().x(),secondship->getlocation().y()-10,1,pi/9));
+        cannonball.push_back( new cannonBall(secondship->getlocation().x(),secondship->getlocation().y()+10,1,pi/9));
+        cannonball.push_back( new cannonBall(secondship->getlocation().x(),secondship->getlocation().y()-10,1,pi/9));
     }
-    if(secondship->shoot())
+    if(thirdship->shoot())
     {
-       cannonball.push_back( new cannonBall(thirdship->getlocation().x(),thirdship->getlocation().y()+10,1,0));
-       cannonball.push_back( new cannonBall(thirdship->getlocation().x(),thirdship->getlocation().y()-10,1,0));
+        cannonball.push_back( new cannonBall(thirdship->getlocation().x(),thirdship->getlocation().y()+10,1,0));
+        cannonball.push_back( new cannonBall(thirdship->getlocation().x(),thirdship->getlocation().y()-10,1,0));
     }
 }
 
 void fightScene::closeEvent(QCloseEvent *)
 {
-this->clearFocus();
+    this->clearFocus();
 }
 
 

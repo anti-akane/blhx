@@ -6,17 +6,19 @@
 #include<QBitmap>
 #include<QString>
 #include<QMouseEvent>
-class operationButton:public QPushButton{
+class operationButton:public QPushButton {
     Q_OBJECT
 public:
-    operationButton(QWidget *parent=nullptr);
-    bool getOpState()const;
-~operationButton();
-signals:
+    operationButton(QWidget *parent = nullptr);
+
+    bool getOpState() const;
+
+    ~operationButton();
+
+    void mousePressEvent(QMouseEvent *event);
 
 private:
-  bool operatingState;
-  QString type;
-  void mousePressEvent(QMouseEvent *event);
+    bool operatingState;
+    QString type;
 };
 #endif // SKILLBUTTON_H

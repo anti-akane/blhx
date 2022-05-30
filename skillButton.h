@@ -9,13 +9,18 @@
 #include<QKeyEvent>
 #include<QTimer>
 #include<QApplication>
-class skillButton:public QPushButton{
+class skillButton:public QPushButton {
     Q_OBJECT
 public:
     ~skillButton();
-    skillButton(QWidget *parent=nullptr,QPixmap *pixmap=nullptr,QString type="",int skillnumber=0);
-        void Unleash_skills();
-            void mousePressEvent(QMouseEvent *event);
+
+    skillButton(QWidget *parent = nullptr, QPixmap *pixmap = nullptr, QString type = "", int skillnumber = 0);
+
+    void Unleash_skills();
+
+    void mousePressEvent(QMouseEvent *event);
+
+    void addSkillNumber();
 private:
     int skillNumber;
 

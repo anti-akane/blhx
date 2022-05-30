@@ -6,12 +6,13 @@
 #include<QDialog>
 #include<QLabel>
 #include<QPainter>
-class quitMessageBox:public QDialog
-{
+class quitMessageBox:public QDialog {
     Q_OBJECT
 public:
     ~quitMessageBox();
-    quitMessageBox(QWidget *parent=nullptr);
+
+    quitMessageBox(QWidget *parent = nullptr);
+
 private:
     QPushButton *cancelButton;
     QPushButton *continueButton;

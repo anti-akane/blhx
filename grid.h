@@ -1,15 +1,21 @@
 #ifndef GRID_H
 #define GRID_H
-class grid
-{
+class grid {
 public:
-grid(int x,int y,int state=0);
-void init(grid *parent,grid *end);
-int getstate();
-int getx();
-int gety();
-int getf();
-grid *getparent();
+    grid(int x, int y, int state = 0);
+
+    void init(grid *parent, grid *end);
+
+    int getstate();
+
+    int getx();
+
+    int gety();
+
+    int getf();
+
+    grid *getparent();
+
 private:
     int x;
     int y;

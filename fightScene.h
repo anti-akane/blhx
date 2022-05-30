@@ -16,19 +16,37 @@
 #include<QCloseEvent>
 #include"frontWarShip.h"
 #include"cannonBall.h"
-class fightScene:public QWidget
-{
+class fightScene:public QWidget {
     Q_OBJECT
 public:
-    fightScene(QWidget *parent=nullptr);
+    fightScene(QWidget *parent = nullptr);
+
     ~fightScene();
+
     void init();
-     void playGame();
-     QTimer *updateTimer;//游戏内部计时器
+
+    void playGame();
+
+    void updatetarger(int x, int y);//封装的调整目的坐标函数
+
+    void keyPressEvent(QKeyEvent *event);//处理战斗中的键盘信号
+
+    void keyReleaseEvent(QKeyEvent *event);//处理键盘事件
+
+    void paintEvent(QPaintEvent *);//绘制场景等
+
+    void keyPress();//处理键盘事件，用于实现同时间处理多个键盘事件，实现八方向移动
+
+    void mouseMoveEvent(QMouseEvent *event);//处理鼠标点击时间，主要用于处理点击改变坐标
+
+    void closeEvent(QCloseEvent *event);
+
+    void shoot();
+
 private:
-    skillButton* planeButton;
-    skillButton* torpedoesButton;
-    skillButton* navalgunButton;
+    skillButton *planeButton;
+    skillButton *torpedoesButton;
+    skillButton *navalgunButton;
     operationButton *operationbutton;
     QPushButton *pause;
     QPoint target;
@@ -43,25 +61,13 @@ private:
 
     quitMessageBox *quitmessagebox;
 
-    QVector< cannonBall *> cannonball;
-    
-    void updatetarger(int x,int y);//封装的调整目的坐标函数
+    QVector<cannonBall *> cannonball;
 
-    void keyPressEvent(QKeyEvent *event);//处理战斗中的键盘信号
+    QTimer *updateTimer;//游戏内部计时器
 
-     void keyReleaseEvent(QKeyEvent *event);//处理键盘事件
-
-    void paintEvent(QPaintEvent*);//绘制场景等
-
-     void keyPress();//处理键盘事件，用于实现同时间处理多个键盘事件，实现八方向移动
-
-      void mouseMoveEvent(QMouseEvent *event);//处理鼠标点击时间，主要用于处理点击改变坐标
-
-      void closeEvent(QCloseEvent *event);
-
-      void shoot();
-        public slots:
-      void callquitmessage();
+public
+    slots:
+            void callquitmessage();
 };
 
 #endif // FIGHTSCENE_H
