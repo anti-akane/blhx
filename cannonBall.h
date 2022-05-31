@@ -5,9 +5,11 @@
 #include<QPixmap>
 #include<QMatrix>
 #include<QString>
+#include"frontWarShip.h"
+class frontWarShip;
 class cannonBall {
 public:
-    cannonBall(int x = 0, int y = 0,int hurt = 0, double angle = 0,QString pixmap=":/res/connanball.png");
+    cannonBall(int x = 0, int y = 0,int hurt = 0, double angle = 0,frontWarShip *parent=nullptr,QString pixmap=":/res/connanball.png");
 
     void move();
 
@@ -21,6 +23,8 @@ public:
 
     QPixmap *getPixmap();
 
+    frontWarShip* getparent();
+
 private:
     int x;
     int y;
@@ -30,6 +34,7 @@ private:
     QRect connonRect;
     double angle;
     QPixmap *cannonBallPixmap;
+    frontWarShip*parent;
 };
 
 #endif // CANNONBALL_H

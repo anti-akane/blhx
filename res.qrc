@@ -33,5 +33,6 @@
         <file>res/wall 1-3.png</file>
         <file>res/wall 2-2.png</file>
         <file>res/wall 2-1.png</file>
+        <file>res/torp.png</file>
     </qresource>
 </RCC>

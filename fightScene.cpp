@@ -23,6 +23,11 @@ void fightScene::paintEvent(QPaintEvent *){
     }
 }
 void fightScene::init(){
+
+    target=QPoint(300,337);
+    firstship=new frontWarShip(1,1,1,10,40,100,1,QPixmap(":/res/Portland.png"),QPoint(300,337),&target);
+    secondship=new frontWarShip(1,1,1,8,30,1,1,QPixmap(":/res/Helena.png"),QPoint(300,337),&firstship->getlocation());
+    thirdship=new frontWarShip(1,1,1,6,25,1,1,QPixmap(":/res/Santiago.png"),QPoint(300,337),&secondship->getlocation());
     //三个技能按钮的初始化
     quitmessagebox=new quitMessageBox(this);
     QPixmap *plane=new QPixmap(":/res/feiji-available.png");
@@ -34,7 +39,7 @@ void fightScene::init(){
     *navalgun=navalgun->scaled(100, 100, Qt::KeepAspectRatio);
     planeButton=new skillButton(this,plane,"feiji",3);
     planeButton->move(800,570);
-    torpedoesButton=new skillButton(this,torpedoes,"yvlei",3);
+    torpedoesButton=new skillButton(this,torpedoes,"yvlei",firstship->getTorpNumber()+secondship->getTorpNumber()+thirdship->getTorpNumber());
     torpedoesButton->move(950,570);
     navalgunButton=new skillButton(this,navalgun,"jianpao",2);
     navalgunButton->move(1100,570);
@@ -58,16 +63,12 @@ void fightScene::init(){
     connect(pause,&QPushButton::pressed,this,&fightScene::callquitmessage);
 
     //角色初始化
-
+    connect(torpedoesButton,&skillButton::skills,this,&fightScene::torp);
 
     delete plane;
     delete  torpedoes;
     delete  navalgun;
     delete pausepix;
-    target=QPoint(300,337);
-    firstship=new frontWarShip(1,1,1,10,40,1,1,QPixmap(":/res/Portland.png"),QPoint(300,337),&target);
-    secondship=new frontWarShip(1,1,1,8,30,1,1,QPixmap(":/res/Helena.png"),QPoint(300,337),&firstship->getlocation());
-    thirdship=new frontWarShip(1,1,1,6,25,1,1,QPixmap(":/res/Santiago.png"),QPoint(300,337),&secondship->getlocation());
     update();
 
 }
@@ -170,6 +171,7 @@ void fightScene::keyPress(){
                 break;
             case Qt::Key_R:
                 QApplication::postEvent(torpedoesButton,press);
+                //torp();
                 break;
             case Qt::Key_T:
                 QApplication::postEvent(navalgunButton,press);
@@ -203,9 +205,14 @@ void fightScene::shoot(){
     for(int i=0;i<cannonball.size();i++)
     {
         if(!cannonball[i]->check())
+           {
+            cannonball[i]=nullptr;
+            delete cannonball[i];
             cannonball.erase(cannonball.begin()+i);
+        }
         else
             cannonball[i]->move();
+
     }
     if(firstship->shoot())
     {
@@ -222,6 +229,11 @@ void fightScene::shoot(){
         cannonball.push_back( new cannonBall(thirdship->getlocation().x(),thirdship->getlocation().y()+10,1,0));
         cannonball.push_back( new cannonBall(thirdship->getlocation().x(),thirdship->getlocation().y()-10,1,0));
     }
+    if(firstship->checkTorp())
+    {
+        torpedoesButton->addSkillNumber();
+        torplist.push_back(new cannonBall(0,0,100,0,firstship));
+    }
 }
 
 void fightScene::closeEvent(QCloseEvent *)
@@ -229,5 +241,18 @@ void fightScene::closeEvent(QCloseEvent *)
     this->clearFocus();
 }
 
+void fightScene::torp()
+{
+    if(torplist.empty())
+        return;
+    cannonBall *torp=torplist[0];
+    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),1,0,nullptr,":/res/torp.png"));
+    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),1,pi/18,nullptr,":/res/torp.png"));
+    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),1,2*pi/18,nullptr,":/res/torp.png"));
+    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),1,-pi/18,nullptr,":/res/torp.png"));
+    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),1,-2*pi/18,nullptr,":/res/torp.png"));
+    torp->getparent()->declineTorpNumber();
+    torplist.erase(torplist.begin());
+}
 
 

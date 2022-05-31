@@ -44,6 +44,7 @@ public:
     void shoot();
 
 private:
+    QVector<cannonBall*>torplist;
     skillButton *planeButton;
     skillButton *torpedoesButton;
     skillButton *navalgunButton;
@@ -68,6 +69,7 @@ private:
 public
     slots:
             void callquitmessage();
+                void torp();
 };
 
 #endif // FIGHTSCENE_H

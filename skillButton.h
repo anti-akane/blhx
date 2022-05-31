@@ -14,7 +14,7 @@ class skillButton:public QPushButton {
 public:
     ~skillButton();
 
-    skillButton(QWidget *parent = nullptr, QPixmap *pixmap = nullptr, QString type = "", int skillnumber = 0);
+    skillButton(QWidget *parent = nullptr, QPixmap *pixmap = nullptr, QString type = "", int maxskillnumber = 0);
 
     void Unleash_skills();
 
@@ -23,10 +23,12 @@ public:
     void addSkillNumber();
 private:
     int skillNumber;
-
+    int maxSkillNubmer;
 
     QString available_imagePath;
     QString unavailable_imagePath;
+signals:
+    void skills();
 };
 
 #endif // GAMEBUTTON_H

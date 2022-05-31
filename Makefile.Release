@@ -2347,43 +2347,7 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../include/QtGui/qtouchdevice.h \
 		../include/QtWidgets/qtabwidget.h \
 		../include/QtGui/qicon.h \
-		ui_mainwindow.h \
-		../include/QtCore/QVariant \
-		../include/QtWidgets/QAction \
-		../include/QtWidgets/qaction.h \
-		../include/QtWidgets/qactiongroup.h \
-		../include/QtWidgets/QApplication \
-		../include/QtWidgets/qapplication.h \
-		../include/QtCore/qcoreapplication.h \
-		../include/QtCore/qeventloop.h \
-		../include/QtWidgets/qdesktopwidget.h \
-		../include/QtGui/qguiapplication.h \
-		../include/QtGui/qinputmethod.h \
-		../include/QtWidgets/QButtonGroup \
-		../include/QtWidgets/qbuttongroup.h \
-		../include/QtWidgets/QHeaderView \
-		../include/QtWidgets/qheaderview.h \
-		../include/QtWidgets/qabstractitemview.h \
-		../include/QtWidgets/qabstractscrollarea.h \
-		../include/QtWidgets/qframe.h \
-		../include/QtCore/qabstractitemmodel.h \
-		../include/QtCore/qitemselectionmodel.h \
-		../include/QtWidgets/qabstractitemdelegate.h \
-		../include/QtWidgets/qstyleoption.h \
-		../include/QtWidgets/qabstractspinbox.h \
-		../include/QtGui/qvalidator.h \
-		../include/QtCore/qregularexpression.h \
-		../include/QtWidgets/qslider.h \
-		../include/QtWidgets/qabstractslider.h \
-		../include/QtWidgets/qstyle.h \
-		../include/QtWidgets/qtabbar.h \
-		../include/QtWidgets/qrubberband.h \
-		../include/QtWidgets/QMenuBar \
-		../include/QtWidgets/qmenubar.h \
-		../include/QtWidgets/qmenu.h \
-		../include/QtWidgets/QStatusBar \
-		../include/QtWidgets/qstatusbar.h \
-		../include/QtWidgets/QWidget
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o mainwindow.cpp
 
 release/operationButton.o: operationButton.cpp operationButton.h \

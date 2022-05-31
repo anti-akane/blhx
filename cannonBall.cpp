@@ -1,21 +1,21 @@
 #include"cannonBall.h"
 #include"math.h"
 const double pi=acos(-1.0);
-cannonBall::cannonBall(int x,int y,int hurt,double angle,QString pixmap):x(x),y(y),hurt(hurt),angle(angle) {
+cannonBall::cannonBall(int x,int y,int hurt,double angle,frontWarShip *parent,QString pixmap):x(x),y(y),hurt(hurt),angle(angle) ,parent(parent){
     QMatrix matrix;
-    matrix.rotate(angle * 2 * 90 / pi);
+    matrix.rotate((angle * 2 * 90)/ pi);
     cannonBallPixmap = new QPixmap(pixmap);
     height = cannonBallPixmap->height();
     width = cannonBallPixmap->width();
-    *cannonBallPixmap = cannonBallPixmap->transformed(matrix, Qt::SmoothTransformation);
+    *cannonBallPixmap = cannonBallPixmap->transformed(matrix,Qt::SmoothTransformation);
     connonRect.setWidth(width);
     connonRect.setHeight(width);
     connonRect.moveTo(x + width * cos(angle) / 2, y - width * sin(angle) / 2);
 }
 
 void cannonBall::move() {
-    x += 10 * acos(angle);
-    y += 10 * asin(angle);
+    x += 10 * cos(angle);
+    y += 10 * sin(angle);
     connonRect.moveTo(x + width * cos(angle) / 2, y - width * sin(angle) / 2);
 }
 
@@ -36,4 +36,9 @@ int cannonBall::getY() {
 
 QPixmap* cannonBall::getPixmap() {
     return cannonBallPixmap;
+}
+
+frontWarShip *cannonBall::getparent()
+{
+    return parent;
 }

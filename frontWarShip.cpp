@@ -45,6 +45,7 @@ bool frontWarShip::checkTorp()
     torpclock++;
     if(torpclock>torpcd)
     {
+        torpclock=0;
         current_torp_number++;
         return 1;
     }
@@ -59,4 +60,9 @@ int frontWarShip::getTorpNumber()
 int frontWarShip::getCurrentTorpNumber()
 {
     return current_torp_number;
+}
+
+void frontWarShip::declineTorpNumber()
+{
+current_torp_number--;
 }

@@ -1,7 +1,7 @@
 #include"skillButton.h"
 #include"windows.h"
-skillButton::skillButton(QWidget *parent,QPixmap *pixmap,QString type,int skillnumber):QPushButton(parent) {
-    skillNumber = skillnumber;
+skillButton::skillButton(QWidget *parent,QPixmap *pixmap,QString type,int maxskillnumber):QPushButton(parent),maxSkillNubmer(maxskillnumber) {
+    skillNumber = 0;
     this->setFlat(true);
     this->setStyleSheet("border: 0px");
     resize(pixmap->size());
@@ -12,7 +12,7 @@ skillButton::skillButton(QWidget *parent,QPixmap *pixmap,QString type,int skilln
     unavailable_imagePath = "QPushButton{border-image: url(:/res/";
     unavailable_imagePath += type;
     unavailable_imagePath += "-unavailable.png);};";
-    setStyleSheet(available_imagePath);
+    setStyleSheet(unavailable_imagePath);
 }
 
 skillButton::~skillButton() {
@@ -21,7 +21,7 @@ skillButton::~skillButton() {
 void skillButton::mousePressEvent(QMouseEvent *) {
     Unleash_skills();
     setEnabled(false);
-    QTimer::singleShot(1000, this, [=] {
+    QTimer::singleShot(500, this, [=] {
         setEnabled(true);
     });
 
@@ -32,6 +32,7 @@ void skillButton::Unleash_skills() {
     if (skillNumber) {
 
         skillNumber--;
+        emit skills();
     }
     if (!skillNumber) {
         setStyleSheet(unavailable_imagePath);
@@ -40,7 +41,10 @@ void skillButton::Unleash_skills() {
 
 void skillButton::addSkillNumber()
 {
-    skillNumber++;
-    setStyleSheet(available_imagePath);
+    if(skillNumber<maxSkillNubmer)
+    {skillNumber++;
+    setStyleSheet(available_imagePath);}
 }
+
+
 
