@@ -13,9 +13,10 @@
 #include"quitMessageBox.h"
 #include"operationButton.h"
 #include<QSet>
+#include<QBrush>
 #include<QCloseEvent>
-#include"frontWarShip.h"
 #include"cannonBall.h"
+#include"frontWarShip.h"
 class fightScene:public QWidget {
     Q_OBJECT
 public:
@@ -44,6 +45,7 @@ public:
     void shoot();
 
 private:
+    int begining;
     QVector<cannonBall*>torplist;
     skillButton *planeButton;
     skillButton *torpedoesButton;
@@ -65,11 +67,12 @@ private:
     QVector<cannonBall *> cannonball;
 
     QTimer *updateTimer;//游戏内部计时器
-
 public
     slots:
             void callquitmessage();
                 void torp();
+signals:
+                void closeFight();
 };
 
 #endif // FIGHTSCENE_H

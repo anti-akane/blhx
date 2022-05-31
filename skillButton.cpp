@@ -46,5 +46,10 @@ void skillButton::addSkillNumber()
     setStyleSheet(available_imagePath);}
 }
 
+int skillButton::getSkillNumber()
+{
+    return skillNumber;
+}
+
 
 

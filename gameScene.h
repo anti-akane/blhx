@@ -28,12 +28,16 @@ public:
 
     void move(const int direction);
 
+    QTimer *moveTimer;
+    QTimer *upgateTimer;
+public
+    slots:
+    void closeFight();
 private:
+    int begining;
     int ismove;
     levelMap *gameMap;
     QPoint fleetLocation;
-    QTimer *moveTimer;
-    QTimer *upgateTimer;
     int movecontroller = 0;
     fightScene *game;
     QStack<grid *> gamePath;

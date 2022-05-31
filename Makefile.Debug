@@ -166,6 +166,7 @@ debug/qrc_res.cpp: res.qrc \
 		res/feiji-unavailable.png \
 		res/lisailiu(reverse).png \
 		res/quitfight.png \
+		res/torp.png \
 		res/jianpao-available.png \
 		res/1200px-Bg_story_bsmlevel.png \
 		res/cancel.png \
@@ -432,11 +433,12 @@ debug/moc_fightScene.cpp: ../include/QtWidgets/QWidget \
 		../include/QtWidgets/QDialog \
 		operationButton.h \
 		../include/QtCore/QSet \
+		../include/QtGui/QBrush \
 		../include/QtGui/QCloseEvent \
-		frontWarShip.h \
-		../include/QtCore/QPoint \
 		cannonBall.h \
 		../include/QtGui/QMatrix \
+		frontWarShip.h \
+		../include/QtCore/QPoint \
 		fightScene.h \
 		debug/moc_predefs.h \
 		../bin/moc.exe
@@ -693,10 +695,11 @@ debug/moc_gameScene.cpp: ../include/QtWidgets/QWidget \
 		../include/QtWidgets/QDialog \
 		operationButton.h \
 		../include/QtCore/QSet \
+		../include/QtGui/QBrush \
 		../include/QtGui/QCloseEvent \
-		frontWarShip.h \
 		cannonBall.h \
 		../include/QtGui/QMatrix \
+		frontWarShip.h \
 		levelMap.h \
 		grid.h \
 		../include/QtCore/QStack \
@@ -1297,7 +1300,9 @@ debug/cannonBall.o: cannonBall.cpp cannonBall.h \
 		../include/QtGui/qtouchdevice.h \
 		../include/QtGui/QPixmap \
 		../include/QtGui/QMatrix \
-		../include/QtCore/QString
+		../include/QtCore/QString \
+		frontWarShip.h \
+		../include/QtCore/QPoint
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\cannonBall.o cannonBall.cpp
 
 debug/fightScene.o: fightScene.cpp fightScene.h \
@@ -1550,11 +1555,12 @@ debug/fightScene.o: fightScene.cpp fightScene.h \
 		../include/QtWidgets/QDialog \
 		operationButton.h \
 		../include/QtCore/QSet \
+		../include/QtGui/QBrush \
 		../include/QtGui/QCloseEvent \
-		frontWarShip.h \
-		../include/QtCore/QPoint \
 		cannonBall.h \
 		../include/QtGui/QMatrix \
+		frontWarShip.h \
+		../include/QtCore/QPoint \
 		../include/QtCore/QtGlobal \
 		../include/QtCore/QCoreApplication
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\fightScene.o fightScene.cpp
@@ -1920,10 +1926,11 @@ debug/gameScene.o: gameScene.cpp gameScene.h \
 		../include/QtWidgets/QDialog \
 		operationButton.h \
 		../include/QtCore/QSet \
+		../include/QtGui/QBrush \
 		../include/QtGui/QCloseEvent \
-		frontWarShip.h \
 		cannonBall.h \
 		../include/QtGui/QMatrix \
+		frontWarShip.h \
 		levelMap.h \
 		grid.h \
 		../include/QtCore/QStack
@@ -2232,11 +2239,12 @@ debug/main.o: main.cpp mainwindow.h \
 		../include/QtWidgets/QDialog \
 		operationButton.h \
 		../include/QtCore/QSet \
+		../include/QtGui/QBrush \
 		../include/QtGui/QCloseEvent \
-		frontWarShip.h \
-		../include/QtCore/QPoint \
 		cannonBall.h \
 		../include/QtGui/QMatrix \
+		frontWarShip.h \
+		../include/QtCore/QPoint \
 		gameScene.h \
 		levelMap.h \
 		grid.h \

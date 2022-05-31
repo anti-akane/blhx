@@ -21,6 +21,8 @@ public:
     void mousePressEvent(QMouseEvent *event);
 
     void addSkillNumber();
+
+    int getSkillNumber();
 private:
     int skillNumber;
     int maxSkillNubmer;

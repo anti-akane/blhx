@@ -12,6 +12,7 @@ frontWarShip::frontWarShip(int hp,int power,int torp,int speed,int shootcd,
                            QPoint location,QPoint*target)
     :HP(hp),power(power),torp(torp),speed(speed),shootcd(shootcd),
     torpcd(torpcd),torp_number(tornumber),Tachie(Tachie),location(location),target(target) {
+    currentHP=HP/2;
     Rect.setWidth(Tachie.width());
     Rect.setHeight(Tachie.height());
     Rect.moveTo(location);
@@ -33,8 +34,10 @@ void frontWarShip::move() {
     int l_x = location.x(), l_y = location.y();
     int t_x = target->x(), t_y = target->y();
     double len = sqrt((l_x - t_x) * (l_x - t_x) + (l_y - t_y) * (l_y - t_y));
-    if (len <= speed)
+    if (len <= 4*speed)
+       {
         return;
+        }
     location.setX(l_x + speed * (t_x - l_x) / len);
     location.setY(l_y + speed * (t_y - l_y) / len);
 }
@@ -65,4 +68,9 @@ int frontWarShip::getCurrentTorpNumber()
 void frontWarShip::declineTorpNumber()
 {
 current_torp_number--;
+}
+
+double frontWarShip::getHpRate()
+{
+    return currentHP*1.0/HP;
 }

@@ -24,6 +24,8 @@ public:
 
     void declineTorpNumber();
 
+    double getHpRate();
+
 private:
     int HP;//生命值上限
     int currentHP;//现在的生命值

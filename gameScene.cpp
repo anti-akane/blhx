@@ -33,7 +33,6 @@ gameScene::gameScene(QWidget *parent):QWidget(parent) {
     wall_2_1 = new QPixmap(":/res/wall 2-1.png");
     wall_2_2 = new QPixmap(":/res/wall 2-2.png");
     wall_3_1 = new QPixmap(":/res/wall 3-1.png");
-
     movecontroller = 0;
     gameMap = new levelMap(row, col, m);
 };
@@ -44,7 +43,8 @@ gameScene::~gameScene() {
 
 void gameScene::paintEvent(QPaintEvent*) {
     QPainter painter(this);
-    painter.drawPixmap(0, 0, *backgroud);
+        this->begining=1;
+        painter.drawPixmap(0, 0, *backgroud);
     for (int i = 0; i <= col; i++) {
         painter.drawLine(QPoint(startpos_x + i * gridWdith, startpos_y),
                          QPoint(startpos_x + i * gridWdith, startpos_y + row * gridHeight));
@@ -72,7 +72,7 @@ void gameScene::move(int direction) {
         flagShip = new QPixmap(":/res/lisailiu.png");
     if (!moveTimer->isActive())
         moveTimer->start(16);
-    moveTimer->disconnect();
+    moveTimer->disconnect();  
     connect(moveTimer, &QTimer::timeout, [=]() {
         movecontroller++;
         if (movecontroller > 25) {
@@ -89,10 +89,12 @@ void gameScene::move(int direction) {
 
 }
 
+//void
+
  void gameScene::keyPressEvent(QKeyEvent *event) {
      if (event->key() == Qt::Key_Z) {
          game = new fightScene(this);
-         QObject::connect(game, &QWidget::close, [=] { delete game; });
+         connect(game,&fightScene::closeFight,this,&gameScene::closeFight);
          game->show();
          game->setFocus();
          game->playGame();
@@ -136,5 +138,12 @@ void gameScene::move(int direction) {
          gamePath = gameMap->search(current, end);
 
      }
+
+ }
+
+ void gameScene::closeFight()
+ {
+     setFocus();
+     game->clearFocus();
 
  }
