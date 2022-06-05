@@ -2,10 +2,9 @@
 #define WARSHIP_H
 #include<QPixmap>
 #include<QPoint>
-#include"cannonBall.h"
 class frontWarShip {
 public:
-    frontWarShip(int hp, int power, int torp, int speed, int shootcd, int torpcd, int tornumber, QPixmap Tachie,
+    frontWarShip(int hp, int power, int torp, int speed, int shootcd, int torpcd, int tornumber, QPixmap tachie,
                  QPoint location, QPoint *target);
 
     void move();//更新自身位置
@@ -25,6 +24,12 @@ public:
     void declineTorpNumber();
 
     double getHpRate();
+
+    int power_hurt();
+
+    int torp_hurt();
+
+    int getSpeed();
 
 private:
     int HP;//生命值上限

@@ -17,6 +17,7 @@
 #include<QCloseEvent>
 #include"cannonBall.h"
 #include"frontWarShip.h"
+#include"emptyWarShip.h"
 class fightScene:public QWidget {
     Q_OBJECT
 public:
@@ -44,8 +45,12 @@ public:
 
     void shoot();
 
+    void autoOperate();
+
+    double cal_angle(QPoint*begin,QPoint*goal);//计算角度
+
+    void drawfront(QPainter&painter,frontWarShip*WarShip,QBrush*black_brush,QBrush*green_brush);
 private:
-    int begining;
     QVector<cannonBall*>torplist;
     skillButton *planeButton;
     skillButton *torpedoesButton;
@@ -62,11 +67,15 @@ private:
 
     int autoOpTimer;//处理自律作战的轨迹所设置的计时器
 
+    int autoState;
+
     quitMessageBox *quitmessagebox;
 
     QVector<cannonBall *> cannonball;
 
     QTimer *updateTimer;//游戏内部计时器
+
+    QVector<emptyWarShip*>emptylist;
 public
     slots:
             void callquitmessage();

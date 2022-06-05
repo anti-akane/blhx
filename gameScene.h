@@ -34,7 +34,6 @@ public
     slots:
     void closeFight();
 private:
-    int begining;
     int ismove;
     levelMap *gameMap;
     QPoint fleetLocation;

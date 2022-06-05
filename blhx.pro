@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     cannonBall.cpp \
+    emptyWarShip.cpp \
     fightScene.cpp \
     frontWarShip.cpp \
     gameScene.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 
 HEADERS += \
     cannonBall.h \
+    emptyWarShip.h \
     fightScene.h \
     frontWarShip.h \
     gameScene.h \

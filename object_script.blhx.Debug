@@ -1,5 +1,6 @@
 INPUT(
 ./debug\cannonBall.o
+./debug\emptyWarShip.o
 ./debug\fightScene.o
 ./debug\frontWarShip.o
 ./debug\gameScene.o

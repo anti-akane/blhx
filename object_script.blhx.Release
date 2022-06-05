@@ -1,5 +1,6 @@
 INPUT(
 ./release\cannonBall.o
+./release\emptyWarShip.o
 ./release\fightScene.o
 ./release\frontWarShip.o
 ./release\gameScene.o

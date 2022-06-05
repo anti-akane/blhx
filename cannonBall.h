@@ -5,7 +5,6 @@
 #include<QPixmap>
 #include<QMatrix>
 #include<QString>
-#include"frontWarShip.h"
 class frontWarShip;
 class cannonBall {
 public:
@@ -35,6 +34,7 @@ private:
     double angle;
     QPixmap *cannonBallPixmap;
     frontWarShip*parent;
+    bool isempty;
 };
 
 #endif // CANNONBALL_H

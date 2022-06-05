@@ -51,5 +51,10 @@ int skillButton::getSkillNumber()
     return skillNumber;
 }
 
+int skillButton::getmaxSkillNumber()
+{
+    return maxSkillNubmer;
+}
+
 
 

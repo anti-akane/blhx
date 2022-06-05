@@ -34,5 +34,6 @@
         <file>res/wall 2-2.png</file>
         <file>res/wall 2-1.png</file>
         <file>res/torp.png</file>
+        <file>res/liangchan-1.png</file>
     </qresource>
 </RCC>

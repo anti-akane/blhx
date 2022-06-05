@@ -11,7 +11,7 @@ MAKEFILE      = Makefile.Release
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
+DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -fno-keep-inline-dllexport -O2 -Wall -W -Wextra $(DEFINES)
 CXXFLAGS      = -fno-keep-inline-dllexport -O2 -std=gnu++11 -Wall -W -Wextra -fexceptions -mthreads $(DEFINES)
 INCPATH       = -I. -I..\include -I..\include\QtWidgets -I..\include\QtGui -I..\include\QtANGLE -I..\include\QtCore -Irelease -I. -I..\mkspecs\win32-g++ 
@@ -46,6 +46,7 @@ OBJECTS_DIR   = release
 ####### Files
 
 SOURCES       = cannonBall.cpp \
+		emptyWarShip.cpp \
 		fightScene.cpp \
 		frontWarShip.cpp \
 		gameScene.cpp \
@@ -63,6 +64,7 @@ SOURCES       = cannonBall.cpp \
 		release\moc_quitMessageBox.cpp \
 		release\moc_skillButton.cpp
 OBJECTS       = release/cannonBall.o \
+		release/emptyWarShip.o \
 		release/fightScene.o \
 		release/frontWarShip.o \
 		release/gameScene.o \
@@ -82,6 +84,7 @@ OBJECTS       = release/cannonBall.o \
 		release/moc_skillButton.o
 
 DIST          =  cannonBall.h \
+		emptyWarShip.h \
 		fightScene.h \
 		frontWarShip.h \
 		gameScene.h \
@@ -91,6 +94,7 @@ DIST          =  cannonBall.h \
 		operationButton.h \
 		quitMessageBox.h \
 		skillButton.h cannonBall.cpp \
+		emptyWarShip.cpp \
 		fightScene.cpp \
 		frontWarShip.cpp \
 		gameScene.cpp \
@@ -115,15 +119,15 @@ $(DESTDIR_TARGET): ui_mainwindow.h $(OBJECTS)
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) object_script.blhx.Release  $(LIBS)
 
 qmake: FORCE
-	@$(QMAKE) -o Makefile.Release blhx.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
+	@$(QMAKE) -o Makefile.Release blhx.pro -spec win32-g++
 
 qmake_all: FORCE
 
 dist:
-	$(ZIP) blhx.zip $(SOURCES) $(DIST) blhx.pro ..\mkspecs\features\spec_pre.prf ..\mkspecs\qdevice.pri ..\mkspecs\features\device_config.prf ..\mkspecs\common\sanitize.conf ..\mkspecs\common\gcc-base.conf ..\mkspecs\common\g++-base.conf ..\mkspecs\common\angle.conf ..\mkspecs\qconfig.pri ..\mkspecs\modules\qt_lib_3danimation.pri ..\mkspecs\modules\qt_lib_3danimation_private.pri ..\mkspecs\modules\qt_lib_3dcore.pri ..\mkspecs\modules\qt_lib_3dcore_private.pri ..\mkspecs\modules\qt_lib_3dextras.pri ..\mkspecs\modules\qt_lib_3dextras_private.pri ..\mkspecs\modules\qt_lib_3dinput.pri ..\mkspecs\modules\qt_lib_3dinput_private.pri ..\mkspecs\modules\qt_lib_3dlogic.pri ..\mkspecs\modules\qt_lib_3dlogic_private.pri ..\mkspecs\modules\qt_lib_3dquick.pri ..\mkspecs\modules\qt_lib_3dquick_private.pri ..\mkspecs\modules\qt_lib_3dquickanimation.pri ..\mkspecs\modules\qt_lib_3dquickanimation_private.pri ..\mkspecs\modules\qt_lib_3dquickextras.pri ..\mkspecs\modules\qt_lib_3dquickextras_private.pri ..\mkspecs\modules\qt_lib_3dquickinput.pri ..\mkspecs\modules\qt_lib_3dquickinput_private.pri ..\mkspecs\modules\qt_lib_3dquickrender.pri ..\mkspecs\modules\qt_lib_3dquickrender_private.pri ..\mkspecs\modules\qt_lib_3dquickscene2d.pri ..\mkspecs\modules\qt_lib_3dquickscene2d_private.pri ..\mkspecs\modules\qt_lib_3drender.pri ..\mkspecs\modules\qt_lib_3drender_private.pri ..\mkspecs\modules\qt_lib_accessibility_support_private.pri ..\mkspecs\modules\qt_lib_axbase.pri ..\mkspecs\modules\qt_lib_axbase_private.pri ..\mkspecs\modules\qt_lib_axcontainer.pri ..\mkspecs\modules\qt_lib_axcontainer_private.pri ..\mkspecs\modules\qt_lib_axserver.pri ..\mkspecs\modules\qt_lib_axserver_private.pri ..\mkspecs\modules\qt_lib_bluetooth.pri ..\mkspecs\modules\qt_lib_bluetooth_private.pri ..\mkspecs\modules\qt_lib_bootstrap_private.pri ..\mkspecs\modules\qt_lib_charts.pri ..\mkspecs\modules\qt_lib_charts_private.pri ..\mkspecs\modules\qt_lib_concurrent.pri ..\mkspecs\modules\qt_lib_concurrent_private.pri ..\mkspecs\modules\qt_lib_core.pri ..\mkspecs\modules\qt_lib_core_private.pri ..\mkspecs\modules\qt_lib_datavisualization.pri ..\mkspecs\modules\qt_lib_datavisualization_private.pri ..\mkspecs\modules\qt_lib_dbus.pri ..\mkspecs\modules\qt_lib_dbus_private.pri ..\mkspecs\modules\qt_lib_designer.pri ..\mkspecs\modules\qt_lib_designer_private.pri ..\mkspecs\modules\qt_lib_designercomponents_private.pri ..\mkspecs\modules\qt_lib_devicediscovery_support_private.pri ..\mkspecs\modules\qt_lib_egl_support_private.pri ..\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri ..\mkspecs\modules\qt_lib_fb_support_private.pri ..\mkspecs\modules\qt_lib_fontdatabase_support_private.pri ..\mkspecs\modules\qt_lib_gamepad.pri ..\mkspecs\modules\qt_lib_gamepad_private.pri ..\mkspecs\modules\qt_lib_gui.pri ..\mkspecs\modules\qt_lib_gui_private.pri ..\mkspecs\modules\qt_lib_help.pri ..\mkspecs\modules\qt_lib_help_private.pri ..\mkspecs\modules\qt_lib_location.pri ..\mkspecs\modules\qt_lib_location_private.pri ..\mkspecs\modules\qt_lib_multimedia.pri ..\mkspecs\modules\qt_lib_multimedia_private.pri ..\mkspecs\modules\qt_lib_multimediawidgets.pri ..\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\mkspecs\modules\qt_lib_network.pri ..\mkspecs\modules\qt_lib_network_private.pri ..\mkspecs\modules\qt_lib_networkauth.pri ..\mkspecs\modules\qt_lib_networkauth_private.pri ..\mkspecs\modules\qt_lib_nfc.pri ..\mkspecs\modules\qt_lib_nfc_private.pri ..\mkspecs\modules\qt_lib_opengl.pri ..\mkspecs\modules\qt_lib_opengl_private.pri ..\mkspecs\modules\qt_lib_openglextensions.pri ..\mkspecs\modules\qt_lib_openglextensions_private.pri ..\mkspecs\modules\qt_lib_packetprotocol_private.pri ..\mkspecs\modules\qt_lib_platformcompositor_support_private.pri ..\mkspecs\modules\qt_lib_positioning.pri ..\mkspecs\modules\qt_lib_positioning_private.pri ..\mkspecs\modules\qt_lib_printsupport.pri ..\mkspecs\modules\qt_lib_printsupport_private.pri ..\mkspecs\modules\qt_lib_purchasing.pri ..\mkspecs\modules\qt_lib_purchasing_private.pri ..\mkspecs\modules\qt_lib_qml.pri ..\mkspecs\modules\qt_lib_qml_private.pri ..\mkspecs\modules\qt_lib_qmldebug_private.pri ..\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\mkspecs\modules\qt_lib_qmltest.pri ..\mkspecs\modules\qt_lib_qmltest_private.pri ..\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\mkspecs\modules\qt_lib_quick.pri ..\mkspecs\modules\qt_lib_quick_private.pri ..\mkspecs\modules\qt_lib_quickcontrols2.pri ..\mkspecs\modules\qt_lib_quickcontrols2_private.pri ..\mkspecs\modules\qt_lib_quickparticles_private.pri ..\mkspecs\modules\qt_lib_quicktemplates2_private.pri ..\mkspecs\modules\qt_lib_quickwidgets.pri ..\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\mkspecs\modules\qt_lib_remoteobjects.pri ..\mkspecs\modules\qt_lib_remoteobjects_private.pri ..\mkspecs\modules\qt_lib_repparser.pri ..\mkspecs\modules\qt_lib_repparser_private.pri ..\mkspecs\modules\qt_lib_scxml.pri ..\mkspecs\modules\qt_lib_scxml_private.pri ..\mkspecs\modules\qt_lib_sensors.pri ..\mkspecs\modules\qt_lib_sensors_private.pri ..\mkspecs\modules\qt_lib_serialbus.pri ..\mkspecs\modules\qt_lib_serialbus_private.pri ..\mkspecs\modules\qt_lib_serialport.pri ..\mkspecs\modules\qt_lib_serialport_private.pri ..\mkspecs\modules\qt_lib_sql.pri ..\mkspecs\modules\qt_lib_sql_private.pri ..\mkspecs\modules\qt_lib_svg.pri ..\mkspecs\modules\qt_lib_svg_private.pri ..\mkspecs\modules\qt_lib_testlib.pri ..\mkspecs\modules\qt_lib_testlib_private.pri ..\mkspecs\modules\qt_lib_texttospeech.pri ..\mkspecs\modules\qt_lib_texttospeech_private.pri ..\mkspecs\modules\qt_lib_theme_support_private.pri ..\mkspecs\modules\qt_lib_uiplugin.pri ..\mkspecs\modules\qt_lib_uitools.pri ..\mkspecs\modules\qt_lib_uitools_private.pri ..\mkspecs\modules\qt_lib_webchannel.pri ..\mkspecs\modules\qt_lib_webchannel_private.pri ..\mkspecs\modules\qt_lib_websockets.pri ..\mkspecs\modules\qt_lib_websockets_private.pri ..\mkspecs\modules\qt_lib_widgets.pri ..\mkspecs\modules\qt_lib_widgets_private.pri ..\mkspecs\modules\qt_lib_winextras.pri ..\mkspecs\modules\qt_lib_winextras_private.pri ..\mkspecs\modules\qt_lib_xml.pri ..\mkspecs\modules\qt_lib_xml_private.pri ..\mkspecs\modules\qt_lib_xmlpatterns.pri ..\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\mkspecs\features\qt_functions.prf ..\mkspecs\features\qt_config.prf ..\mkspecs\win32-g++\qmake.conf ..\mkspecs\features\spec_post.prf .qmake.stash ..\mkspecs\features\exclusive_builds.prf ..\mkspecs\features\toolchain.prf ..\mkspecs\features\default_pre.prf ..\mkspecs\features\win32\default_pre.prf ..\mkspecs\features\resolve_config.prf ..\mkspecs\features\exclusive_builds_post.prf ..\mkspecs\features\default_post.prf ..\mkspecs\features\build_pass.prf ..\mkspecs\features\qml_debug.prf ..\mkspecs\features\precompile_header.prf ..\mkspecs\features\warn_on.prf ..\mkspecs\features\qt.prf ..\mkspecs\features\resources.prf ..\mkspecs\features\moc.prf ..\mkspecs\features\win32\opengl.prf ..\mkspecs\features\uic.prf ..\mkspecs\features\qmake_use.prf ..\mkspecs\features\file_copies.prf ..\mkspecs\features\win32\windows.prf ..\mkspecs\features\testcase_targets.prf ..\mkspecs\features\exceptions.prf ..\mkspecs\features\yacc.prf ..\mkspecs\features\lex.prf blhx.pro res.qrc ..\lib\qtmain.prl ..\lib\Qt5Widgets.prl ..\lib\Qt5Gui.prl ..\lib\Qt5Core.prl   res.qrc ..\mkspecs\features\data\dummy.cpp cannonBall.h fightScene.h frontWarShip.h gameScene.h grid.h levelMap.h mainwindow.h operationButton.h quitMessageBox.h skillButton.h cannonBall.cpp fightScene.cpp frontWarShip.cpp gameScene.cpp grid.cpp levelMap.cpp main.cpp mainwindow.cpp operationButton.cpp quitMessageBox.cpp skillButton.cpp mainwindow.ui    
+	$(ZIP) blhx.zip $(SOURCES) $(DIST) blhx.pro ..\mkspecs\features\spec_pre.prf ..\mkspecs\qdevice.pri ..\mkspecs\features\device_config.prf ..\mkspecs\common\sanitize.conf ..\mkspecs\common\gcc-base.conf ..\mkspecs\common\g++-base.conf ..\mkspecs\common\angle.conf ..\mkspecs\qconfig.pri ..\mkspecs\modules\qt_lib_3danimation.pri ..\mkspecs\modules\qt_lib_3danimation_private.pri ..\mkspecs\modules\qt_lib_3dcore.pri ..\mkspecs\modules\qt_lib_3dcore_private.pri ..\mkspecs\modules\qt_lib_3dextras.pri ..\mkspecs\modules\qt_lib_3dextras_private.pri ..\mkspecs\modules\qt_lib_3dinput.pri ..\mkspecs\modules\qt_lib_3dinput_private.pri ..\mkspecs\modules\qt_lib_3dlogic.pri ..\mkspecs\modules\qt_lib_3dlogic_private.pri ..\mkspecs\modules\qt_lib_3dquick.pri ..\mkspecs\modules\qt_lib_3dquick_private.pri ..\mkspecs\modules\qt_lib_3dquickanimation.pri ..\mkspecs\modules\qt_lib_3dquickanimation_private.pri ..\mkspecs\modules\qt_lib_3dquickextras.pri ..\mkspecs\modules\qt_lib_3dquickextras_private.pri ..\mkspecs\modules\qt_lib_3dquickinput.pri ..\mkspecs\modules\qt_lib_3dquickinput_private.pri ..\mkspecs\modules\qt_lib_3dquickrender.pri ..\mkspecs\modules\qt_lib_3dquickrender_private.pri ..\mkspecs\modules\qt_lib_3dquickscene2d.pri ..\mkspecs\modules\qt_lib_3dquickscene2d_private.pri ..\mkspecs\modules\qt_lib_3drender.pri ..\mkspecs\modules\qt_lib_3drender_private.pri ..\mkspecs\modules\qt_lib_accessibility_support_private.pri ..\mkspecs\modules\qt_lib_axbase.pri ..\mkspecs\modules\qt_lib_axbase_private.pri ..\mkspecs\modules\qt_lib_axcontainer.pri ..\mkspecs\modules\qt_lib_axcontainer_private.pri ..\mkspecs\modules\qt_lib_axserver.pri ..\mkspecs\modules\qt_lib_axserver_private.pri ..\mkspecs\modules\qt_lib_bluetooth.pri ..\mkspecs\modules\qt_lib_bluetooth_private.pri ..\mkspecs\modules\qt_lib_bootstrap_private.pri ..\mkspecs\modules\qt_lib_charts.pri ..\mkspecs\modules\qt_lib_charts_private.pri ..\mkspecs\modules\qt_lib_concurrent.pri ..\mkspecs\modules\qt_lib_concurrent_private.pri ..\mkspecs\modules\qt_lib_core.pri ..\mkspecs\modules\qt_lib_core_private.pri ..\mkspecs\modules\qt_lib_datavisualization.pri ..\mkspecs\modules\qt_lib_datavisualization_private.pri ..\mkspecs\modules\qt_lib_dbus.pri ..\mkspecs\modules\qt_lib_dbus_private.pri ..\mkspecs\modules\qt_lib_designer.pri ..\mkspecs\modules\qt_lib_designer_private.pri ..\mkspecs\modules\qt_lib_designercomponents_private.pri ..\mkspecs\modules\qt_lib_devicediscovery_support_private.pri ..\mkspecs\modules\qt_lib_egl_support_private.pri ..\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri ..\mkspecs\modules\qt_lib_fb_support_private.pri ..\mkspecs\modules\qt_lib_fontdatabase_support_private.pri ..\mkspecs\modules\qt_lib_gamepad.pri ..\mkspecs\modules\qt_lib_gamepad_private.pri ..\mkspecs\modules\qt_lib_gui.pri ..\mkspecs\modules\qt_lib_gui_private.pri ..\mkspecs\modules\qt_lib_help.pri ..\mkspecs\modules\qt_lib_help_private.pri ..\mkspecs\modules\qt_lib_location.pri ..\mkspecs\modules\qt_lib_location_private.pri ..\mkspecs\modules\qt_lib_multimedia.pri ..\mkspecs\modules\qt_lib_multimedia_private.pri ..\mkspecs\modules\qt_lib_multimediawidgets.pri ..\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\mkspecs\modules\qt_lib_network.pri ..\mkspecs\modules\qt_lib_network_private.pri ..\mkspecs\modules\qt_lib_networkauth.pri ..\mkspecs\modules\qt_lib_networkauth_private.pri ..\mkspecs\modules\qt_lib_nfc.pri ..\mkspecs\modules\qt_lib_nfc_private.pri ..\mkspecs\modules\qt_lib_opengl.pri ..\mkspecs\modules\qt_lib_opengl_private.pri ..\mkspecs\modules\qt_lib_openglextensions.pri ..\mkspecs\modules\qt_lib_openglextensions_private.pri ..\mkspecs\modules\qt_lib_packetprotocol_private.pri ..\mkspecs\modules\qt_lib_platformcompositor_support_private.pri ..\mkspecs\modules\qt_lib_positioning.pri ..\mkspecs\modules\qt_lib_positioning_private.pri ..\mkspecs\modules\qt_lib_printsupport.pri ..\mkspecs\modules\qt_lib_printsupport_private.pri ..\mkspecs\modules\qt_lib_purchasing.pri ..\mkspecs\modules\qt_lib_purchasing_private.pri ..\mkspecs\modules\qt_lib_qml.pri ..\mkspecs\modules\qt_lib_qml_private.pri ..\mkspecs\modules\qt_lib_qmldebug_private.pri ..\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\mkspecs\modules\qt_lib_qmltest.pri ..\mkspecs\modules\qt_lib_qmltest_private.pri ..\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\mkspecs\modules\qt_lib_quick.pri ..\mkspecs\modules\qt_lib_quick_private.pri ..\mkspecs\modules\qt_lib_quickcontrols2.pri ..\mkspecs\modules\qt_lib_quickcontrols2_private.pri ..\mkspecs\modules\qt_lib_quickparticles_private.pri ..\mkspecs\modules\qt_lib_quicktemplates2_private.pri ..\mkspecs\modules\qt_lib_quickwidgets.pri ..\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\mkspecs\modules\qt_lib_remoteobjects.pri ..\mkspecs\modules\qt_lib_remoteobjects_private.pri ..\mkspecs\modules\qt_lib_repparser.pri ..\mkspecs\modules\qt_lib_repparser_private.pri ..\mkspecs\modules\qt_lib_scxml.pri ..\mkspecs\modules\qt_lib_scxml_private.pri ..\mkspecs\modules\qt_lib_sensors.pri ..\mkspecs\modules\qt_lib_sensors_private.pri ..\mkspecs\modules\qt_lib_serialbus.pri ..\mkspecs\modules\qt_lib_serialbus_private.pri ..\mkspecs\modules\qt_lib_serialport.pri ..\mkspecs\modules\qt_lib_serialport_private.pri ..\mkspecs\modules\qt_lib_sql.pri ..\mkspecs\modules\qt_lib_sql_private.pri ..\mkspecs\modules\qt_lib_svg.pri ..\mkspecs\modules\qt_lib_svg_private.pri ..\mkspecs\modules\qt_lib_testlib.pri ..\mkspecs\modules\qt_lib_testlib_private.pri ..\mkspecs\modules\qt_lib_texttospeech.pri ..\mkspecs\modules\qt_lib_texttospeech_private.pri ..\mkspecs\modules\qt_lib_theme_support_private.pri ..\mkspecs\modules\qt_lib_uiplugin.pri ..\mkspecs\modules\qt_lib_uitools.pri ..\mkspecs\modules\qt_lib_uitools_private.pri ..\mkspecs\modules\qt_lib_webchannel.pri ..\mkspecs\modules\qt_lib_webchannel_private.pri ..\mkspecs\modules\qt_lib_websockets.pri ..\mkspecs\modules\qt_lib_websockets_private.pri ..\mkspecs\modules\qt_lib_widgets.pri ..\mkspecs\modules\qt_lib_widgets_private.pri ..\mkspecs\modules\qt_lib_winextras.pri ..\mkspecs\modules\qt_lib_winextras_private.pri ..\mkspecs\modules\qt_lib_xml.pri ..\mkspecs\modules\qt_lib_xml_private.pri ..\mkspecs\modules\qt_lib_xmlpatterns.pri ..\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\mkspecs\features\qt_functions.prf ..\mkspecs\features\qt_config.prf ..\mkspecs\win32-g++\qmake.conf ..\mkspecs\features\spec_post.prf .qmake.stash ..\mkspecs\features\exclusive_builds.prf ..\mkspecs\features\toolchain.prf ..\mkspecs\features\default_pre.prf ..\mkspecs\features\win32\default_pre.prf ..\mkspecs\features\resolve_config.prf ..\mkspecs\features\exclusive_builds_post.prf ..\mkspecs\features\default_post.prf ..\mkspecs\features\build_pass.prf ..\mkspecs\features\precompile_header.prf ..\mkspecs\features\warn_on.prf ..\mkspecs\features\qt.prf ..\mkspecs\features\resources.prf ..\mkspecs\features\moc.prf ..\mkspecs\features\win32\opengl.prf ..\mkspecs\features\uic.prf ..\mkspecs\features\qmake_use.prf ..\mkspecs\features\file_copies.prf ..\mkspecs\features\win32\windows.prf ..\mkspecs\features\testcase_targets.prf ..\mkspecs\features\exceptions.prf ..\mkspecs\features\yacc.prf ..\mkspecs\features\lex.prf blhx.pro res.qrc ..\lib\qtmain.prl ..\lib\Qt5Widgets.prl ..\lib\Qt5Gui.prl ..\lib\Qt5Core.prl   res.qrc ..\mkspecs\features\data\dummy.cpp cannonBall.h emptyWarShip.h fightScene.h frontWarShip.h gameScene.h grid.h levelMap.h mainwindow.h operationButton.h quitMessageBox.h skillButton.h cannonBall.cpp emptyWarShip.cpp fightScene.cpp frontWarShip.cpp gameScene.cpp grid.cpp levelMap.cpp main.cpp mainwindow.cpp operationButton.cpp quitMessageBox.cpp skillButton.cpp mainwindow.ui    
 
 clean: compiler_clean 
-	-$(DEL_FILE) release\cannonBall.o release\fightScene.o release\frontWarShip.o release\gameScene.o release\grid.o release\levelMap.o release\main.o release\mainwindow.o release\operationButton.o release\quitMessageBox.o release\skillButton.o release\qrc_res.o release\moc_fightScene.o release\moc_gameScene.o release\moc_mainwindow.o release\moc_operationButton.o release\moc_quitMessageBox.o release\moc_skillButton.o
+	-$(DEL_FILE) release\cannonBall.o release\emptyWarShip.o release\fightScene.o release\frontWarShip.o release\gameScene.o release\grid.o release\levelMap.o release\main.o release\mainwindow.o release\operationButton.o release\quitMessageBox.o release\skillButton.o release\qrc_res.o release\moc_fightScene.o release\moc_gameScene.o release\moc_mainwindow.o release\moc_operationButton.o release\moc_quitMessageBox.o release\moc_skillButton.o
 
 distclean: clean 
 	-$(DEL_FILE) .qmake.stash
@@ -1305,6 +1309,85 @@ release/cannonBall.o: cannonBall.cpp cannonBall.h \
 		../include/QtCore/QPoint
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\cannonBall.o cannonBall.cpp
 
+release/emptyWarShip.o: emptyWarShip.cpp emptyWarShip.h \
+		../include/QtCore/QPoint \
+		../include/QtCore/qpoint.h \
+		../include/QtCore/qnamespace.h \
+		../include/QtCore/qglobal.h \
+		../include/QtCore/qconfig-bootstrapped.h \
+		../include/QtCore/qconfig.h \
+		../include/QtCore/qtcore-config.h \
+		../include/QtCore/qsystemdetection.h \
+		../include/QtCore/qprocessordetection.h \
+		../include/QtCore/qcompilerdetection.h \
+		../include/QtCore/qtypeinfo.h \
+		../include/QtCore/qsysinfo.h \
+		../include/QtCore/qlogging.h \
+		../include/QtCore/qflags.h \
+		../include/QtCore/qatomic.h \
+		../include/QtCore/qbasicatomic.h \
+		../include/QtCore/qatomic_bootstrap.h \
+		../include/QtCore/qgenericatomic.h \
+		../include/QtCore/qatomic_cxx11.h \
+		../include/QtCore/qatomic_msvc.h \
+		../include/QtCore/qglobalstatic.h \
+		../include/QtCore/qmutex.h \
+		../include/QtCore/qnumeric.h \
+		../include/QtCore/qversiontagging.h \
+		../include/QtGui/QPixmap \
+		../include/QtGui/qpixmap.h \
+		../include/QtGui/qtguiglobal.h \
+		../include/QtGui/qtgui-config.h \
+		../include/QtGui/qpaintdevice.h \
+		../include/QtGui/qwindowdefs.h \
+		../include/QtCore/qobjectdefs.h \
+		../include/QtCore/qobjectdefs_impl.h \
+		../include/QtGui/qwindowdefs_win.h \
+		../include/QtCore/qrect.h \
+		../include/QtCore/qmargins.h \
+		../include/QtCore/qsize.h \
+		../include/QtGui/qcolor.h \
+		../include/QtGui/qrgb.h \
+		../include/QtCore/qstringlist.h \
+		../include/QtCore/qlist.h \
+		../include/QtCore/qalgorithms.h \
+		../include/QtCore/qiterator.h \
+		../include/QtCore/qrefcount.h \
+		../include/QtCore/qarraydata.h \
+		../include/QtCore/qhashfunctions.h \
+		../include/QtCore/qchar.h \
+		../include/QtCore/qpair.h \
+		../include/QtCore/qbytearraylist.h \
+		../include/QtCore/qbytearray.h \
+		../include/QtCore/qstring.h \
+		../include/QtCore/qstringbuilder.h \
+		../include/QtCore/qregexp.h \
+		../include/QtCore/qstringmatcher.h \
+		../include/QtGui/qrgba64.h \
+		../include/QtCore/qsharedpointer.h \
+		../include/QtCore/qshareddata.h \
+		../include/QtCore/qhash.h \
+		../include/QtCore/qsharedpointer_impl.h \
+		../include/QtCore/qobject.h \
+		../include/QtCore/qcoreevent.h \
+		../include/QtCore/qscopedpointer.h \
+		../include/QtCore/qmetatype.h \
+		../include/QtCore/qvarlengtharray.h \
+		../include/QtCore/qcontainerfwd.h \
+		../include/QtCore/qobject_impl.h \
+		../include/QtGui/qimage.h \
+		../include/QtGui/qpixelformat.h \
+		../include/QtGui/qtransform.h \
+		../include/QtGui/qmatrix.h \
+		../include/QtGui/qpolygon.h \
+		../include/QtCore/qvector.h \
+		../include/QtGui/qregion.h \
+		../include/QtCore/qdatastream.h \
+		../include/QtCore/qiodevice.h \
+		../include/QtCore/qline.h \
+		../include/QtGui/qpainterpath.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\emptyWarShip.o emptyWarShip.cpp
+
 release/fightScene.o: fightScene.cpp fightScene.h \
 		../include/QtWidgets/QWidget \
 		../include/QtWidgets/qwidget.h \
@@ -1561,6 +1644,7 @@ release/fightScene.o: fightScene.cpp fightScene.h \
 		../include/QtGui/QMatrix \
 		frontWarShip.h \
 		../include/QtCore/QPoint \
+		../include/QtGui/QFont \
 		../include/QtCore/QtGlobal \
 		../include/QtCore/QCoreApplication
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\fightScene.o fightScene.cpp
@@ -2355,7 +2439,43 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../include/QtGui/qtouchdevice.h \
 		../include/QtWidgets/qtabwidget.h \
 		../include/QtGui/qicon.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../include/QtCore/QVariant \
+		../include/QtWidgets/QAction \
+		../include/QtWidgets/qaction.h \
+		../include/QtWidgets/qactiongroup.h \
+		../include/QtWidgets/QApplication \
+		../include/QtWidgets/qapplication.h \
+		../include/QtCore/qcoreapplication.h \
+		../include/QtCore/qeventloop.h \
+		../include/QtWidgets/qdesktopwidget.h \
+		../include/QtGui/qguiapplication.h \
+		../include/QtGui/qinputmethod.h \
+		../include/QtWidgets/QButtonGroup \
+		../include/QtWidgets/qbuttongroup.h \
+		../include/QtWidgets/QHeaderView \
+		../include/QtWidgets/qheaderview.h \
+		../include/QtWidgets/qabstractitemview.h \
+		../include/QtWidgets/qabstractscrollarea.h \
+		../include/QtWidgets/qframe.h \
+		../include/QtCore/qabstractitemmodel.h \
+		../include/QtCore/qitemselectionmodel.h \
+		../include/QtWidgets/qabstractitemdelegate.h \
+		../include/QtWidgets/qstyleoption.h \
+		../include/QtWidgets/qabstractspinbox.h \
+		../include/QtGui/qvalidator.h \
+		../include/QtCore/qregularexpression.h \
+		../include/QtWidgets/qslider.h \
+		../include/QtWidgets/qabstractslider.h \
+		../include/QtWidgets/qstyle.h \
+		../include/QtWidgets/qtabbar.h \
+		../include/QtWidgets/qrubberband.h \
+		../include/QtWidgets/QMenuBar \
+		../include/QtWidgets/qmenubar.h \
+		../include/QtWidgets/qmenu.h \
+		../include/QtWidgets/QStatusBar \
+		../include/QtWidgets/qstatusbar.h \
+		../include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o mainwindow.cpp
 
 release/operationButton.o: operationButton.cpp operationButton.h \

@@ -43,7 +43,7 @@ gameScene::~gameScene() {
 
 void gameScene::paintEvent(QPaintEvent*) {
     QPainter painter(this);
-        this->begining=1;
+
         painter.drawPixmap(0, 0, *backgroud);
     for (int i = 0; i <= col; i++) {
         painter.drawLine(QPoint(startpos_x + i * gridWdith, startpos_y),
@@ -53,6 +53,7 @@ void gameScene::paintEvent(QPaintEvent*) {
         painter.drawLine(QPoint(startpos_x, startpos_y + i * gridHeight),
                          QPoint(startpos_x + col * gridWdith, startpos_y + i * gridHeight));
     }
+
     painter.drawPixmap(startpos_x + 0 * gridWdith, startpos_y + 1 * gridHeight, *wall_1_3);
     painter.drawPixmap(startpos_x + 6 * gridWdith, startpos_y + 1 * gridHeight, *wall_2_2);
     painter.drawPixmap(startpos_x + 2 * gridWdith, startpos_y + 0 * gridHeight, *wall_2_1);
@@ -92,10 +93,12 @@ void gameScene::move(int direction) {
 //void
 
  void gameScene::keyPressEvent(QKeyEvent *event) {
-     if (event->key() == Qt::Key_Z) {
+     if (event->key() == Qt::Key_Z&&!ismove) {
          game = new fightScene(this);
          connect(game,&fightScene::closeFight,this,&gameScene::closeFight);
          game->show();
+         upgateTimer->stop();
+         moveTimer->stop();
          game->setFocus();
          game->playGame();
      }
@@ -104,6 +107,7 @@ void gameScene::move(int direction) {
      int fx = (fleetLocation.x() + gridWdith / 2) / 100;
      int fy = (fleetLocation.y() + 60 + 2 * gridHeight / 3) / 100;
      static grid *current = new grid(fx, fy, m[fy][fx]);
+     upgateTimer->disconnect();
      connect(upgateTimer, &QTimer::timeout, [&]() {
          if (!gamePath.empty()) {
 
@@ -123,7 +127,7 @@ void gameScene::move(int direction) {
  }
 
  void gameScene::mousePressEvent(QMouseEvent *event) {
-     if (ismove)
+     if (ismove||!gamePath.empty())
          return;
      gamePath.clear();
      int tx = event->x() / 100;
@@ -145,5 +149,8 @@ void gameScene::move(int direction) {
  {
      setFocus();
      game->clearFocus();
+     moveTimer->disconnect();
+     upgateTimer->start(450);
+     moveTimer->start(16);
 
  }

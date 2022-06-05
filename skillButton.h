@@ -23,6 +23,8 @@ public:
     void addSkillNumber();
 
     int getSkillNumber();
+
+    int getmaxSkillNumber();
 private:
     int skillNumber;
     int maxSkillNubmer;
