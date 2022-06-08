@@ -22,6 +22,14 @@ public:
 
     int torp_hurt();
 
+    int getwidth();
+
+    int getheight();
+
+    void declineHP(int hurt);
+
+    QRect getRect();
+
 private:
     int HP;//生命值上限
     int currentHP;//现在的生命值
@@ -35,6 +43,8 @@ private:
     QPixmap Tachie;//角色立绘
     QPoint location;
     QRect Rect;
+    int width;
+    int height;
 };
 
 #endif // EMPTYWARSHIP_H

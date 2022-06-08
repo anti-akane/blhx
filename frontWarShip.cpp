@@ -27,11 +27,11 @@ bool frontWarShip::shoot() {
     if (shootclock%shootcd==0) {
         return 1;
     }
-    else if(shootclock%(shootcd+4)==0)
+    else if(shootclock%(shootcd+3)==0)
     {
         return 1;
     }
-    else if(shootclock%(shootcd+8)==0)
+    else if(shootclock%(shootcd+6)==0)
     {
         shootclock=0;
         return 1;
@@ -90,10 +90,10 @@ double frontWarShip::getHpRate()
 
 int frontWarShip::power_hurt()
 {
-    return (1+power*1.0/100)*100;
+    return (1+power*1.0/100)*40;
 }
 
 int frontWarShip::torp_hurt()
 {
-    return (1+power*1.0/100)*200;
+    return (1+power*1.0/100)*500;
 }

@@ -24,6 +24,16 @@ public:
 
     frontWarShip* getparent();
 
+    double getAngle();
+
+    int getH();
+
+    int getW();
+
+    int getHurt();
+
+    QRect getRect();
+
 private:
     int x;
     int y;
@@ -35,6 +45,7 @@ private:
     QPixmap *cannonBallPixmap;
     frontWarShip*parent;
     bool isempty;
+    int speed;
 };
 
 #endif // CANNONBALL_H

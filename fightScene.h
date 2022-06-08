@@ -45,11 +45,16 @@ public:
 
     void shoot();
 
+    void frontshoot(frontWarShip *WarShip);
+
     void autoOperate();
 
     double cal_angle(QPoint*begin,QPoint*goal);//计算角度
 
     void drawfront(QPainter&painter,frontWarShip*WarShip,QBrush*black_brush,QBrush*green_brush);
+
+    void collide();
+
 private:
     QVector<cannonBall*>torplist;
     skillButton *planeButton;

@@ -3,9 +3,12 @@
 emptyWarShip::emptyWarShip(int HP,int power,int torp,int speed,int shootcd,int torpcd,QPixmap Tachie,QPoint location)
     :HP(HP),power(power),torp(torp),speed(speed),shootcd(shootcd),torpcd(torpcd),Tachie(Tachie),location(location)
 {
+    currentHP=HP;
 Rect.setWidth(Tachie.width());
 Rect.setHeight(Tachie.height());
 Rect.moveTo(location);
+height=Rect.height();
+width=Rect.width();
 }
 
 QPixmap emptyWarShip::getTachie() {
@@ -53,4 +56,27 @@ int emptyWarShip::power_hurt()
 int emptyWarShip::torp_hurt()
 {
     return (1+power*1.0/100)*200;
+}
+
+int emptyWarShip::getwidth()
+{
+    return width;
+}
+
+int emptyWarShip::getheight()
+{
+    return height;
+}
+
+void emptyWarShip::declineHP(int hurt)
+{
+    if(currentHP>hurt)
+    currentHP-=hurt;
+    else
+    currentHP=0;
+}
+
+QRect emptyWarShip::getRect()
+{
+    return Rect;
 }

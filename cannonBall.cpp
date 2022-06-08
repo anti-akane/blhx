@@ -5,8 +5,12 @@ cannonBall::cannonBall(int x,int y,int hurt,double angle,frontWarShip *parent,QS
     QMatrix matrix;
     matrix.rotate((angle * 2 * 90)/ pi);
     cannonBallPixmap = new QPixmap(pixmap);
+    speed=30;
     if(pixmap==":/res/torp.png")
+    {
         *this->cannonBallPixmap=(this->cannonBallPixmap)->scaled(35,35,Qt::KeepAspectRatio);
+        speed=10;
+    }
     else
      *this->cannonBallPixmap=(this->cannonBallPixmap)->scaled(70,70,Qt::KeepAspectRatio);
     height = cannonBallPixmap->height();
@@ -14,13 +18,19 @@ cannonBall::cannonBall(int x,int y,int hurt,double angle,frontWarShip *parent,QS
     *cannonBallPixmap = cannonBallPixmap->transformed(matrix,Qt::SmoothTransformation);
     connonRect.setWidth(width);
     connonRect.setHeight(width);
-    connonRect.moveTo(x + width * cos(angle) / 2, y - width * sin(angle) / 2);
+    if(angle>0)
+   connonRect.moveTo(x-height*sin(angle)/2.0,y+height*cos(angle)/2.0);
+    else
+  connonRect.moveTo(x+height*sin(angle)/2.0,y-height*cos(angle)/2.0);
 }
 
 void cannonBall::move() {
-    x += (15 * cos(angle));
-    y += (15 * sin(angle));
-    connonRect.moveTo(x + width * cos(angle) / 2, y - width * sin(angle) / 2);
+    x += (speed * cos(angle));
+    y += (speed * sin(angle));
+    if(angle>0)
+   connonRect.moveTo(x+height*sin(angle)/2.0,y-height*cos(angle)/2.0);
+    else
+  connonRect.moveTo(x+height*sin(angle)/2.0,y-height*cos(angle)/2.0);
 }
 
 bool cannonBall::check() {
@@ -45,4 +55,29 @@ QPixmap* cannonBall::getPixmap() {
 frontWarShip *cannonBall::getparent()
 {
     return parent;
+}
+
+double cannonBall::getAngle()
+{
+    return angle;
+}
+
+int cannonBall::getH()
+{
+    return height;
+}
+
+int cannonBall::getW()
+{
+    return width;
+}
+
+int cannonBall::getHurt()
+{
+    return hurt;
+}
+
+QRect cannonBall::getRect()
+{
+    return connonRect;
 }

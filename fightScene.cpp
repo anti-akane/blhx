@@ -3,6 +3,7 @@
 #include"quitMessageBox.h"
 #include<QMessageBox>
 #include<QFont>
+#include<QDebug>
 #include <QtGlobal>
 #include<QCoreApplication>
 const double pi=acos(-1.0);
@@ -23,13 +24,17 @@ void fightScene::drawfront(QPainter&painter,frontWarShip*WarShip,QBrush*black_br
                      80*WarShip->getHpRate(),8);
 }
 void fightScene::paintEvent(QPaintEvent *){
+
     QPainter painter(this);
     painter.drawPixmap(0,0,QPixmap(":/res/1200px-Bg_banama_1.png"));
 
     painter.drawPixmap(target.x(),target.y(),QPixmap(":/res/target.png"));
-    for(int i=0;i<cannonball.size();i++)
+    for(auto v:cannonball)
     {
-        painter.drawPixmap(cannonball[i]->getX(),cannonball[i]->getY(),*(cannonball[i]->getPixmap()));
+        if(v->getAngle()>0)
+        painter.drawPixmap(v->getX()+v->getH()*sin(v->getAngle())/2.0,v->getY()+v->getH()*cos(v->getAngle())/2.0,*(v->getPixmap()));
+       else
+        painter.drawPixmap(v->getX()+v->getH()*sin(v->getAngle())/2.0,v->getY()-v->getH()*cos(v->getAngle())/2.0,*(v->getPixmap()));
     }
     QBrush green_brush(QColor("#33FF66"));
     QBrush black_brush(QColor("#000000"));
@@ -45,7 +50,7 @@ void fightScene::paintEvent(QPaintEvent *){
                          emptylist[i]->getTachie().width()*0.6,8);
         painter.setBrush(green_brush);
         painter.drawRect(emptylist[i]->getlocation().x()+40,emptylist[i]->getlocation().y(),
-                         emptylist[i]->getTachie().width()*0.6*thirdship->getHpRate(),8);
+                         emptylist[i]->getTachie().width()*0.6*emptylist[i]->getHpRate(),8);
     }
 
     QFont font;
@@ -54,12 +59,13 @@ void fightScene::paintEvent(QPaintEvent *){
     painter.setPen(Qt::white);
     painter.drawText(950,570,QString::number(torpedoesButton->getSkillNumber())+"/"+QString::number(torpedoesButton->getmaxSkillNumber()));
 
+
 }
 void fightScene::init(){
     target=QPoint(300,337);
-    firstship=new frontWarShip(1000,1,1,8,100,750,2,QPixmap(":/res/Portland.png"),QPoint(300,337),&target);
-    secondship=new frontWarShip(1000,1,1,7,70,650,2,QPixmap(":/res/Helena.png"),QPoint(200,337),&firstship->getlocation());
-    thirdship=new frontWarShip(1000,1,1,7,45,500,2,QPixmap(":/res/Santiago.png"),QPoint(100,337),&secondship->getlocation());
+    firstship=new frontWarShip(1000,100,400,8,100,750,2,QPixmap(":/res/Portland.png"),QPoint(300,337),&target);
+    secondship=new frontWarShip(1000,100,400,7,70,650,2,QPixmap(":/res/Helena.png"),QPoint(200,337),&firstship->getlocation());
+    thirdship=new frontWarShip(1000,100,400,7,45,500,2,QPixmap(":/res/Santiago.png"),QPoint(100,337),&secondship->getlocation());
     emptylist.push_back(new emptyWarShip(10000,100,100,1,100,1000,QPixmap("://res/liangchan-1.png"),QPoint(900,200)));
     emptylist.push_back(new emptyWarShip(10000,100,100,1,100,1000,QPixmap("://res/liangchan-1.png"),QPoint(900,300)));
     emptylist.push_back(new emptyWarShip(10000,100,100,1,100,1000,QPixmap("://res/liangchan-1.png"),QPoint(900,400)));
@@ -161,7 +167,10 @@ void fightScene::updatetarger(int x, int y)
 }
 void fightScene::playGame()
 {
+
     connect(updateTimer,&QTimer::timeout,[=](){
+
+
         qApp->processEvents();
         keyPress();
         if(!updateTimer->isActive())
@@ -174,7 +183,10 @@ void fightScene::playGame()
         secondship->move();
         thirdship->move();
         shoot();
+        collide();
         update();
+
+
     });
 }
 void fightScene::keyPress(){
@@ -223,42 +235,24 @@ void fightScene::mouseMoveEvent(QMouseEvent *event)
 }
 
 void fightScene::shoot(){
-    for(int i=0;i<cannonball.size();i++)
-    {
-        if(!cannonball[i]->check())
+
+    for (QVector<cannonBall*>::iterator it = cannonball.begin(); it != cannonball.end();) {
+
+        if(!((*it)->check()))
            {
-            cannonball[i]=nullptr;
-            delete cannonball[i];
-            cannonball.erase(cannonball.begin()+i);
+            *it=nullptr;
+           delete *it;
+            cannonball.erase(it);
         }
         else
-            cannonball[i]->move();
+           { (*it)->move();
+            it++;
+        }
+    }
 
-    }
-    QPoint k= QPoint(emptylist[0]->getlocation());
-    k.setX(k.x()+emptylist[0]->getTachie().width());
-        k.setY(k.y()+emptylist[0]->getTachie().height());
-    if(firstship->shoot())
-    {
-        cannonball.push_back( new cannonBall(firstship->getlocation().x(),firstship->getlocation().y()+5,firstship->power_hurt(),
-                                             cal_angle(&firstship->getlocation(),&k)));
-        cannonball.push_back( new cannonBall(firstship->getlocation().x(),firstship->getlocation().y()-5,firstship->power_hurt(),
-                                             cal_angle(&firstship->getlocation(),&k)));
-    }
-    if(secondship->shoot())
-    {
-        cannonball.push_back( new cannonBall(secondship->getlocation().x(),secondship->getlocation().y()+5,secondship->power_hurt(),
-                                             cal_angle(&secondship->getlocation(),&k)));
-        cannonball.push_back( new cannonBall(secondship->getlocation().x(),secondship->getlocation().y()-5,secondship->power_hurt(),
-                                             cal_angle(&secondship->getlocation(),&k)));
-    }
-    if(thirdship->shoot())
-    {
-        cannonball.push_back( new cannonBall(thirdship->getlocation().x(),thirdship->getlocation().y()+5,thirdship->power_hurt(),
-                                             cal_angle(&thirdship->getlocation(),&k)));
-        cannonball.push_back( new cannonBall(thirdship->getlocation().x(),thirdship->getlocation().y()-5,thirdship->power_hurt(),
-                                             cal_angle(&thirdship->getlocation(),&k)));
-    }
+    frontshoot(firstship);
+    frontshoot(secondship);
+    frontshoot(thirdship);
     if(firstship->checkTorp())
     {
         torpedoesButton->addSkillNumber();
@@ -276,6 +270,36 @@ void fightScene::shoot(){
     }
 }
 
+void fightScene::frontshoot(frontWarShip*WarShip)
+{
+    //if(emptylist.empty())
+        //return;
+    if(WarShip->shoot())
+    {
+        int b_x=WarShip->getlocation().x(),b_y=WarShip->getlocation().y();
+        QPoint *goal=nullptr;
+        int len=1e8;
+        for(auto v:emptylist)
+        {
+        int g_x=v->getlocation().x()+v->getwidth()/2,g_y=v->getlocation().y()+v->getheight()/2;
+        int temp=(b_x-g_x)*(b_x-g_x)+(b_y-g_y)*(b_y-g_y);
+        if(temp<len)
+        {
+            goal=new QPoint(g_x,g_y);
+            len=temp;
+        }
+
+        }
+        cannonball.push_back( new cannonBall(WarShip->getlocation().x(),WarShip->getlocation().y()+5,WarShip->power_hurt(),
+                                             cal_angle(&WarShip->getlocation(),goal)));
+        cannonball.push_back( new cannonBall(WarShip->getlocation().x(),WarShip->getlocation().y()-5,WarShip->power_hurt(),
+                                             cal_angle(&WarShip->getlocation(),goal)));
+        delete  goal;
+    }
+
+
+}
+
 void fightScene::closeEvent(QCloseEvent *)
 {
     this->clearFocus();
@@ -289,10 +313,10 @@ void fightScene::torp()
         return;
     cannonBall *torp=torplist[0];
     cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),torp->getparent()->torp_hurt(),0,nullptr,":/res/torp.png"));
-    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),torp->getparent()->torp_hurt(),pi/18,nullptr,":/res/torp.png"));
-    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),torp->getparent()->torp_hurt(),2*pi/18,nullptr,":/res/torp.png"));
-    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),torp->getparent()->torp_hurt(),-pi/18,nullptr,":/res/torp.png"));
-    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),torp->getparent()->torp_hurt(),-2*pi/18,nullptr,":/res/torp.png"));
+    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),torp->getparent()->torp_hurt(),pi/30.0,nullptr,":/res/torp.png"));
+    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),torp->getparent()->torp_hurt(),-1.0*pi/30.0,nullptr,":/res/torp.png"));
+    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),torp->getparent()->torp_hurt(),pi/40.0,nullptr,":/res/torp.png"));
+    cannonball.push_back(new cannonBall(torp->getparent()->getlocation().x(),torp->getparent()->getlocation().y(),torp->getparent()->torp_hurt(),-1.0*pi/40.0,nullptr,":/res/torp.png"));
     torp->getparent()->declineTorpNumber();
     torplist[0]=nullptr;
     torplist.erase(torplist.begin());
@@ -325,6 +349,8 @@ if(len<=3*firstship->getSpeed())
 
 double fightScene::cal_angle(QPoint *begin, QPoint *goal)
 {
+    if(goal==nullptr)
+        return 0;
     int b_x=begin->x(),b_y=begin->y();
     int g_x=goal->x(),g_y=goal->y();
     double xx = g_x - b_x;
@@ -345,4 +371,30 @@ double fightScene::cal_angle(QPoint *begin, QPoint *goal)
         return (tempAngle);
 }
 
+void fightScene::collide(){
+    for (QVector<cannonBall*>::iterator can = cannonball.begin(); can != cannonball.end();) {
+int flag1=0;
+         for (QVector<emptyWarShip*>::iterator empty = emptylist.begin(); empty != emptylist.end();)
+         {
+             int flag2=0;
+             if((*empty)->getRect().intersects((*can)->getRect()))
+             {
+                 flag1=1;
+                 flag2=1;
+                 (*empty)->declineHP((*can)->getHurt());
+                 if((*empty)->getHpRate()==0)
+                    emptylist.erase(empty);
+                 qDebug()<<(*can)->getHurt()<<endl;
+
+                 break;
+             }
+             if(!flag2)
+                 empty++;
+         }
+         if(flag1)
+             cannonball.erase(can);
+         else
+         can++;
+    }
+}
 
