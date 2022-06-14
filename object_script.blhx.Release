@@ -11,6 +11,7 @@ INPUT(
 ./release\operationButton.o
 ./release\quitMessageBox.o
 ./release\skillButton.o
+./release\warShip.o
 ./release\qrc_res.o
 ./release\moc_fightScene.o
 ./release\moc_gameScene.o

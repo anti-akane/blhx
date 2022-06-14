@@ -1,22 +1,14 @@
 #include"frontWarShip.h"
 #include"math.h"
-QPixmap  frontWarShip::getTachie() {
-    return (Tachie);
-}
-
-QPoint& frontWarShip::getlocation() {
-    return location;
-}
 frontWarShip::frontWarShip(int hp,int power,int torp,int speed,int shootcd,
                            int torpcd,int tornumber,QPixmap tachie,
                            QPoint location,QPoint*target)
-    :HP(hp),power(power),torp(torp),speed(speed),shootcd(shootcd),
-    torpcd(torpcd),torp_number(tornumber),location(location),target(target) {
-    currentHP=HP/2;
+    :warShip(hp,power,torp,speed,shootcd,torpcd,tachie,location),torp_number(tornumber),target(target) {
+    currentHP=HP;
     (this->Tachie)=tachie.scaled(120,120,Qt::KeepAspectRatio);
-    Rect.setWidth(Tachie.width());
-    Rect.setHeight(Tachie.height());
-    Rect.moveTo(location);
+    Rect.setWidth(Tachie.width()/4);
+    Rect.setHeight(Tachie.height()/4);
+    Rect.moveTo(location.x()+Tachie.width()/4,location.y()+Tachie.height()/2);
     shootclock = 0;
     torpclock=0;
     current_torp_number=0;
@@ -49,6 +41,7 @@ void frontWarShip::move() {
         }
     location.setX(l_x + speed * (t_x - l_x) / len);
     location.setY(l_y + speed * (t_y - l_y) / len);
+    Rect.moveTo(location.x()+Tachie.width()/4,location.y()+Tachie.height()/2);
 }
 
 bool frontWarShip::checkTorp()
@@ -83,17 +76,15 @@ void frontWarShip::declineTorpNumber()
 current_torp_number--;
 }
 
-double frontWarShip::getHpRate()
-{
-    return currentHP*1.0/HP;
+
+
+QRect & frontWarShip::getRect(){
+    return Rect;
 }
 
-int frontWarShip::power_hurt()
+void frontWarShip::setTarget(QPoint *goal)
 {
-    return (1+power*1.0/100)*40;
+    target=goal;
 }
 
-int frontWarShip::torp_hurt()
-{
-    return (1+power*1.0/100)*500;
-}
+

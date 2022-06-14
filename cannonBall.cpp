@@ -5,7 +5,7 @@ cannonBall::cannonBall(int x,int y,int hurt,double angle,frontWarShip *parent,QS
     QMatrix matrix;
     matrix.rotate((angle * 2 * 90)/ pi);
     cannonBallPixmap = new QPixmap(pixmap);
-    speed=30;
+    speed=50;
     if(pixmap==":/res/torp.png")
     {
         *this->cannonBallPixmap=(this->cannonBallPixmap)->scaled(35,35,Qt::KeepAspectRatio);

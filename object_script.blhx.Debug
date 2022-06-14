@@ -11,6 +11,7 @@ INPUT(
 ./debug\operationButton.o
 ./debug\quitMessageBox.o
 ./debug\skillButton.o
+./debug\warShip.o
 ./debug\qrc_res.o
 ./debug\moc_fightScene.o
 ./debug\moc_gameScene.o

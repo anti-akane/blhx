@@ -27,7 +27,8 @@ SOURCES += \
     mainwindow.cpp \
     operationButton.cpp \
     quitMessageBox.cpp \
-    skillButton.cpp
+    skillButton.cpp \
+    warShip.cpp
 
 HEADERS += \
     cannonBall.h \
@@ -40,7 +41,8 @@ HEADERS += \
     mainwindow.h \
     operationButton.h \
     quitMessageBox.h \
-    skillButton.h
+    skillButton.h \
+    warShip.h
 
 FORMS += \
     mainwindow.ui

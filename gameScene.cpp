@@ -36,6 +36,7 @@ gameScene::gameScene(QWidget *parent):QWidget(parent) {
     movecontroller = 0;
     gameMap = new levelMap(row, col, m);
 };
+
 gameScene::~gameScene() {
     delete moveTimer;
     delete game;

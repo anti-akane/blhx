@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_fightScene_t {
-    QByteArrayData data[5];
-    char stringdata0[44];
+    QByteArrayData data[6];
+    char stringdata0[49];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,11 +34,12 @@ static const qt_meta_stringdata_fightScene_t qt_meta_stringdata_fightScene = {
 QT_MOC_LITERAL(0, 0, 10), // "fightScene"
 QT_MOC_LITERAL(1, 11, 10), // "closeFight"
 QT_MOC_LITERAL(2, 22, 0), // ""
-QT_MOC_LITERAL(3, 23, 15), // "callquitmessage"
-QT_MOC_LITERAL(4, 39, 4) // "torp"
+QT_MOC_LITERAL(3, 23, 4), // "fail"
+QT_MOC_LITERAL(4, 28, 15), // "callquitmessage"
+QT_MOC_LITERAL(5, 44, 4) // "torp"
 
     },
-    "fightScene\0closeFight\0\0callquitmessage\0"
+    "fightScene\0closeFight\0\0fail\0callquitmessage\0"
     "torp"
 };
 #undef QT_MOC_LITERAL
@@ -49,21 +50,23 @@ static const uint qt_meta_data_fightScene[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
+       2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   29,    2, 0x06 /* Public */,
+       1,    0,   34,    2, 0x06 /* Public */,
+       3,    0,   35,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    0,   30,    2, 0x0a /* Public */,
-       4,    0,   31,    2, 0x0a /* Public */,
+       4,    0,   36,    2, 0x0a /* Public */,
+       5,    0,   37,    2, 0x0a /* Public */,
 
  // signals: parameters
+    QMetaType::Void,
     QMetaType::Void,
 
  // slots: parameters
@@ -80,8 +83,9 @@ void fightScene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->closeFight(); break;
-        case 1: _t->callquitmessage(); break;
-        case 2: _t->torp(); break;
+        case 1: _t->fail(); break;
+        case 2: _t->callquitmessage(); break;
+        case 3: _t->torp(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -90,6 +94,13 @@ void fightScene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             typedef void (fightScene::*_t)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&fightScene::closeFight)) {
                 *result = 0;
+                return;
+            }
+        }
+        {
+            typedef void (fightScene::*_t)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&fightScene::fail)) {
+                *result = 1;
                 return;
             }
         }
@@ -122,13 +133,13 @@ int fightScene::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 4)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }
@@ -137,6 +148,12 @@ int fightScene::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 void fightScene::closeFight()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
+}
+
+// SIGNAL 1
+void fightScene::fail()
+{
+    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

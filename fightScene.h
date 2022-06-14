@@ -55,6 +55,12 @@ public:
 
     void collide();
 
+    void emptyshoot();
+
+    void frontcollide(frontWarShip*Warship);
+
+    void checkDeath();
+
 private:
     QVector<cannonBall*>torplist;
     skillButton *planeButton;
@@ -64,9 +70,8 @@ private:
     QPushButton *pause;
     QPoint target;
 
-    frontWarShip *firstship;
-    frontWarShip *secondship;
-    frontWarShip *thirdship;
+
+    QVector<frontWarShip*>frontwarship;
 
     QSet<int> pressedKeys;//储存每帧中的键盘事件
 
@@ -77,16 +82,20 @@ private:
     quitMessageBox *quitmessagebox;
 
     QVector<cannonBall *> cannonball;
+    QVector<cannonBall*>emptycannon;
 
     QTimer *updateTimer;//游戏内部计时器
 
+
     QVector<emptyWarShip*>emptylist;
+
 public
     slots:
             void callquitmessage();
                 void torp();
 signals:
                 void closeFight();
+                void fail();
 };
 
 #endif // FIGHTSCENE_H
