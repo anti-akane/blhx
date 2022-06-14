@@ -3,16 +3,16 @@
 #include<QPixmap>
 #include<QPoint>
 #include"warShip.h"
-class frontWarShip :public warShip{
+class frontWarShip :public warShip {
 public:
     frontWarShip(int hp, int power, int torp, int speed, int shootcd, int torpcd, int tornumber, QPixmap tachie,
                  QPoint location, QPoint *target);
 
-    void move()override;//更新自身位置
+    void move() override;//更新自身位置
 
     bool shoot();
 
-    bool checkTorp() ;
+    bool checkTorp();
 
     int getTorpNumber();
 
@@ -24,7 +24,7 @@ public:
 
     QRect &getRect();
 
-    void setTarget(QPoint*goal);
+    void setTarget(QPoint *goal);
 
 private:
     int torp_number;//携带鱼雷数量

@@ -18,6 +18,8 @@
 #include"cannonBall.h"
 #include"frontWarShip.h"
 #include"emptyWarShip.h"
+#include"standardEmpty.h"
+#include"humanoidEmpty.h"
 class fightScene:public QWidget {
     Q_OBJECT
 public:
@@ -49,20 +51,20 @@ public:
 
     void autoOperate();
 
-    double cal_angle(QPoint*begin,QPoint*goal);//计算角度
+    double cal_angle(QPoint *begin, QPoint *goal);//计算角度
 
-    void drawfront(QPainter&painter,frontWarShip*WarShip,QBrush*black_brush,QBrush*green_brush);
+    void drawfront(QPainter &painter, frontWarShip *WarShip, QBrush *black_brush, QBrush *green_brush);
 
     void collide();
 
     void emptyshoot();
 
-    void frontcollide(frontWarShip*Warship);
+    void frontcollide(frontWarShip *Warship);
 
     void checkDeath();
 
 private:
-    QVector<cannonBall*>torplist;
+    QVector<cannonBall *> torplist;
     skillButton *planeButton;
     skillButton *torpedoesButton;
     skillButton *navalgunButton;
@@ -71,31 +73,30 @@ private:
     QPoint target;
 
 
-    QVector<frontWarShip*>frontwarship;
+    QVector<frontWarShip *> frontwarship;
 
     QSet<int> pressedKeys;//储存每帧中的键盘事件
-
-    int autoOpTimer;//处理自律作战的轨迹所设置的计时器
-
-    int autoState;
 
     quitMessageBox *quitmessagebox;
 
     QVector<cannonBall *> cannonball;
-    QVector<cannonBall*>emptycannon;
+    QVector<cannonBall *> emptycannon;
 
     QTimer *updateTimer;//游戏内部计时器
 
 
-    QVector<emptyWarShip*>emptylist;
+    QVector<emptyWarShip *> emptylist;
 
 public
     slots:
             void callquitmessage();
-                void torp();
-signals:
-                void closeFight();
-                void fail();
+
+    void torp();
+
+    signals:
+            void closeFight();
+
+    void fail();
 };
 
 #endif // FIGHTSCENE_H

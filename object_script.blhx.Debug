@@ -5,12 +5,14 @@ INPUT(
 ./debug\frontWarShip.o
 ./debug\gameScene.o
 ./debug\grid.o
+./debug\humanoidEmpty.o
 ./debug\levelMap.o
 ./debug\main.o
 ./debug\mainwindow.o
 ./debug\operationButton.o
 ./debug\quitMessageBox.o
 ./debug\skillButton.o
+./debug\standardEmpty.o
 ./debug\warShip.o
 ./debug\qrc_res.o
 ./debug\moc_fightScene.o

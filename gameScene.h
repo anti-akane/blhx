@@ -32,7 +32,7 @@ public:
     QTimer *upgateTimer;
 public
     slots:
-    void closeFight();
+            void closeFight();
 private:
     int ismove;
     levelMap *gameMap;

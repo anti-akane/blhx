@@ -5,12 +5,14 @@ INPUT(
 ./release\frontWarShip.o
 ./release\gameScene.o
 ./release\grid.o
+./release\humanoidEmpty.o
 ./release\levelMap.o
 ./release\main.o
 ./release\mainwindow.o
 ./release\operationButton.o
 ./release\quitMessageBox.o
 ./release\skillButton.o
+./release\standardEmpty.o
 ./release\warShip.o
 ./release\qrc_res.o
 ./release\moc_fightScene.o

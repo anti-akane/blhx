@@ -1,12 +1,11 @@
 #include"warShip.h"
 #include"math.h"
 warShip::warShip(int HP,int power,int torp,int speed,int shootcd,int torpcd,QPixmap Tachie,QPoint location)
-    :HP(HP),power(power),torp(torp),speed(speed),shootcd(shootcd),torpcd(torpcd),Tachie(Tachie),location(location)
-{
-    currentHP=HP;
-height=Tachie.height();
-width=Tachie.width();
-shootclock=0;
+    :HP(HP),power(power),torp(torp),speed(speed),shootcd(shootcd),torpcd(torpcd),Tachie(Tachie),location(location) {
+    currentHP = HP;
+    height = Tachie.height();
+    width = Tachie.width();
+    shootclock = 0;
 }
 
 QPixmap warShip::getTachie() {
@@ -24,12 +23,12 @@ double warShip::getHpRate()
 
 int warShip::power_hurt()
 {
-    return (1+power*1.0/100)*100;
+    return (1+power*1.0/100)*50;
 }
 
 int warShip::torp_hurt()
 {
-    return (1+power*1.0/100)*200;
+    return (1+power*1.0/100)*500;
 }
 
 int warShip::getwidth()

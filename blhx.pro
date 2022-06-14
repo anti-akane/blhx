@@ -22,12 +22,14 @@ SOURCES += \
     frontWarShip.cpp \
     gameScene.cpp \
     grid.cpp \
+    humanoidEmpty.cpp \
     levelMap.cpp \
     main.cpp \
     mainwindow.cpp \
     operationButton.cpp \
     quitMessageBox.cpp \
     skillButton.cpp \
+    standardEmpty.cpp \
     warShip.cpp
 
 HEADERS += \
@@ -37,11 +39,13 @@ HEADERS += \
     frontWarShip.h \
     gameScene.h \
     grid.h \
+    humanoidEmpty.h \
     levelMap.h \
     mainwindow.h \
     operationButton.h \
     quitMessageBox.h \
     skillButton.h \
+    standardEmpty.h \
     warShip.h
 
 FORMS += \

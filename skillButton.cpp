@@ -13,18 +13,20 @@ skillButton::skillButton(QWidget *parent,QPixmap *pixmap,QString type,int maxski
     unavailable_imagePath += type;
     unavailable_imagePath += "-unavailable.png);};";
     setStyleSheet(unavailable_imagePath);
+    isDown = 0;
 }
 
 skillButton::~skillButton() {
 }
 
-void skillButton::mousePressEvent(QMouseEvent *) {
+void skillButton::mouseReleaseEvent(QMouseEvent *) {
     Unleash_skills();
     setEnabled(false);
+    isDown = 1;
     QTimer::singleShot(500, this, [=] {
         setEnabled(true);
+        isDown = 0;
     });
-
 }
 
 void skillButton::Unleash_skills() {
@@ -57,4 +59,7 @@ int skillButton::getmaxSkillNumber()
 }
 
 
+int skillButton::IsDown() {
+    return isDown;
+}
 

@@ -45,7 +45,7 @@ gameScene::~gameScene() {
 void gameScene::paintEvent(QPaintEvent*) {
     QPainter painter(this);
 
-        painter.drawPixmap(0, 0, *backgroud);
+    painter.drawPixmap(0, 0, *backgroud);
     for (int i = 0; i <= col; i++) {
         painter.drawLine(QPoint(startpos_x + i * gridWdith, startpos_y),
                          QPoint(startpos_x + i * gridWdith, startpos_y + row * gridHeight));
@@ -74,7 +74,7 @@ void gameScene::move(int direction) {
         flagShip = new QPixmap(":/res/lisailiu.png");
     if (!moveTimer->isActive())
         moveTimer->start(16);
-    moveTimer->disconnect();  
+    moveTimer->disconnect();
     connect(moveTimer, &QTimer::timeout, [=]() {
         movecontroller++;
         if (movecontroller > 25) {
@@ -91,12 +91,10 @@ void gameScene::move(int direction) {
 
 }
 
-//void
-
  void gameScene::keyPressEvent(QKeyEvent *event) {
-     if (event->key() == Qt::Key_Z&&!ismove) {
+     if (event->key() == Qt::Key_Z && !ismove) {
          game = new fightScene(this);
-         connect(game,&fightScene::closeFight,this,&gameScene::closeFight);
+         connect(game, &fightScene::closeFight, this, &gameScene::closeFight);
          game->show();
          upgateTimer->stop();
          moveTimer->stop();
@@ -128,7 +126,7 @@ void gameScene::move(int direction) {
  }
 
  void gameScene::mousePressEvent(QMouseEvent *event) {
-     if (ismove||!gamePath.empty())
+     if (ismove || !gamePath.empty())
          return;
      gamePath.clear();
      int tx = event->x() / 100;

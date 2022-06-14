@@ -7,11 +7,13 @@ class emptyWarShip:public warShip{
 public:
     emptyWarShip(int HP,int power,int torp,int speed,int shootcd,int torpcd,QPixmap Tachie,QPoint location);
 
-    QRect getRect();
+    QRect &getRect();
 
-    virtual void move();
+    virtual void move()=0;
 
-    bool shoot();
+    virtual bool shoot();
+
+    virtual ~emptyWarShip();
 
 private:
     QRect Rect;

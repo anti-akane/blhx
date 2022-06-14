@@ -18,21 +18,24 @@ public:
 
     void Unleash_skills();
 
-    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
     void addSkillNumber();
 
     int getSkillNumber();
 
     int getmaxSkillNumber();
+
+    int IsDown();
+
 private:
     int skillNumber;
     int maxSkillNubmer;
-
+    int isDown;
     QString available_imagePath;
     QString unavailable_imagePath;
-signals:
-    void skills();
+    signals:
+            void skills();
 };
 
 #endif // GAMEBUTTON_H
