@@ -24,6 +24,8 @@ public:
 
     void declineHP(int hurt);
 
+    void addHP(int recover);
+
 
     protected:
     int HP;//生命值上限

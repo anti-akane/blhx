@@ -20,6 +20,11 @@
 #include"emptyWarShip.h"
 #include"standardEmpty.h"
 #include"humanoidEmpty.h"
+#include"battleShip.h"
+#include"backWarShip.h"
+#include"battlecannon.h"
+#include"carrierVessels.h"
+#include"airCraft.h"
 class fightScene:public QWidget {
     Q_OBJECT
 public:
@@ -63,6 +68,18 @@ public:
 
     void checkDeath();
 
+    void battleShoot();
+
+    void drawback(QPainter &painter, backWarShip *WarShip, QBrush *black_brush, QBrush *green_brush);
+
+    void Boundary();
+
+    void check_airCraft();
+
+    QPoint *findEmpty(QPoint start);
+
+    void checkEmpty();
+
 private:
     QVector<cannonBall *> torplist;
     skillButton *planeButton;
@@ -87,11 +104,27 @@ private:
 
     QVector<emptyWarShip *> emptylist;
 
+    QPixmap aim;
+
+    QVector<backWarShip*>backwarship;
+
+    QVector<cannonBall*>battlecannon;
+
+    QVector<cannonBall*>airRaid;
+
+    QVector<airCraft*>aircraft;
+
+    QVector<emptyWarShip*>totalempty;
+
+    int state;
+
 public
     slots:
             void callquitmessage();
 
     void torp();
+
+     void airraid();
 
     signals:
             void closeFight();

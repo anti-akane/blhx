@@ -15,8 +15,15 @@ public:
 
     virtual ~emptyWarShip();
 
+    int getHP();
+
+    void setState(int state);
+
+    int getState();
+
 private:
     QRect Rect;
+    int state;
 };
 
 #endif // EMPTYWARSHIP_H

@@ -92,14 +92,14 @@ void gameScene::move(int direction) {
 }
 
  void gameScene::keyPressEvent(QKeyEvent *event) {
-     if (event->key() == Qt::Key_Z && !ismove) {
+     if (event->key() == Qt::Key_Z&&!ismove) {
          game = new fightScene(this);
-         connect(game, &fightScene::closeFight, this, &gameScene::closeFight);
          game->show();
          upgateTimer->stop();
          moveTimer->stop();
          game->setFocus();
          game->playGame();
+         connect(game, &fightScene::closeFight, this, &gameScene::closeFight);
      }
  }
  void gameScene::upgateGame() {
@@ -146,10 +146,13 @@ void gameScene::move(int direction) {
 
  void gameScene::closeFight()
  {
-     setFocus();
-     game->clearFocus();
+
+        game->close();
+        game->clearFocus();
+        game=nullptr;
+        this->setFocus();
      moveTimer->disconnect();
-     upgateTimer->start(450);
-     moveTimer->start(16);
+    upgateTimer->start(450);
+    moveTimer->start(16);
 
  }

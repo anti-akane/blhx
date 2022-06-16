@@ -48,3 +48,13 @@ void warShip::declineHP(int hurt)
     else
     currentHP=0;
 }
+
+void warShip::addHP(int recover)
+{
+    if(currentHP+recover<=HP)
+    {
+        currentHP+=recover;
+    }
+    else
+        currentHP=HP;
+}

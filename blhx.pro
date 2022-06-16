@@ -16,7 +16,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    airCraft.cpp \
+    backWarShip.cpp \
+    battleShip.cpp \
+    battlecannon.cpp \
     cannonBall.cpp \
+    carrierVessels.cpp \
     emptyWarShip.cpp \
     fightScene.cpp \
     frontWarShip.cpp \
@@ -33,7 +38,12 @@ SOURCES += \
     warShip.cpp
 
 HEADERS += \
+    airCraft.h \
+    backWarShip.h \
+    battleShip.h \
+    battlecannon.h \
     cannonBall.h \
+    carrierVessels.h \
     emptyWarShip.h \
     fightScene.h \
     frontWarShip.h \

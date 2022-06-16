@@ -1,5 +1,10 @@
 INPUT(
+./release\airCraft.o
+./release\backWarShip.o
+./release\battleShip.o
+./release\battlecannon.o
 ./release\cannonBall.o
+./release\carrierVessels.o
 ./release\emptyWarShip.o
 ./release\fightScene.o
 ./release\frontWarShip.o

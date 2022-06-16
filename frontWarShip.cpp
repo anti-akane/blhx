@@ -2,8 +2,8 @@
 #include"math.h"
 frontWarShip::frontWarShip(int hp,int power,int torp,int speed,int shootcd,
                            int torpcd,int tornumber,QPixmap tachie,
-                           QPoint location,QPoint*target)
-    :warShip(hp,power,torp,speed,shootcd,torpcd,tachie,location),torp_number(tornumber),target(target) {
+                           QPoint location,QPoint*target,int barragecd)
+    :warShip(hp,power,torp,speed,shootcd,torpcd,tachie,location),torp_number(tornumber),target(target),barragecd(barragecd) {
     currentHP = HP;
     (this->Tachie) = tachie.scaled(120, 120, Qt::KeepAspectRatio);
     Rect.setWidth(Tachie.width() / 4);
@@ -11,6 +11,7 @@ frontWarShip::frontWarShip(int hp,int power,int torp,int speed,int shootcd,
     Rect.moveTo(location.x() + Tachie.width() / 4, location.y() + Tachie.height() / 2);
     shootclock = 0;
     torpclock = 0;
+    barrageclock=0;
     current_torp_number = 0;
 }
 
@@ -75,6 +76,31 @@ QRect & frontWarShip::getRect(){
 void frontWarShip::setTarget(QPoint *goal)
 {
     target=goal;
+}
+
+bool frontWarShip::checkBarrage()
+{if(!barragecd)
+        return 0;
+    barrageclock++;
+    if(barrageclock>=barragecd)
+    {
+        barrageclock=0;
+        return 1;
+    }
+    return 0;
+}
+
+void frontWarShip::setBarrage(QVector<cannonBall *> Barrage)
+{
+    for(auto v:Barrage)
+    {
+        barrage.push_back(new cannonBall(*v));
+    }
+}
+
+QVector<cannonBall*>frontWarShip::getBarrage()
+{
+    return barrage;
 }
 
 

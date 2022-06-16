@@ -26,3 +26,18 @@ bool emptyWarShip::shoot() {
     }
     return 0;
 }
+
+int emptyWarShip::getHP()
+{
+    return currentHP;
+}
+
+int emptyWarShip::getState()
+{
+    return state;
+}
+
+void emptyWarShip::setState(int state)
+{
+    this->state=state;
+}

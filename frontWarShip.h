@@ -3,10 +3,11 @@
 #include<QPixmap>
 #include<QPoint>
 #include"warShip.h"
+#include"cannonBall.h"
 class frontWarShip :public warShip {
 public:
     frontWarShip(int hp, int power, int torp, int speed, int shootcd, int torpcd, int tornumber, QPixmap tachie,
-                 QPoint location, QPoint *target);
+                 QPoint location, QPoint *target,int barragecd=0);
 
     void move() override;//更新自身位置
 
@@ -22,9 +23,15 @@ public:
 
     int getSpeed();
 
+    bool checkBarrage();
+
     QRect &getRect();
 
     void setTarget(QPoint *goal);
+
+    void setBarrage(QVector<cannonBall*>Barrage);
+
+    QVector<cannonBall*>getBarrage();
 
 private:
     int torp_number;//携带鱼雷数量
@@ -32,6 +39,9 @@ private:
     QPixmap Tachie;//角色立绘
     QPoint *target;
     QRect Rect;
+    int barragecd;
+    int barrageclock;
+    QVector<cannonBall*>barrage;
 
 };
 

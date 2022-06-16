@@ -20,6 +20,8 @@ public:
 
     void mouseReleaseEvent(QMouseEvent *event);
 
+    void mousePressEvent(QMouseEvent*);
+
     void addSkillNumber();
 
     int getSkillNumber();
@@ -28,6 +30,9 @@ public:
 
     int IsDown();
 
+    void declineMaxSkill(int number);
+
+    void declineSkill(int number);
 private:
     int skillNumber;
     int maxSkillNubmer;

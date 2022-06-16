@@ -1,5 +1,10 @@
 INPUT(
+./debug\airCraft.o
+./debug\backWarShip.o
+./debug\battleShip.o
+./debug\battlecannon.o
 ./debug\cannonBall.o
+./debug\carrierVessels.o
 ./debug\emptyWarShip.o
 ./debug\fightScene.o
 ./debug\frontWarShip.o

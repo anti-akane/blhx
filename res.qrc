@@ -36,5 +36,14 @@
         <file>res/torp.png</file>
         <file>res/liangchan-1.png</file>
         <file>res/Yukikaze.png</file>
+        <file>res/aim.png</file>
+        <file>res/battlecannon.png</file>
+        <file>res/Richelieu.png</file>
+        <file>res/avantgarde.png</file>
+        <file>res/Hutten.png</file>
+        <file>res/comet.png</file>
+        <file>res/bombing.png</file>
+        <file>res/airCraft.png</file>
+        <file>res/unicorn.png</file>
     </qresource>
 </RCC>

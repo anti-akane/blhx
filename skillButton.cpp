@@ -63,3 +63,18 @@ int skillButton::IsDown() {
     return isDown;
 }
 
+
+void skillButton::mousePressEvent(QMouseEvent*)
+{
+    isDown=1;
+}
+
+void skillButton::declineMaxSkill(int number)
+{
+    maxSkillNubmer-=number;
+}
+
+void skillButton::declineSkill(int number)
+{
+    skillNumber-=number;
+}
