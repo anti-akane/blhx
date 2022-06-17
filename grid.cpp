@@ -1,5 +1,6 @@
 #include"grid.h"
 #include"math.h"
+#include"qdebug.h"
 grid::grid(int x,int y,int state):x(x),y(y),state(state) {
     parent = nullptr;
 };
@@ -33,4 +34,9 @@ int grid::getf() {
 
 grid* grid::getparent() {
     return parent;
+}
+
+void grid::setState(int State)
+{
+    this->state=State;
 }

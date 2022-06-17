@@ -1,16 +1,17 @@
 #include"levelMap.h"
+#include"qdebug.h"
 enum GridState { blank = 0, wall, enemy };
 levelMap::levelMap(int row, int col, int stateMap[20][20]) :row(row), col(col) {
     for (int i = 1; i <= row; i++)
         for (int j = 1; j <= col; j++) {
-            Map[i][j] = new grid(j, i, stateMap[i][j]);
+            Map[i][j] = new grid(j, i, stateMap[i][j]); 
         }
 }
 
 QStack<grid *>levelMap::search(grid *start, grid*end) {
     QVector < grid * > openlist;
     QVector < grid * > closelist;
-
+this->goal=new grid(end->getx(),end->gety(),1);
     openlist.push_back(start);
     bool flag = 1;
     while (!openlist.empty()) {
@@ -67,8 +68,13 @@ bool levelMap::check(int x, int y, QVector<grid*>openlist, QVector<grid*>closeli
         return false;
     if (y > row || y <= 0)
         return false;
-    if (Map[y][x]->getstate() == wall || Map[y][x]->getstate() == enemy)
+    if (Map[y][x]->getstate()>0)
+    {
+        if(Map[y][x]->getstate()==1)
         return false;
+        else if(Map[y][x]->getstate()>1&&!(goal->getx()==x&&goal->gety()==y))
+        return false;
+    }
     if (iscontain(openlist, x, y))
         return false;
     if (iscontain(closelist, x, y))
@@ -98,3 +104,13 @@ int levelMap::findMinGrid(QVector<grid*>openlist) {
     return index;
 }
 
+void levelMap::setState(int x, int y, int state)
+
+{
+    Map[y][x]->setState(state);
+}
+
+int levelMap::getState(int x,int y)
+{
+    return Map[y][x]->getstate();
+}

@@ -16,6 +16,8 @@ public:
 
     grid *getparent();
 
+    void setState(int State);
+
 private:
     int x;
     int y;

@@ -45,5 +45,11 @@
         <file>res/bombing.png</file>
         <file>res/airCraft.png</file>
         <file>res/unicorn.png</file>
+        <file>res/win.png</file>
+        <file>res/fail.png</file>
+        <file>res/start.png</file>
+        <file>res/Main.png</file>
+        <file>res/Investigation.png</file>
+        <file>res/Takao.png</file>
     </qresource>
 </RCC>

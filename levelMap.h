@@ -17,9 +17,14 @@ public:
 
     int findMinGrid(QVector<grid *> openlist);
 
+    void setState(int x,int y,int state);
+
+    int getState(int x,int y);
+
 private:
     int row;
     int col;
+    grid *goal;
     grid *Map[20][20];
 };
 

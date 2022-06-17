@@ -22,19 +22,20 @@ SOURCES += \
     battlecannon.cpp \
     cannonBall.cpp \
     carrierVessels.cpp \
-    emptyWarShip.cpp \
+    enemyWarShip.cpp \
     fightScene.cpp \
     frontWarShip.cpp \
     gameScene.cpp \
     grid.cpp \
-    humanoidEmpty.cpp \
+    humanoidEnemy.cpp \
     levelMap.cpp \
     main.cpp \
     mainwindow.cpp \
     operationButton.cpp \
     quitMessageBox.cpp \
     skillButton.cpp \
-    standardEmpty.cpp \
+    standardEnemy.cpp \
+    startScene.cpp \
     warShip.cpp
 
 HEADERS += \
@@ -44,18 +45,19 @@ HEADERS += \
     battlecannon.h \
     cannonBall.h \
     carrierVessels.h \
-    emptyWarShip.h \
+    enemyWarShip.h \
     fightScene.h \
     frontWarShip.h \
     gameScene.h \
     grid.h \
-    humanoidEmpty.h \
+    humanoidEnemy.h \
     levelMap.h \
     mainwindow.h \
     operationButton.h \
     quitMessageBox.h \
     skillButton.h \
-    standardEmpty.h \
+    standardEnemy.h \
+    startScene.h \
     warShip.h
 
 FORMS += \
@@ -68,3 +70,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
+DISTFILES += \
+    logo.rc
+
+RC_FILE+=logo.rc
+
+

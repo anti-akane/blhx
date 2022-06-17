@@ -11,19 +11,19 @@ MAKEFILE      = Makefile.Debug
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
+DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DQT_DEPRECATED_WARNINGS -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -fno-keep-inline-dllexport -g -Wall -W -Wextra $(DEFINES)
 CXXFLAGS      = -fno-keep-inline-dllexport -g -std=gnu++11 -Wall -W -Wextra -fexceptions -mthreads $(DEFINES)
 INCPATH       = -I. -I..\include -I..\include\QtWidgets -I..\include\QtGui -I..\include\QtANGLE -I..\include\QtCore -Idebug -I. -I..\mkspecs\win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,windows -mthreads
-LIBS        =        -lmingw32 -LC:\Qt\5.9.9\mingw53_32\lib C:\Qt\5.9.9\mingw53_32\lib\libqtmaind.a -LC:\openssl\lib -LC:\Utils\my_sql\my_sql\lib -LC:\Utils\postgresql\pgsql\lib -lshell32 C:\Qt\5.9.9\mingw53_32\lib\libQt5Widgetsd.a C:\Qt\5.9.9\mingw53_32\lib\libQt5Guid.a C:\Qt\5.9.9\mingw53_32\lib\libQt5Cored.a 
+LIBS        =        -lmingw32 -LC:\Qt\5.9.9\mingw53_32\lib C:\Qt\5.9.9\mingw53_32\lib\libqtmaind.a -LC:\openssl\lib -LC:\Utils\my_sql\my_sql\lib -LC:\Utils\postgresql\pgsql\lib -lshell32 C:\Qt\5.9.9\mingw53_32\lib\libQt5Widgetsd.a C:\Qt\5.9.9\mingw53_32\lib\libQt5Guid.a C:\Qt\5.9.9\mingw53_32\lib\libQt5Cored.a debug\logo_res.o 
 QMAKE         = C:\Qt\5.9.9\mingw53_32\bin\qmake.exe
 IDC           = idc
 IDL           = midl
 ZIP           = zip -r -9
 DEF_FILE      = 
-RES_FILE      = 
+RES_FILE      = debug\logo_res.o
 COPY          = copy /y
 SED           = $(QMAKE) -install sed
 COPY_FILE     = copy /y
@@ -51,19 +51,20 @@ SOURCES       = airCraft.cpp \
 		battlecannon.cpp \
 		cannonBall.cpp \
 		carrierVessels.cpp \
-		emptyWarShip.cpp \
+		enemyWarShip.cpp \
 		fightScene.cpp \
 		frontWarShip.cpp \
 		gameScene.cpp \
 		grid.cpp \
-		humanoidEmpty.cpp \
+		humanoidEnemy.cpp \
 		levelMap.cpp \
 		main.cpp \
 		mainwindow.cpp \
 		operationButton.cpp \
 		quitMessageBox.cpp \
 		skillButton.cpp \
-		standardEmpty.cpp \
+		standardEnemy.cpp \
+		startScene.cpp \
 		warShip.cpp debug\qrc_res.cpp \
 		debug\moc_fightScene.cpp \
 		debug\moc_gameScene.cpp \
@@ -77,19 +78,20 @@ OBJECTS       = debug/airCraft.o \
 		debug/battlecannon.o \
 		debug/cannonBall.o \
 		debug/carrierVessels.o \
-		debug/emptyWarShip.o \
+		debug/enemyWarShip.o \
 		debug/fightScene.o \
 		debug/frontWarShip.o \
 		debug/gameScene.o \
 		debug/grid.o \
-		debug/humanoidEmpty.o \
+		debug/humanoidEnemy.o \
 		debug/levelMap.o \
 		debug/main.o \
 		debug/mainwindow.o \
 		debug/operationButton.o \
 		debug/quitMessageBox.o \
 		debug/skillButton.o \
-		debug/standardEmpty.o \
+		debug/standardEnemy.o \
+		debug/startScene.o \
 		debug/warShip.o \
 		debug/qrc_res.o \
 		debug/moc_fightScene.o \
@@ -99,43 +101,45 @@ OBJECTS       = debug/airCraft.o \
 		debug/moc_quitMessageBox.o \
 		debug/moc_skillButton.o
 
-DIST          =  airCraft.h \
+DIST          = logo.rc airCraft.h \
 		backWarShip.h \
 		battleShip.h \
 		battlecannon.h \
 		cannonBall.h \
 		carrierVessels.h \
-		emptyWarShip.h \
+		enemyWarShip.h \
 		fightScene.h \
 		frontWarShip.h \
 		gameScene.h \
 		grid.h \
-		humanoidEmpty.h \
+		humanoidEnemy.h \
 		levelMap.h \
 		mainwindow.h \
 		operationButton.h \
 		quitMessageBox.h \
 		skillButton.h \
-		standardEmpty.h \
+		standardEnemy.h \
+		startScene.h \
 		warShip.h airCraft.cpp \
 		backWarShip.cpp \
 		battleShip.cpp \
 		battlecannon.cpp \
 		cannonBall.cpp \
 		carrierVessels.cpp \
-		emptyWarShip.cpp \
+		enemyWarShip.cpp \
 		fightScene.cpp \
 		frontWarShip.cpp \
 		gameScene.cpp \
 		grid.cpp \
-		humanoidEmpty.cpp \
+		humanoidEnemy.cpp \
 		levelMap.cpp \
 		main.cpp \
 		mainwindow.cpp \
 		operationButton.cpp \
 		quitMessageBox.cpp \
 		skillButton.cpp \
-		standardEmpty.cpp \
+		standardEnemy.cpp \
+		startScene.cpp \
 		warShip.cpp
 QMAKE_TARGET  = blhx
 DESTDIR        = debug\ #avoid trailing-slash linebreak
@@ -147,19 +151,23 @@ DESTDIR_TARGET = debug\blhx.exe
 first: all
 all: Makefile.Debug  $(DESTDIR_TARGET)
 
-$(DESTDIR_TARGET): ui_mainwindow.h $(OBJECTS) 
+$(DESTDIR_TARGET): ui_mainwindow.h $(OBJECTS) debug/logo_res.o
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) object_script.blhx.Debug  $(LIBS)
 
+debug/logo_res.o: logo.rc
+	windres -i logo.rc -o debug\logo_res.o --include-dir=. $(DEFINES)
+
 qmake: FORCE
-	@$(QMAKE) -o Makefile.Debug blhx.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
+	@$(QMAKE) -o Makefile.Debug blhx.pro -spec win32-g++
 
 qmake_all: FORCE
 
 dist:
-	$(ZIP) blhx.zip $(SOURCES) $(DIST) blhx.pro ..\mkspecs\features\spec_pre.prf ..\mkspecs\qdevice.pri ..\mkspecs\features\device_config.prf ..\mkspecs\common\sanitize.conf ..\mkspecs\common\gcc-base.conf ..\mkspecs\common\g++-base.conf ..\mkspecs\common\angle.conf ..\mkspecs\qconfig.pri ..\mkspecs\modules\qt_lib_3danimation.pri ..\mkspecs\modules\qt_lib_3danimation_private.pri ..\mkspecs\modules\qt_lib_3dcore.pri ..\mkspecs\modules\qt_lib_3dcore_private.pri ..\mkspecs\modules\qt_lib_3dextras.pri ..\mkspecs\modules\qt_lib_3dextras_private.pri ..\mkspecs\modules\qt_lib_3dinput.pri ..\mkspecs\modules\qt_lib_3dinput_private.pri ..\mkspecs\modules\qt_lib_3dlogic.pri ..\mkspecs\modules\qt_lib_3dlogic_private.pri ..\mkspecs\modules\qt_lib_3dquick.pri ..\mkspecs\modules\qt_lib_3dquick_private.pri ..\mkspecs\modules\qt_lib_3dquickanimation.pri ..\mkspecs\modules\qt_lib_3dquickanimation_private.pri ..\mkspecs\modules\qt_lib_3dquickextras.pri ..\mkspecs\modules\qt_lib_3dquickextras_private.pri ..\mkspecs\modules\qt_lib_3dquickinput.pri ..\mkspecs\modules\qt_lib_3dquickinput_private.pri ..\mkspecs\modules\qt_lib_3dquickrender.pri ..\mkspecs\modules\qt_lib_3dquickrender_private.pri ..\mkspecs\modules\qt_lib_3dquickscene2d.pri ..\mkspecs\modules\qt_lib_3dquickscene2d_private.pri ..\mkspecs\modules\qt_lib_3drender.pri ..\mkspecs\modules\qt_lib_3drender_private.pri ..\mkspecs\modules\qt_lib_accessibility_support_private.pri ..\mkspecs\modules\qt_lib_axbase.pri ..\mkspecs\modules\qt_lib_axbase_private.pri ..\mkspecs\modules\qt_lib_axcontainer.pri ..\mkspecs\modules\qt_lib_axcontainer_private.pri ..\mkspecs\modules\qt_lib_axserver.pri ..\mkspecs\modules\qt_lib_axserver_private.pri ..\mkspecs\modules\qt_lib_bluetooth.pri ..\mkspecs\modules\qt_lib_bluetooth_private.pri ..\mkspecs\modules\qt_lib_bootstrap_private.pri ..\mkspecs\modules\qt_lib_charts.pri ..\mkspecs\modules\qt_lib_charts_private.pri ..\mkspecs\modules\qt_lib_concurrent.pri ..\mkspecs\modules\qt_lib_concurrent_private.pri ..\mkspecs\modules\qt_lib_core.pri ..\mkspecs\modules\qt_lib_core_private.pri ..\mkspecs\modules\qt_lib_datavisualization.pri ..\mkspecs\modules\qt_lib_datavisualization_private.pri ..\mkspecs\modules\qt_lib_dbus.pri ..\mkspecs\modules\qt_lib_dbus_private.pri ..\mkspecs\modules\qt_lib_designer.pri ..\mkspecs\modules\qt_lib_designer_private.pri ..\mkspecs\modules\qt_lib_designercomponents_private.pri ..\mkspecs\modules\qt_lib_devicediscovery_support_private.pri ..\mkspecs\modules\qt_lib_egl_support_private.pri ..\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri ..\mkspecs\modules\qt_lib_fb_support_private.pri ..\mkspecs\modules\qt_lib_fontdatabase_support_private.pri ..\mkspecs\modules\qt_lib_gamepad.pri ..\mkspecs\modules\qt_lib_gamepad_private.pri ..\mkspecs\modules\qt_lib_gui.pri ..\mkspecs\modules\qt_lib_gui_private.pri ..\mkspecs\modules\qt_lib_help.pri ..\mkspecs\modules\qt_lib_help_private.pri ..\mkspecs\modules\qt_lib_location.pri ..\mkspecs\modules\qt_lib_location_private.pri ..\mkspecs\modules\qt_lib_multimedia.pri ..\mkspecs\modules\qt_lib_multimedia_private.pri ..\mkspecs\modules\qt_lib_multimediawidgets.pri ..\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\mkspecs\modules\qt_lib_network.pri ..\mkspecs\modules\qt_lib_network_private.pri ..\mkspecs\modules\qt_lib_networkauth.pri ..\mkspecs\modules\qt_lib_networkauth_private.pri ..\mkspecs\modules\qt_lib_nfc.pri ..\mkspecs\modules\qt_lib_nfc_private.pri ..\mkspecs\modules\qt_lib_opengl.pri ..\mkspecs\modules\qt_lib_opengl_private.pri ..\mkspecs\modules\qt_lib_openglextensions.pri ..\mkspecs\modules\qt_lib_openglextensions_private.pri ..\mkspecs\modules\qt_lib_packetprotocol_private.pri ..\mkspecs\modules\qt_lib_platformcompositor_support_private.pri ..\mkspecs\modules\qt_lib_positioning.pri ..\mkspecs\modules\qt_lib_positioning_private.pri ..\mkspecs\modules\qt_lib_printsupport.pri ..\mkspecs\modules\qt_lib_printsupport_private.pri ..\mkspecs\modules\qt_lib_purchasing.pri ..\mkspecs\modules\qt_lib_purchasing_private.pri ..\mkspecs\modules\qt_lib_qml.pri ..\mkspecs\modules\qt_lib_qml_private.pri ..\mkspecs\modules\qt_lib_qmldebug_private.pri ..\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\mkspecs\modules\qt_lib_qmltest.pri ..\mkspecs\modules\qt_lib_qmltest_private.pri ..\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\mkspecs\modules\qt_lib_quick.pri ..\mkspecs\modules\qt_lib_quick_private.pri ..\mkspecs\modules\qt_lib_quickcontrols2.pri ..\mkspecs\modules\qt_lib_quickcontrols2_private.pri ..\mkspecs\modules\qt_lib_quickparticles_private.pri ..\mkspecs\modules\qt_lib_quicktemplates2_private.pri ..\mkspecs\modules\qt_lib_quickwidgets.pri ..\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\mkspecs\modules\qt_lib_remoteobjects.pri ..\mkspecs\modules\qt_lib_remoteobjects_private.pri ..\mkspecs\modules\qt_lib_repparser.pri ..\mkspecs\modules\qt_lib_repparser_private.pri ..\mkspecs\modules\qt_lib_scxml.pri ..\mkspecs\modules\qt_lib_scxml_private.pri ..\mkspecs\modules\qt_lib_sensors.pri ..\mkspecs\modules\qt_lib_sensors_private.pri ..\mkspecs\modules\qt_lib_serialbus.pri ..\mkspecs\modules\qt_lib_serialbus_private.pri ..\mkspecs\modules\qt_lib_serialport.pri ..\mkspecs\modules\qt_lib_serialport_private.pri ..\mkspecs\modules\qt_lib_sql.pri ..\mkspecs\modules\qt_lib_sql_private.pri ..\mkspecs\modules\qt_lib_svg.pri ..\mkspecs\modules\qt_lib_svg_private.pri ..\mkspecs\modules\qt_lib_testlib.pri ..\mkspecs\modules\qt_lib_testlib_private.pri ..\mkspecs\modules\qt_lib_texttospeech.pri ..\mkspecs\modules\qt_lib_texttospeech_private.pri ..\mkspecs\modules\qt_lib_theme_support_private.pri ..\mkspecs\modules\qt_lib_uiplugin.pri ..\mkspecs\modules\qt_lib_uitools.pri ..\mkspecs\modules\qt_lib_uitools_private.pri ..\mkspecs\modules\qt_lib_webchannel.pri ..\mkspecs\modules\qt_lib_webchannel_private.pri ..\mkspecs\modules\qt_lib_websockets.pri ..\mkspecs\modules\qt_lib_websockets_private.pri ..\mkspecs\modules\qt_lib_widgets.pri ..\mkspecs\modules\qt_lib_widgets_private.pri ..\mkspecs\modules\qt_lib_winextras.pri ..\mkspecs\modules\qt_lib_winextras_private.pri ..\mkspecs\modules\qt_lib_xml.pri ..\mkspecs\modules\qt_lib_xml_private.pri ..\mkspecs\modules\qt_lib_xmlpatterns.pri ..\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\mkspecs\features\qt_functions.prf ..\mkspecs\features\qt_config.prf ..\mkspecs\win32-g++\qmake.conf ..\mkspecs\features\spec_post.prf .qmake.stash ..\mkspecs\features\exclusive_builds.prf ..\mkspecs\features\toolchain.prf ..\mkspecs\features\default_pre.prf ..\mkspecs\features\win32\default_pre.prf ..\mkspecs\features\resolve_config.prf ..\mkspecs\features\exclusive_builds_post.prf ..\mkspecs\features\default_post.prf ..\mkspecs\features\build_pass.prf ..\mkspecs\features\qml_debug.prf ..\mkspecs\features\precompile_header.prf ..\mkspecs\features\warn_on.prf ..\mkspecs\features\qt.prf ..\mkspecs\features\resources.prf ..\mkspecs\features\moc.prf ..\mkspecs\features\win32\opengl.prf ..\mkspecs\features\uic.prf ..\mkspecs\features\qmake_use.prf ..\mkspecs\features\file_copies.prf ..\mkspecs\features\win32\windows.prf ..\mkspecs\features\testcase_targets.prf ..\mkspecs\features\exceptions.prf ..\mkspecs\features\yacc.prf ..\mkspecs\features\lex.prf blhx.pro res.qrc ..\lib\qtmaind.prl ..\lib\Qt5Widgetsd.prl ..\lib\Qt5Guid.prl ..\lib\Qt5Cored.prl   res.qrc ..\mkspecs\features\data\dummy.cpp airCraft.h backWarShip.h battleShip.h battlecannon.h cannonBall.h carrierVessels.h emptyWarShip.h fightScene.h frontWarShip.h gameScene.h grid.h humanoidEmpty.h levelMap.h mainwindow.h operationButton.h quitMessageBox.h skillButton.h standardEmpty.h warShip.h airCraft.cpp backWarShip.cpp battleShip.cpp battlecannon.cpp cannonBall.cpp carrierVessels.cpp emptyWarShip.cpp fightScene.cpp frontWarShip.cpp gameScene.cpp grid.cpp humanoidEmpty.cpp levelMap.cpp main.cpp mainwindow.cpp operationButton.cpp quitMessageBox.cpp skillButton.cpp standardEmpty.cpp warShip.cpp mainwindow.ui    
+	$(ZIP) blhx.zip $(SOURCES) $(DIST) blhx.pro ..\mkspecs\features\spec_pre.prf ..\mkspecs\qdevice.pri ..\mkspecs\features\device_config.prf ..\mkspecs\common\sanitize.conf ..\mkspecs\common\gcc-base.conf ..\mkspecs\common\g++-base.conf ..\mkspecs\common\angle.conf ..\mkspecs\qconfig.pri ..\mkspecs\modules\qt_lib_3danimation.pri ..\mkspecs\modules\qt_lib_3danimation_private.pri ..\mkspecs\modules\qt_lib_3dcore.pri ..\mkspecs\modules\qt_lib_3dcore_private.pri ..\mkspecs\modules\qt_lib_3dextras.pri ..\mkspecs\modules\qt_lib_3dextras_private.pri ..\mkspecs\modules\qt_lib_3dinput.pri ..\mkspecs\modules\qt_lib_3dinput_private.pri ..\mkspecs\modules\qt_lib_3dlogic.pri ..\mkspecs\modules\qt_lib_3dlogic_private.pri ..\mkspecs\modules\qt_lib_3dquick.pri ..\mkspecs\modules\qt_lib_3dquick_private.pri ..\mkspecs\modules\qt_lib_3dquickanimation.pri ..\mkspecs\modules\qt_lib_3dquickanimation_private.pri ..\mkspecs\modules\qt_lib_3dquickextras.pri ..\mkspecs\modules\qt_lib_3dquickextras_private.pri ..\mkspecs\modules\qt_lib_3dquickinput.pri ..\mkspecs\modules\qt_lib_3dquickinput_private.pri ..\mkspecs\modules\qt_lib_3dquickrender.pri ..\mkspecs\modules\qt_lib_3dquickrender_private.pri ..\mkspecs\modules\qt_lib_3dquickscene2d.pri ..\mkspecs\modules\qt_lib_3dquickscene2d_private.pri ..\mkspecs\modules\qt_lib_3drender.pri ..\mkspecs\modules\qt_lib_3drender_private.pri ..\mkspecs\modules\qt_lib_accessibility_support_private.pri ..\mkspecs\modules\qt_lib_axbase.pri ..\mkspecs\modules\qt_lib_axbase_private.pri ..\mkspecs\modules\qt_lib_axcontainer.pri ..\mkspecs\modules\qt_lib_axcontainer_private.pri ..\mkspecs\modules\qt_lib_axserver.pri ..\mkspecs\modules\qt_lib_axserver_private.pri ..\mkspecs\modules\qt_lib_bluetooth.pri ..\mkspecs\modules\qt_lib_bluetooth_private.pri ..\mkspecs\modules\qt_lib_bootstrap_private.pri ..\mkspecs\modules\qt_lib_charts.pri ..\mkspecs\modules\qt_lib_charts_private.pri ..\mkspecs\modules\qt_lib_concurrent.pri ..\mkspecs\modules\qt_lib_concurrent_private.pri ..\mkspecs\modules\qt_lib_core.pri ..\mkspecs\modules\qt_lib_core_private.pri ..\mkspecs\modules\qt_lib_datavisualization.pri ..\mkspecs\modules\qt_lib_datavisualization_private.pri ..\mkspecs\modules\qt_lib_dbus.pri ..\mkspecs\modules\qt_lib_dbus_private.pri ..\mkspecs\modules\qt_lib_designer.pri ..\mkspecs\modules\qt_lib_designer_private.pri ..\mkspecs\modules\qt_lib_designercomponents_private.pri ..\mkspecs\modules\qt_lib_devicediscovery_support_private.pri ..\mkspecs\modules\qt_lib_egl_support_private.pri ..\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri ..\mkspecs\modules\qt_lib_fb_support_private.pri ..\mkspecs\modules\qt_lib_fontdatabase_support_private.pri ..\mkspecs\modules\qt_lib_gamepad.pri ..\mkspecs\modules\qt_lib_gamepad_private.pri ..\mkspecs\modules\qt_lib_gui.pri ..\mkspecs\modules\qt_lib_gui_private.pri ..\mkspecs\modules\qt_lib_help.pri ..\mkspecs\modules\qt_lib_help_private.pri ..\mkspecs\modules\qt_lib_location.pri ..\mkspecs\modules\qt_lib_location_private.pri ..\mkspecs\modules\qt_lib_multimedia.pri ..\mkspecs\modules\qt_lib_multimedia_private.pri ..\mkspecs\modules\qt_lib_multimediawidgets.pri ..\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\mkspecs\modules\qt_lib_network.pri ..\mkspecs\modules\qt_lib_network_private.pri ..\mkspecs\modules\qt_lib_networkauth.pri ..\mkspecs\modules\qt_lib_networkauth_private.pri ..\mkspecs\modules\qt_lib_nfc.pri ..\mkspecs\modules\qt_lib_nfc_private.pri ..\mkspecs\modules\qt_lib_opengl.pri ..\mkspecs\modules\qt_lib_opengl_private.pri ..\mkspecs\modules\qt_lib_openglextensions.pri ..\mkspecs\modules\qt_lib_openglextensions_private.pri ..\mkspecs\modules\qt_lib_packetprotocol_private.pri ..\mkspecs\modules\qt_lib_platformcompositor_support_private.pri ..\mkspecs\modules\qt_lib_positioning.pri ..\mkspecs\modules\qt_lib_positioning_private.pri ..\mkspecs\modules\qt_lib_printsupport.pri ..\mkspecs\modules\qt_lib_printsupport_private.pri ..\mkspecs\modules\qt_lib_purchasing.pri ..\mkspecs\modules\qt_lib_purchasing_private.pri ..\mkspecs\modules\qt_lib_qml.pri ..\mkspecs\modules\qt_lib_qml_private.pri ..\mkspecs\modules\qt_lib_qmldebug_private.pri ..\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\mkspecs\modules\qt_lib_qmltest.pri ..\mkspecs\modules\qt_lib_qmltest_private.pri ..\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\mkspecs\modules\qt_lib_quick.pri ..\mkspecs\modules\qt_lib_quick_private.pri ..\mkspecs\modules\qt_lib_quickcontrols2.pri ..\mkspecs\modules\qt_lib_quickcontrols2_private.pri ..\mkspecs\modules\qt_lib_quickparticles_private.pri ..\mkspecs\modules\qt_lib_quicktemplates2_private.pri ..\mkspecs\modules\qt_lib_quickwidgets.pri ..\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\mkspecs\modules\qt_lib_remoteobjects.pri ..\mkspecs\modules\qt_lib_remoteobjects_private.pri ..\mkspecs\modules\qt_lib_repparser.pri ..\mkspecs\modules\qt_lib_repparser_private.pri ..\mkspecs\modules\qt_lib_scxml.pri ..\mkspecs\modules\qt_lib_scxml_private.pri ..\mkspecs\modules\qt_lib_sensors.pri ..\mkspecs\modules\qt_lib_sensors_private.pri ..\mkspecs\modules\qt_lib_serialbus.pri ..\mkspecs\modules\qt_lib_serialbus_private.pri ..\mkspecs\modules\qt_lib_serialport.pri ..\mkspecs\modules\qt_lib_serialport_private.pri ..\mkspecs\modules\qt_lib_sql.pri ..\mkspecs\modules\qt_lib_sql_private.pri ..\mkspecs\modules\qt_lib_svg.pri ..\mkspecs\modules\qt_lib_svg_private.pri ..\mkspecs\modules\qt_lib_testlib.pri ..\mkspecs\modules\qt_lib_testlib_private.pri ..\mkspecs\modules\qt_lib_texttospeech.pri ..\mkspecs\modules\qt_lib_texttospeech_private.pri ..\mkspecs\modules\qt_lib_theme_support_private.pri ..\mkspecs\modules\qt_lib_uiplugin.pri ..\mkspecs\modules\qt_lib_uitools.pri ..\mkspecs\modules\qt_lib_uitools_private.pri ..\mkspecs\modules\qt_lib_webchannel.pri ..\mkspecs\modules\qt_lib_webchannel_private.pri ..\mkspecs\modules\qt_lib_websockets.pri ..\mkspecs\modules\qt_lib_websockets_private.pri ..\mkspecs\modules\qt_lib_widgets.pri ..\mkspecs\modules\qt_lib_widgets_private.pri ..\mkspecs\modules\qt_lib_winextras.pri ..\mkspecs\modules\qt_lib_winextras_private.pri ..\mkspecs\modules\qt_lib_xml.pri ..\mkspecs\modules\qt_lib_xml_private.pri ..\mkspecs\modules\qt_lib_xmlpatterns.pri ..\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\mkspecs\features\qt_functions.prf ..\mkspecs\features\qt_config.prf ..\mkspecs\win32-g++\qmake.conf ..\mkspecs\features\spec_post.prf .qmake.stash ..\mkspecs\features\exclusive_builds.prf ..\mkspecs\features\toolchain.prf ..\mkspecs\features\default_pre.prf ..\mkspecs\features\win32\default_pre.prf ..\mkspecs\features\resolve_config.prf ..\mkspecs\features\exclusive_builds_post.prf ..\mkspecs\features\default_post.prf ..\mkspecs\features\build_pass.prf ..\mkspecs\features\precompile_header.prf ..\mkspecs\features\warn_on.prf ..\mkspecs\features\qt.prf ..\mkspecs\features\resources.prf ..\mkspecs\features\moc.prf ..\mkspecs\features\win32\opengl.prf ..\mkspecs\features\uic.prf ..\mkspecs\features\qmake_use.prf ..\mkspecs\features\file_copies.prf ..\mkspecs\features\win32\windows.prf ..\mkspecs\features\testcase_targets.prf ..\mkspecs\features\exceptions.prf ..\mkspecs\features\yacc.prf ..\mkspecs\features\lex.prf blhx.pro res.qrc ..\lib\qtmaind.prl ..\lib\Qt5Widgetsd.prl ..\lib\Qt5Guid.prl ..\lib\Qt5Cored.prl   res.qrc ..\mkspecs\features\data\dummy.cpp airCraft.h backWarShip.h battleShip.h battlecannon.h cannonBall.h carrierVessels.h enemyWarShip.h fightScene.h frontWarShip.h gameScene.h grid.h humanoidEnemy.h levelMap.h mainwindow.h operationButton.h quitMessageBox.h skillButton.h standardEnemy.h startScene.h warShip.h airCraft.cpp backWarShip.cpp battleShip.cpp battlecannon.cpp cannonBall.cpp carrierVessels.cpp enemyWarShip.cpp fightScene.cpp frontWarShip.cpp gameScene.cpp grid.cpp humanoidEnemy.cpp levelMap.cpp main.cpp mainwindow.cpp operationButton.cpp quitMessageBox.cpp skillButton.cpp standardEnemy.cpp startScene.cpp warShip.cpp mainwindow.ui    
 
 clean: compiler_clean 
-	-$(DEL_FILE) debug\airCraft.o debug\backWarShip.o debug\battleShip.o debug\battlecannon.o debug\cannonBall.o debug\carrierVessels.o debug\emptyWarShip.o debug\fightScene.o debug\frontWarShip.o debug\gameScene.o debug\grid.o debug\humanoidEmpty.o debug\levelMap.o debug\main.o debug\mainwindow.o debug\operationButton.o debug\quitMessageBox.o debug\skillButton.o debug\standardEmpty.o debug\warShip.o debug\qrc_res.o debug\moc_fightScene.o debug\moc_gameScene.o debug\moc_mainwindow.o debug\moc_operationButton.o debug\moc_quitMessageBox.o debug\moc_skillButton.o
+	-$(DEL_FILE) debug\airCraft.o debug\backWarShip.o debug\battleShip.o debug\battlecannon.o debug\cannonBall.o debug\carrierVessels.o debug\enemyWarShip.o debug\fightScene.o debug\frontWarShip.o debug\gameScene.o debug\grid.o debug\humanoidEnemy.o debug\levelMap.o debug\main.o debug\mainwindow.o debug\operationButton.o debug\quitMessageBox.o debug\skillButton.o debug\standardEnemy.o debug\startScene.o debug\warShip.o debug\qrc_res.o debug\moc_fightScene.o debug\moc_gameScene.o debug\moc_mainwindow.o debug\moc_operationButton.o debug\moc_quitMessageBox.o debug\moc_skillButton.o
+	-$(DEL_FILE) debug\logo_res.o
 
 distclean: clean 
 	-$(DEL_FILE) .qmake.stash
@@ -185,6 +193,7 @@ debug/qrc_res.cpp: res.qrc \
 		res/Helena.png \
 		res/aim.png \
 		res/connanball.png \
+		res/start.png \
 		res/cancel.png \
 		res/jianpao-unavailable.png \
 		res/yvlei-available.png \
@@ -193,24 +202,32 @@ debug/qrc_res.cpp: res.qrc \
 		res/jianpao-available.png \
 		res/yvlei-unavailable.png \
 		res/feiji-unavailable.png \
+		res/Investigation.png \
 		res/target.png \
+		res/bombing.png \
 		res/torp.png \
 		res/feiji-available.png \
 		res/zhunxin.png \
 		res/lisailiu.png \
 		res/aa9jv-f80ap-001.ico \
 		res/avantgarde.png \
+		res/airCraft.png \
+		res/Takao.png \
 		res/Richelieu.png \
 		res/messagetitle.png \
 		res/1200px-Bg_banama_1.png \
 		res/3s48x1oizyu8pq9kh5nqy8m47hr5obp.png \
+		res/unicorn.png \
+		res/win.png \
 		res/Santiago.png \
 		res/Hutten.png \
 		res/lisailiu(reverse).png \
 		res/comet.png \
+		res/Main.png \
 		res/pause.png \
 		res/1200px-Bg_story_bsmlevel.png \
 		res/Yukikaze.png \
+		res/fail.png \
 		res/liangchan-1.png \
 		res/auto-operate.png \
 		res/Portland.png \
@@ -484,9 +501,9 @@ debug/moc_fightScene.cpp: ../include/QtWidgets/QWidget \
 		warShip.h \
 		../include/QtCore/QPoint \
 		frontWarShip.h \
-		emptyWarShip.h \
-		standardEmpty.h \
-		humanoidEmpty.h \
+		enemyWarShip.h \
+		standardEnemy.h \
+		humanoidEnemy.h \
 		battleShip.h \
 		backWarShip.h \
 		battlecannon.h \
@@ -754,9 +771,9 @@ debug/moc_gameScene.cpp: ../include/QtWidgets/QWidget \
 		../include/QtGui/QMatrix \
 		warShip.h \
 		frontWarShip.h \
-		emptyWarShip.h \
-		standardEmpty.h \
-		humanoidEmpty.h \
+		enemyWarShip.h \
+		standardEnemy.h \
+		humanoidEnemy.h \
 		battleShip.h \
 		backWarShip.h \
 		battlecannon.h \
@@ -1258,7 +1275,82 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ####### Compile
 
-debug/airCraft.o: airCraft.cpp airCraft.h
+debug/airCraft.o: airCraft.cpp airCraft.h \
+		../include/QtGui/QPixmap \
+		../include/QtGui/qpixmap.h \
+		../include/QtGui/qtguiglobal.h \
+		../include/QtCore/qglobal.h \
+		../include/QtCore/qconfig-bootstrapped.h \
+		../include/QtCore/qconfig.h \
+		../include/QtCore/qtcore-config.h \
+		../include/QtCore/qsystemdetection.h \
+		../include/QtCore/qprocessordetection.h \
+		../include/QtCore/qcompilerdetection.h \
+		../include/QtCore/qtypeinfo.h \
+		../include/QtCore/qsysinfo.h \
+		../include/QtCore/qlogging.h \
+		../include/QtCore/qflags.h \
+		../include/QtCore/qatomic.h \
+		../include/QtCore/qbasicatomic.h \
+		../include/QtCore/qatomic_bootstrap.h \
+		../include/QtCore/qgenericatomic.h \
+		../include/QtCore/qatomic_cxx11.h \
+		../include/QtCore/qatomic_msvc.h \
+		../include/QtCore/qglobalstatic.h \
+		../include/QtCore/qmutex.h \
+		../include/QtCore/qnumeric.h \
+		../include/QtCore/qversiontagging.h \
+		../include/QtGui/qtgui-config.h \
+		../include/QtGui/qpaintdevice.h \
+		../include/QtGui/qwindowdefs.h \
+		../include/QtCore/qobjectdefs.h \
+		../include/QtCore/qnamespace.h \
+		../include/QtCore/qobjectdefs_impl.h \
+		../include/QtGui/qwindowdefs_win.h \
+		../include/QtCore/qrect.h \
+		../include/QtCore/qmargins.h \
+		../include/QtCore/qsize.h \
+		../include/QtCore/qpoint.h \
+		../include/QtGui/qcolor.h \
+		../include/QtGui/qrgb.h \
+		../include/QtCore/qstringlist.h \
+		../include/QtCore/qlist.h \
+		../include/QtCore/qalgorithms.h \
+		../include/QtCore/qiterator.h \
+		../include/QtCore/qrefcount.h \
+		../include/QtCore/qarraydata.h \
+		../include/QtCore/qhashfunctions.h \
+		../include/QtCore/qchar.h \
+		../include/QtCore/qpair.h \
+		../include/QtCore/qbytearraylist.h \
+		../include/QtCore/qbytearray.h \
+		../include/QtCore/qstring.h \
+		../include/QtCore/qstringbuilder.h \
+		../include/QtCore/qregexp.h \
+		../include/QtCore/qstringmatcher.h \
+		../include/QtGui/qrgba64.h \
+		../include/QtCore/qsharedpointer.h \
+		../include/QtCore/qshareddata.h \
+		../include/QtCore/qhash.h \
+		../include/QtCore/qsharedpointer_impl.h \
+		../include/QtCore/qobject.h \
+		../include/QtCore/qcoreevent.h \
+		../include/QtCore/qscopedpointer.h \
+		../include/QtCore/qmetatype.h \
+		../include/QtCore/qvarlengtharray.h \
+		../include/QtCore/qcontainerfwd.h \
+		../include/QtCore/qobject_impl.h \
+		../include/QtGui/qimage.h \
+		../include/QtGui/qpixelformat.h \
+		../include/QtGui/qtransform.h \
+		../include/QtGui/qmatrix.h \
+		../include/QtGui/qpolygon.h \
+		../include/QtCore/qvector.h \
+		../include/QtGui/qregion.h \
+		../include/QtCore/qdatastream.h \
+		../include/QtCore/qiodevice.h \
+		../include/QtCore/qline.h \
+		../include/QtGui/qpainterpath.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\airCraft.o airCraft.cpp
 
 debug/backWarShip.o: backWarShip.cpp backWarShip.h \
@@ -1722,7 +1814,7 @@ debug/carrierVessels.o: carrierVessels.cpp carrierVessels.h \
 		../include/QtGui/qpainterpath.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\carrierVessels.o carrierVessels.cpp
 
-debug/emptyWarShip.o: emptyWarShip.cpp emptyWarShip.h \
+debug/enemyWarShip.o: enemyWarShip.cpp enemyWarShip.h \
 		../include/QtCore/QPoint \
 		../include/QtCore/qpoint.h \
 		../include/QtCore/qnamespace.h \
@@ -1800,7 +1892,7 @@ debug/emptyWarShip.o: emptyWarShip.cpp emptyWarShip.h \
 		../include/QtCore/qline.h \
 		../include/QtGui/qpainterpath.h \
 		warShip.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\emptyWarShip.o emptyWarShip.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\enemyWarShip.o enemyWarShip.cpp
 
 debug/fightScene.o: fightScene.cpp fightScene.h \
 		../include/QtWidgets/QWidget \
@@ -2059,9 +2151,9 @@ debug/fightScene.o: fightScene.cpp fightScene.h \
 		warShip.h \
 		../include/QtCore/QPoint \
 		frontWarShip.h \
-		emptyWarShip.h \
-		standardEmpty.h \
-		humanoidEmpty.h \
+		enemyWarShip.h \
+		standardEnemy.h \
+		humanoidEnemy.h \
 		battleShip.h \
 		backWarShip.h \
 		battlecannon.h \
@@ -2441,9 +2533,9 @@ debug/gameScene.o: gameScene.cpp gameScene.h \
 		../include/QtGui/QMatrix \
 		warShip.h \
 		frontWarShip.h \
-		emptyWarShip.h \
-		standardEmpty.h \
-		humanoidEmpty.h \
+		enemyWarShip.h \
+		standardEnemy.h \
+		humanoidEnemy.h \
 		battleShip.h \
 		backWarShip.h \
 		battlecannon.h \
@@ -2454,11 +2546,71 @@ debug/gameScene.o: gameScene.cpp gameScene.h \
 		../include/QtCore/QStack
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gameScene.o gameScene.cpp
 
-debug/grid.o: grid.cpp grid.h
+debug/grid.o: grid.cpp grid.h \
+		../include/QtCore/qdebug.h \
+		../include/QtCore/qalgorithms.h \
+		../include/QtCore/qglobal.h \
+		../include/QtCore/qconfig-bootstrapped.h \
+		../include/QtCore/qconfig.h \
+		../include/QtCore/qtcore-config.h \
+		../include/QtCore/qsystemdetection.h \
+		../include/QtCore/qprocessordetection.h \
+		../include/QtCore/qcompilerdetection.h \
+		../include/QtCore/qtypeinfo.h \
+		../include/QtCore/qsysinfo.h \
+		../include/QtCore/qlogging.h \
+		../include/QtCore/qflags.h \
+		../include/QtCore/qatomic.h \
+		../include/QtCore/qbasicatomic.h \
+		../include/QtCore/qatomic_bootstrap.h \
+		../include/QtCore/qgenericatomic.h \
+		../include/QtCore/qatomic_cxx11.h \
+		../include/QtCore/qatomic_msvc.h \
+		../include/QtCore/qglobalstatic.h \
+		../include/QtCore/qmutex.h \
+		../include/QtCore/qnumeric.h \
+		../include/QtCore/qversiontagging.h \
+		../include/QtCore/qhash.h \
+		../include/QtCore/qchar.h \
+		../include/QtCore/qiterator.h \
+		../include/QtCore/qlist.h \
+		../include/QtCore/qrefcount.h \
+		../include/QtCore/qarraydata.h \
+		../include/QtCore/qhashfunctions.h \
+		../include/QtCore/qpair.h \
+		../include/QtCore/qbytearraylist.h \
+		../include/QtCore/qbytearray.h \
+		../include/QtCore/qnamespace.h \
+		../include/QtCore/qstring.h \
+		../include/QtCore/qstringbuilder.h \
+		../include/QtCore/qstringlist.h \
+		../include/QtCore/qregexp.h \
+		../include/QtCore/qstringmatcher.h \
+		../include/QtCore/qmap.h \
+		../include/QtCore/qtextstream.h \
+		../include/QtCore/qiodevice.h \
+		../include/QtCore/qobject.h \
+		../include/QtCore/qobjectdefs.h \
+		../include/QtCore/qobjectdefs_impl.h \
+		../include/QtCore/qcoreevent.h \
+		../include/QtCore/qscopedpointer.h \
+		../include/QtCore/qmetatype.h \
+		../include/QtCore/qvarlengtharray.h \
+		../include/QtCore/qcontainerfwd.h \
+		../include/QtCore/qobject_impl.h \
+		../include/QtCore/qlocale.h \
+		../include/QtCore/qvariant.h \
+		../include/QtCore/qshareddata.h \
+		../include/QtCore/qvector.h \
+		../include/QtCore/qpoint.h \
+		../include/QtCore/qset.h \
+		../include/QtCore/qcontiguouscache.h \
+		../include/QtCore/qsharedpointer.h \
+		../include/QtCore/qsharedpointer_impl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\grid.o grid.cpp
 
-debug/humanoidEmpty.o: humanoidEmpty.cpp humanoidEmpty.h \
-		emptyWarShip.h \
+debug/humanoidEnemy.o: humanoidEnemy.cpp humanoidEnemy.h \
+		enemyWarShip.h \
 		../include/QtCore/QPoint \
 		../include/QtCore/qpoint.h \
 		../include/QtCore/qnamespace.h \
@@ -2536,7 +2688,7 @@ debug/humanoidEmpty.o: humanoidEmpty.cpp humanoidEmpty.h \
 		../include/QtCore/qline.h \
 		../include/QtGui/qpainterpath.h \
 		warShip.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\humanoidEmpty.o humanoidEmpty.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\humanoidEnemy.o humanoidEnemy.cpp
 
 debug/levelMap.o: levelMap.cpp levelMap.h \
 		grid.h \
@@ -2581,7 +2733,28 @@ debug/levelMap.o: levelMap.cpp levelMap.h \
 		../include/QtCore/qregexp.h \
 		../include/QtCore/qstringmatcher.h \
 		../include/QtCore/qpoint.h \
-		../include/QtCore/QVector
+		../include/QtCore/QVector \
+		../include/QtCore/qdebug.h \
+		../include/QtCore/qhash.h \
+		../include/QtCore/qmap.h \
+		../include/QtCore/qtextstream.h \
+		../include/QtCore/qiodevice.h \
+		../include/QtCore/qobject.h \
+		../include/QtCore/qobjectdefs.h \
+		../include/QtCore/qobjectdefs_impl.h \
+		../include/QtCore/qcoreevent.h \
+		../include/QtCore/qscopedpointer.h \
+		../include/QtCore/qmetatype.h \
+		../include/QtCore/qvarlengtharray.h \
+		../include/QtCore/qcontainerfwd.h \
+		../include/QtCore/qobject_impl.h \
+		../include/QtCore/qlocale.h \
+		../include/QtCore/qvariant.h \
+		../include/QtCore/qshareddata.h \
+		../include/QtCore/qset.h \
+		../include/QtCore/qcontiguouscache.h \
+		../include/QtCore/qsharedpointer.h \
+		../include/QtCore/qsharedpointer_impl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\levelMap.o levelMap.cpp
 
 debug/main.o: main.cpp mainwindow.h \
@@ -2845,18 +3018,20 @@ debug/main.o: main.cpp mainwindow.h \
 		warShip.h \
 		../include/QtCore/QPoint \
 		frontWarShip.h \
-		emptyWarShip.h \
-		standardEmpty.h \
-		humanoidEmpty.h \
+		enemyWarShip.h \
+		standardEnemy.h \
+		humanoidEnemy.h \
 		battleShip.h \
 		backWarShip.h \
 		battlecannon.h \
 		carrierVessels.h \
 		airCraft.h \
+		startScene.h \
 		gameScene.h \
 		levelMap.h \
 		grid.h \
-		../include/QtCore/QStack
+		../include/QtCore/QStack \
+		../include/QtGui/QPaintEvent
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o main.cpp
 
 debug/mainwindow.o: mainwindow.cpp mainwindow.h \
@@ -3360,8 +3535,8 @@ debug/skillButton.o: skillButton.cpp skillButton.h \
 		../include/QtGui/qinputmethod.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\skillButton.o skillButton.cpp
 
-debug/standardEmpty.o: standardEmpty.cpp standardEmpty.h \
-		emptyWarShip.h \
+debug/standardEnemy.o: standardEnemy.cpp standardEnemy.h \
+		enemyWarShip.h \
 		../include/QtCore/QPoint \
 		../include/QtCore/qpoint.h \
 		../include/QtCore/qnamespace.h \
@@ -3439,7 +3614,280 @@ debug/standardEmpty.o: standardEmpty.cpp standardEmpty.h \
 		../include/QtCore/qline.h \
 		../include/QtGui/qpainterpath.h \
 		warShip.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\standardEmpty.o standardEmpty.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\standardEnemy.o standardEnemy.cpp
+
+debug/startScene.o: startScene.cpp startScene.h \
+		../include/QtWidgets/QWidget \
+		../include/QtWidgets/qwidget.h \
+		../include/QtWidgets/qtwidgetsglobal.h \
+		../include/QtGui/qtguiglobal.h \
+		../include/QtCore/qglobal.h \
+		../include/QtCore/qconfig-bootstrapped.h \
+		../include/QtCore/qconfig.h \
+		../include/QtCore/qtcore-config.h \
+		../include/QtCore/qsystemdetection.h \
+		../include/QtCore/qprocessordetection.h \
+		../include/QtCore/qcompilerdetection.h \
+		../include/QtCore/qtypeinfo.h \
+		../include/QtCore/qsysinfo.h \
+		../include/QtCore/qlogging.h \
+		../include/QtCore/qflags.h \
+		../include/QtCore/qatomic.h \
+		../include/QtCore/qbasicatomic.h \
+		../include/QtCore/qatomic_bootstrap.h \
+		../include/QtCore/qgenericatomic.h \
+		../include/QtCore/qatomic_cxx11.h \
+		../include/QtCore/qatomic_msvc.h \
+		../include/QtCore/qglobalstatic.h \
+		../include/QtCore/qmutex.h \
+		../include/QtCore/qnumeric.h \
+		../include/QtCore/qversiontagging.h \
+		../include/QtGui/qtgui-config.h \
+		../include/QtWidgets/qtwidgets-config.h \
+		../include/QtGui/qwindowdefs.h \
+		../include/QtCore/qobjectdefs.h \
+		../include/QtCore/qnamespace.h \
+		../include/QtCore/qobjectdefs_impl.h \
+		../include/QtGui/qwindowdefs_win.h \
+		../include/QtCore/qobject.h \
+		../include/QtCore/qstring.h \
+		../include/QtCore/qchar.h \
+		../include/QtCore/qbytearray.h \
+		../include/QtCore/qrefcount.h \
+		../include/QtCore/qarraydata.h \
+		../include/QtCore/qstringbuilder.h \
+		../include/QtCore/qlist.h \
+		../include/QtCore/qalgorithms.h \
+		../include/QtCore/qiterator.h \
+		../include/QtCore/qhashfunctions.h \
+		../include/QtCore/qpair.h \
+		../include/QtCore/qbytearraylist.h \
+		../include/QtCore/qstringlist.h \
+		../include/QtCore/qregexp.h \
+		../include/QtCore/qstringmatcher.h \
+		../include/QtCore/qcoreevent.h \
+		../include/QtCore/qscopedpointer.h \
+		../include/QtCore/qmetatype.h \
+		../include/QtCore/qvarlengtharray.h \
+		../include/QtCore/qcontainerfwd.h \
+		../include/QtCore/qobject_impl.h \
+		../include/QtCore/qmargins.h \
+		../include/QtGui/qpaintdevice.h \
+		../include/QtCore/qrect.h \
+		../include/QtCore/qsize.h \
+		../include/QtCore/qpoint.h \
+		../include/QtGui/qpalette.h \
+		../include/QtGui/qcolor.h \
+		../include/QtGui/qrgb.h \
+		../include/QtGui/qrgba64.h \
+		../include/QtGui/qbrush.h \
+		../include/QtCore/qvector.h \
+		../include/QtGui/qmatrix.h \
+		../include/QtGui/qpolygon.h \
+		../include/QtGui/qregion.h \
+		../include/QtCore/qdatastream.h \
+		../include/QtCore/qiodevice.h \
+		../include/QtCore/qline.h \
+		../include/QtGui/qtransform.h \
+		../include/QtGui/qpainterpath.h \
+		../include/QtGui/qimage.h \
+		../include/QtGui/qpixelformat.h \
+		../include/QtGui/qpixmap.h \
+		../include/QtCore/qsharedpointer.h \
+		../include/QtCore/qshareddata.h \
+		../include/QtCore/qhash.h \
+		../include/QtCore/qsharedpointer_impl.h \
+		../include/QtGui/qfont.h \
+		../include/QtGui/qfontmetrics.h \
+		../include/QtGui/qfontinfo.h \
+		../include/QtWidgets/qsizepolicy.h \
+		../include/QtGui/qcursor.h \
+		../include/QtGui/qkeysequence.h \
+		../include/QtGui/qevent.h \
+		../include/QtCore/qvariant.h \
+		../include/QtCore/qmap.h \
+		../include/QtCore/qdebug.h \
+		../include/QtCore/qtextstream.h \
+		../include/QtCore/qlocale.h \
+		../include/QtCore/qset.h \
+		../include/QtCore/qcontiguouscache.h \
+		../include/QtCore/qurl.h \
+		../include/QtCore/qurlquery.h \
+		../include/QtCore/qfile.h \
+		../include/QtCore/qfiledevice.h \
+		../include/QtGui/qvector2d.h \
+		../include/QtGui/qtouchdevice.h \
+		gameScene.h \
+		../include/QtGui/QIcon \
+		../include/QtGui/qicon.h \
+		../include/QtCore/QtCore \
+		../include/QtCore/QtCoreDepends \
+		../include/QtCore/qabstractanimation.h \
+		../include/QtCore/qabstracteventdispatcher.h \
+		../include/QtCore/qeventloop.h \
+		../include/QtCore/qabstractitemmodel.h \
+		../include/QtCore/qabstractnativeeventfilter.h \
+		../include/QtCore/qabstractproxymodel.h \
+		../include/QtCore/qabstractstate.h \
+		../include/QtCore/qabstracttransition.h \
+		../include/QtCore/qanimationgroup.h \
+		../include/QtCore/qarraydataops.h \
+		../include/QtCore/qarraydatapointer.h \
+		../include/QtCore/qbasictimer.h \
+		../include/QtCore/qbitarray.h \
+		../include/QtCore/qbuffer.h \
+		../include/QtCore/qbytearraymatcher.h \
+		../include/QtCore/qcache.h \
+		../include/QtCore/qcollator.h \
+		../include/QtCore/qcommandlineoption.h \
+		../include/QtCore/qcommandlineparser.h \
+		../include/QtCore/qcoreapplication.h \
+		../include/QtCore/qcryptographichash.h \
+		../include/QtCore/qdatetime.h \
+		../include/QtCore/qdeadlinetimer.h \
+		../include/QtCore/qelapsedtimer.h \
+		../include/QtCore/qdir.h \
+		../include/QtCore/qfileinfo.h \
+		../include/QtCore/qdiriterator.h \
+		../include/QtCore/qeasingcurve.h \
+		../include/QtCore/qendian.h \
+		../include/QtCore/qeventtransition.h \
+		../include/QtCore/qexception.h \
+		../include/QtCore/qfactoryinterface.h \
+		../include/QtCore/qfileselector.h \
+		../include/QtCore/QObject \
+		../include/QtCore/QStringList \
+		../include/QtCore/qfilesystemwatcher.h \
+		../include/QtCore/qfinalstate.h \
+		../include/QtCore/qfuture.h \
+		../include/QtCore/qfutureinterface.h \
+		../include/QtCore/qrunnable.h \
+		../include/QtCore/qresultstore.h \
+		../include/QtCore/qfuturesynchronizer.h \
+		../include/QtCore/qfuturewatcher.h \
+		../include/QtCore/qhistorystate.h \
+		../include/QtCore/qidentityproxymodel.h \
+		../include/QtCore/qisenum.h \
+		../include/QtCore/qitemselectionmodel.h \
+		../include/QtCore/qjsonarray.h \
+		../include/QtCore/qjsonvalue.h \
+		../include/QtCore/qjsondocument.h \
+		../include/QtCore/qjsonobject.h \
+		../include/QtCore/qlibrary.h \
+		../include/QtCore/qlibraryinfo.h \
+		../include/QtCore/qversionnumber.h \
+		../include/QtCore/qlinkedlist.h \
+		../include/QtCore/qlockfile.h \
+		../include/QtCore/qloggingcategory.h \
+		../include/QtCore/qmath.h \
+		../include/QtCore/qmessageauthenticationcode.h \
+		../include/QtCore/qmetaobject.h \
+		../include/QtCore/qmimedata.h \
+		../include/QtCore/qmimedatabase.h \
+		../include/QtCore/qmimetype.h \
+		../include/QtCore/qobjectcleanuphandler.h \
+		../include/QtCore/qoperatingsystemversion.h \
+		../include/QtCore/qparallelanimationgroup.h \
+		../include/QtCore/qpauseanimation.h \
+		../include/QtCore/qplugin.h \
+		../include/QtCore/qpointer.h \
+		../include/QtCore/qpluginloader.h \
+		../include/QtCore/qprocess.h \
+		../include/QtCore/qpropertyanimation.h \
+		../include/QtCore/qvariantanimation.h \
+		../include/QtCore/qqueue.h \
+		../include/QtCore/qreadwritelock.h \
+		../include/QtCore/qregularexpression.h \
+		../include/QtCore/qresource.h \
+		../include/QtCore/qsavefile.h \
+		../include/QtCore/qscopedvaluerollback.h \
+		../include/QtCore/qsemaphore.h \
+		../include/QtCore/qsequentialanimationgroup.h \
+		../include/QtCore/qsettings.h \
+		../include/QtCore/qsharedmemory.h \
+		../include/QtCore/qsignalmapper.h \
+		../include/QtCore/qsignaltransition.h \
+		../include/QtCore/qsocketnotifier.h \
+		../include/QtCore/qsortfilterproxymodel.h \
+		../include/QtCore/qstack.h \
+		../include/QtCore/qstandardpaths.h \
+		../include/QtCore/qstate.h \
+		../include/QtCore/qstatemachine.h \
+		../include/QtCore/qstorageinfo.h \
+		../include/QtCore/qstringlistmodel.h \
+		../include/QtCore/qsystemsemaphore.h \
+		../include/QtCore/qtemporarydir.h \
+		../include/QtCore/QScopedPointer \
+		../include/QtCore/qtemporaryfile.h \
+		../include/QtCore/qtextboundaryfinder.h \
+		../include/QtCore/qtextcodec.h \
+		../include/QtCore/qthread.h \
+		../include/QtCore/qthreadpool.h \
+		../include/QtCore/qthreadstorage.h \
+		../include/QtCore/qtimeline.h \
+		../include/QtCore/qtimer.h \
+		../include/QtCore/qtimezone.h \
+		../include/QtCore/qtranslator.h \
+		../include/QtCore/qtypetraits.h \
+		../include/QtCore/quuid.h \
+		../include/QtCore/qwaitcondition.h \
+		../include/QtCore/qwineventnotifier.h \
+		../include/QtCore/qxmlstream.h \
+		../include/QtCore/qtcoreversion.h \
+		../include/QtGui/QPixmap \
+		../include/QtGui/QPainter \
+		../include/QtGui/qpainter.h \
+		../include/QtGui/qtextoption.h \
+		../include/QtGui/qpen.h \
+		../include/QtCore/QRect \
+		../include/QtWidgets/QLabel \
+		../include/QtWidgets/qlabel.h \
+		../include/QtWidgets/qframe.h \
+		../include/QtCore/QPoint \
+		fightScene.h \
+		../include/QtCore/QVector \
+		skillButton.h \
+		../include/QtWidgets/QPushButton \
+		../include/QtWidgets/qpushbutton.h \
+		../include/QtWidgets/qabstractbutton.h \
+		../include/QtCore/QEvent \
+		../include/QtGui/QBitmap \
+		../include/QtGui/qbitmap.h \
+		../include/QtCore/QString \
+		../include/QtGui/QMouseEvent \
+		../include/QtGui/QKeyEvent \
+		../include/QtCore/QTimer \
+		../include/QtWidgets/QApplication \
+		../include/QtWidgets/qapplication.h \
+		../include/QtWidgets/qdesktopwidget.h \
+		../include/QtGui/qguiapplication.h \
+		../include/QtGui/qinputmethod.h \
+		quitMessageBox.h \
+		../include/QtWidgets/QMessageBox \
+		../include/QtWidgets/qmessagebox.h \
+		../include/QtWidgets/qdialog.h \
+		../include/QtWidgets/QDialog \
+		operationButton.h \
+		../include/QtCore/QSet \
+		../include/QtGui/QBrush \
+		../include/QtGui/QCloseEvent \
+		cannonBall.h \
+		../include/QtGui/QMatrix \
+		warShip.h \
+		frontWarShip.h \
+		enemyWarShip.h \
+		standardEnemy.h \
+		humanoidEnemy.h \
+		battleShip.h \
+		backWarShip.h \
+		battlecannon.h \
+		carrierVessels.h \
+		airCraft.h \
+		levelMap.h \
+		grid.h \
+		../include/QtCore/QStack \
+		../include/QtGui/QPaintEvent
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\startScene.o startScene.cpp
 
 debug/warShip.o: warShip.cpp warShip.h \
 		../include/QtCore/QPoint \

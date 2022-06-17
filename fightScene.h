@@ -17,9 +17,9 @@
 #include<QCloseEvent>
 #include"cannonBall.h"
 #include"frontWarShip.h"
-#include"emptyWarShip.h"
-#include"standardEmpty.h"
-#include"humanoidEmpty.h"
+#include"enemyWarShip.h"
+#include"standardEnemy.h"
+#include"humanoidEnemy.h"
 #include"battleShip.h"
 #include"backWarShip.h"
 #include"battlecannon.h"
@@ -28,7 +28,7 @@
 class fightScene:public QWidget {
     Q_OBJECT
 public:
-    fightScene(QWidget *parent = nullptr);
+    fightScene(QWidget *parent,QVector<frontWarShip*>startfront,QVector<backWarShip*>startback,QVector<enemyWarShip*>startEnemy);
 
     ~fightScene();
 
@@ -62,7 +62,7 @@ public:
 
     void collide();
 
-    void emptyshoot();
+    void enemyshoot();
 
     void frontcollide(frontWarShip *Warship);
 
@@ -76,9 +76,17 @@ public:
 
     void check_airCraft();
 
-    QPoint *findEmpty(QPoint start);
+    QPoint *findEnemy(QPoint start);
 
-    void checkEmpty();
+    void checkEnemy();
+
+    int getEnd();
+
+    int getSuccess();
+
+    QVector<frontWarShip*>getFront();
+
+    QVector<backWarShip*>getBack();
 
 private:
     QVector<cannonBall *> torplist;
@@ -97,12 +105,12 @@ private:
     quitMessageBox *quitmessagebox;
 
     QVector<cannonBall *> cannonball;
-    QVector<cannonBall *> emptycannon;
+    QVector<cannonBall *> enemycannon;
 
     QTimer *updateTimer;//游戏内部计时器
 
 
-    QVector<emptyWarShip *> emptylist;
+    QVector<enemyWarShip *> enemylist;
 
     QPixmap aim;
 
@@ -114,9 +122,15 @@ private:
 
     QVector<airCraft*>aircraft;
 
-    QVector<emptyWarShip*>totalempty;
+    QVector<enemyWarShip*>totalenemy;
 
     int state;
+
+    int isEnding;
+
+    int isSucceed;
+
+
 
 public
     slots:
@@ -129,7 +143,9 @@ public
     signals:
             void closeFight();
 
-    void fail();
+            void fail();
+
+            void succeed();
 };
 
 #endif // FIGHTSCENE_H
