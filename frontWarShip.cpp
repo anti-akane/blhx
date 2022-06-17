@@ -103,5 +103,12 @@ QVector<cannonBall*>frontWarShip::getBarrage()
     return barrage;
 }
 
+void frontWarShip::reStart()
+{
+    shootclock = 0;
+    torpclock = 0;
+    barrageclock=0;
+    current_torp_number = 0;
+}
 
 

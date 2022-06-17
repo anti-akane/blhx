@@ -18,7 +18,7 @@ void battleCannon::move()
 bool battleCannon::check()
 {
     double len=sqrt((getX()-target.x())*(getX()-target.x())+(getY()-target.y())*(getY()-target.y()));
-    if(len<=0.6*getSpeed()||getX()>=target.x())
+    if(len<=0.6*getSpeed())
         return 0;
     else
         return 1;

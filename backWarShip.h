@@ -10,6 +10,7 @@ public:
     void decreaseSkill();
     int getMaxSkill();
     bool check();
+    void reStart();
     protected:
     int skillcd;
     int maxskill;

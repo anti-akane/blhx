@@ -32,3 +32,9 @@ void backWarShip::decreaseSkill()
 {
     number_skill--;
 }
+
+void backWarShip::reStart()
+{
+    skill_clock=0;
+    number_skill=0;
+}

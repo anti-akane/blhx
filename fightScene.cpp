@@ -16,7 +16,10 @@ fightScene::fightScene(QWidget *parent,QVector<frontWarShip*>startfront,QVector<
     totalenemy.clear();
     for(auto v:startfront)
     {
+
         frontwarship.push_back(new frontWarShip(*v));
+        frontwarship[frontwarship.size()-1]->reStart();
+
     }
     for(auto v:startback)
     {
@@ -27,6 +30,7 @@ fightScene::fightScene(QWidget *parent,QVector<frontWarShip*>startfront,QVector<
         else {
            backwarship.push_back(new carrierVessel(*CV));
         }
+        backwarship[backwarship.size()-1]->reStart();
     }
     for(auto v:startEnemy)
     {
@@ -279,10 +283,12 @@ void fightScene::updatetarger(int x, int y) {
 void fightScene::playGame() {
 
     connect(updateTimer, &QTimer::timeout, [=]() {
-
+        QTime start;
+        start.start();
         qApp->processEvents();
-        checkDeath();
+
         keyPress();
+        qDebug()<<1<<endl;
         if (!operationbutton->getOpState()) {
             autoOperate();
         }
@@ -292,12 +298,22 @@ void fightScene::playGame() {
         for (auto v: enemylist) {
             v->move();
         }
+        qDebug()<<2<<endl;
         shoot();
+        qDebug()<<3<<endl;
         collide();
+        qDebug()<<4<<endl;
         update();
+        qDebug()<<5<<endl;
         Boundary();
+        qDebug()<<6<<endl;
         check_airCraft();
+        qDebug()<<7<<endl;
+        checkDeath();
+        qDebug()<<8<<endl;
         checkEnemy();
+        qDebug()<<9<<endl;
+
     });
 }
 void fightScene::keyPress() {
@@ -509,23 +525,30 @@ void fightScene::collide() {
         }
         for (QVector<enemyWarShip *>::iterator  enemy= enemylist.begin(); enemy != enemylist.end();) {
             int flag2 = 0;
-
             if ((*enemy)->getRect().intersects((*can)->getRect())) {
                 flag1 = 1;
                 flag2 = 1;
+
                 (*enemy)->declineHP((*can)->getHurt());
                 if ((*enemy)->getHpRate() == 0)
                     enemylist.erase(enemy);
-                break;
+                    break;
             }
 
             if (!flag2)
                 enemy++;
+
         }
+
         if (flag1 || (check != nullptr && !check->check()))
-            cannonball.erase(can);
+        {cannonball.erase(can);
+
+        }
         else
-            can++;
+           { can++;
+
+        }
+
     }
     for (auto v: frontwarship) {
         frontcollide(v);

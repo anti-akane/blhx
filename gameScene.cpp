@@ -10,11 +10,11 @@ const int col=10;
 const int dir[4][2]={{0,-1},{0,1},{-1,0},{1,0}};
 int m[20][20]= {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 1, 1, 0, 0, 0, 0, 2, 0},
-        {0, 1, 0, 3, 0, 0, 0, 1, 1, 0, 0},
-        {0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-        {0, 1, 0, 2, 0, 1, 0, 0, 0, 0, 0},
-        {0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0},
+        {0, 0, 0, 1, 1, 3, 0, 0, 0, 2, 0},
+        {0, 1, 0, 2, 0, 0, 0, 1, 1, 0, 0},
+        {0, 1, 0, 3, 0, 0, 3, 0, 1, 2, 0},
+        {0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+        {0, 0, 2, 3, 0, 0, 0, 2, 0, 3, 0},
         {0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0}
 };
 gameScene::gameScene(QWidget *parent):QWidget(parent) {
@@ -318,11 +318,23 @@ void gameScene::initEnemy()
                 new standardEnemy(10000, 100, 100, 2, 5, 100, 100, QPixmap("://res/liangchan-1.png"), QPoint(900, 500)));
         Investigation.push_back(
                 new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 400)));
+        Investigation.push_back(
+                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 150)));
+        Investigation.push_back(
+                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 500)));
+        Investigation.push_back(
+                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 150)));
+        Investigation.push_back(
+                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 500)));
         Investigation[0]->setState(1);
         Investigation[1]->setState(2);
         Investigation[2]->setState(2);
         Investigation[3]->setState(2);
         Investigation[4]->setState(1);
+        Investigation[5]->setState(1);
+        Investigation[6]->setState(1);
+        Investigation[7]->setState(2);
+        Investigation[8]->setState(2);
         main.push_back(
                 new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 200)));
         main.push_back(
@@ -339,6 +351,10 @@ void gameScene::initEnemy()
                 new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 400)));
         main.push_back(
                 new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 400)));
+        main.push_back(
+                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 150)));
+        main.push_back(
+                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 500)));
         main[0]->setState(1);
         main[1]->setState(2);
         main[2]->setState(3);
@@ -347,6 +363,6 @@ void gameScene::initEnemy()
         main[5]->setState(3);
         main[6]->setState(2);
         main[7]->setState(1);
-
-
+        main[8]->setState(2);
+        main[9]->setState(2);
 }

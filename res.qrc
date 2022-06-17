@@ -51,5 +51,6 @@
         <file>res/Main.png</file>
         <file>res/Investigation.png</file>
         <file>res/Takao.png</file>
+        <file>res/Self-detonation.png</file>
     </qresource>
 </RCC>

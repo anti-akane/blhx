@@ -33,6 +33,8 @@ public:
 
     QVector<cannonBall*>getBarrage();
 
+    void reStart();
+
 
 private:
     int torp_number;//携带鱼雷数量
