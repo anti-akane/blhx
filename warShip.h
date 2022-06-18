@@ -14,7 +14,7 @@ public:
 
     double getHpRate();
 
-    int power_hurt();
+    virtual int power_hurt();
 
     int torp_hurt();
 
@@ -26,6 +26,7 @@ public:
 
     void addHP(int recover);
 
+    virtual~warShip();
 
     protected:
     int HP;//生命值上限

@@ -35,6 +35,8 @@ public:
 
     void reStart();
 
+    virtual ~frontWarShip();
+
 
 private:
     int torp_number;//携带鱼雷数量

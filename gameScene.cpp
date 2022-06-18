@@ -212,8 +212,8 @@ startFight();
             if(game->getSuccess())
             {
                 picture=QPixmap(":/res/win.png").scaled(1200,675);
-                front.clear();
-                back.clear();
+                for(auto v:front){delete v;v=nullptr;}front.clear();
+                for(auto v:back){delete v;v=nullptr;}back.clear();
                 for(auto v:game->getFront())
                 {
                     v->setTarget(nullptr);
@@ -249,7 +249,7 @@ startFight();
 
  }
 
-void gameScene::closeEvent(QCloseEvent *event)
+void gameScene::closeEvent(QCloseEvent *)
 {
     moveTimer->stop();
     upgateTimer->stop();
@@ -292,11 +292,13 @@ void gameScene::initFront()
                              nullptr,100));
     front.push_back(
             new frontWarShip(3000, 100, 400, 7, 70, 650, 2, QPixmap(":/res/Helena.png"), QPoint(200, 337),
-                                            nullptr));
+                                            nullptr,110));
     front.push_back(
             new frontWarShip(3500, 100, 400, 7, 45, 500, 2, QPixmap(":/res/Santiago.png"), QPoint(100, 337),
-                             nullptr));
+                             nullptr,120));
        front[0]->setBarrage(test);
+       front[1]->setBarrage(test);
+       front[2]->setBarrage(test);
 
 }
 
@@ -308,61 +310,65 @@ back.push_back(new battleShip(8000,700,0,0,1000,0,QPixmap(":/res/Richelieu.png")
 }
 
 void gameScene::initEnemy()
-{Investigation.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 200)));
-        Investigation.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(900, 100)));
-        Investigation.push_back(
-                new humanoidEnemy(20000, 400, 100, 3, 110, 1000, QPixmap("://res/Yukikaze.png"), QPoint(900, 300)));
-        Investigation.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 100, 100, QPixmap("://res/liangchan-1.png"), QPoint(900, 500)));
-        Investigation.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 400)));
-        Investigation.push_back(
-                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 150)));
-        Investigation.push_back(
-                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 500)));
-        Investigation.push_back(
-                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 150)));
-        Investigation.push_back(
-                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 500)));
-        Investigation[0]->setState(1);
-        Investigation[1]->setState(2);
-        Investigation[2]->setState(2);
-        Investigation[3]->setState(2);
-        Investigation[4]->setState(1);
-        Investigation[5]->setState(1);
-        Investigation[6]->setState(1);
-        Investigation[7]->setState(2);
-        Investigation[8]->setState(2);
-        main.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 200)));
-        main.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 200)));
-        main.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(900, 100)));
-        main.push_back(
-                new humanoidEnemy(20000, 400, 100, 3, 110, 1000, QPixmap("://res/Yukikaze.png"), QPoint(900, 300)));
-        main.push_back(
-                new humanoidEnemy(20000, 400, 100, 3, 110, 1000, QPixmap("://res/Takao.png"), QPoint(900, 300)));
-        main.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 100, 100, QPixmap("://res/liangchan-1.png"), QPoint(900, 500)));
-        main.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 400)));
-        main.push_back(
-                new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 400)));
-        main.push_back(
-                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 150)));
-        main.push_back(
-                new standardEnemy(600, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 500)));
-        main[0]->setState(1);
-        main[1]->setState(2);
-        main[2]->setState(3);
-        main[3]->setState(2);
-        main[4]->setState(3);
-        main[5]->setState(3);
-        main[6]->setState(2);
-        main[7]->setState(1);
-        main[8]->setState(2);
-        main[9]->setState(2);
+{  standardEnemy *enemy1=new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 200));
+    standardEnemy *enemy2=new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(900, 100));
+    standardEnemy *enemy3=new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(900, 500));
+    standardEnemy *enemy4=new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 400));
+    standardEnemy *Selfdetonation1=new standardEnemy(1000, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 500));
+    standardEnemy *Selfdetonation2=new standardEnemy(1000, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 150));
+    humanoidEnemy *Yukikaze=new humanoidEnemy(20000, 400, 100, 3, 110, 1000, QPixmap("://res/Yukikaze.png"), QPoint(900, 300));
+    humanoidEnemy *Takao=  new humanoidEnemy(20000, 400, 100, 3, 110, 1000, QPixmap("://res/Takao.png"), QPoint(900, 300));
+
+    Investigation.push_back(new standardEnemy(*enemy1));
+    Investigation.push_back(new standardEnemy(*enemy2));
+    Investigation.push_back( new humanoidEnemy(*Yukikaze));
+    Investigation.push_back( new standardEnemy(*enemy3));
+    Investigation.push_back( new standardEnemy(*enemy4));
+    Investigation.push_back(new standardEnemy(*Selfdetonation1));
+    Investigation.push_back(new standardEnemy(*Selfdetonation2));
+    Investigation.push_back(new standardEnemy(*Selfdetonation2));
+    Investigation.push_back(new standardEnemy(*Selfdetonation1));
+    Investigation[0]->setState(1);
+    Investigation[1]->setState(2);
+    Investigation[2]->setState(2);
+    Investigation[3]->setState(2);
+    Investigation[4]->setState(1);
+    Investigation[5]->setState(1);
+    Investigation[6]->setState(1);
+    Investigation[7]->setState(2);
+    Investigation[8]->setState(2);
+
+    main.push_back(new standardEnemy(*enemy1));
+    main.push_back(new standardEnemy(*enemy1));
+    main.push_back(new standardEnemy(*enemy2));
+    main.push_back( new humanoidEnemy(*Yukikaze));
+    main.push_back( new humanoidEnemy(*Takao));
+    main.push_back(new standardEnemy(*enemy3));
+    main.push_back(
+            new standardEnemy(*enemy4));
+    main.push_back(
+            new standardEnemy(*enemy4));
+    main.push_back(
+            new standardEnemy(*Selfdetonation1));
+    main.push_back(
+            new standardEnemy(*Selfdetonation2));
+    main[0]->setState(1);
+    main[1]->setState(2);
+    main[2]->setState(3);
+    main[3]->setState(2);
+    main[4]->setState(3);
+    main[5]->setState(3);
+    main[6]->setState(2);
+    main[7]->setState(1);
+    main[8]->setState(2);
+    main[9]->setState(2);
+
+    delete enemy1;
+    delete enemy2;
+    delete enemy3;
+    delete enemy4;
+    delete Yukikaze;
+    delete Takao;
+    delete Selfdetonation1;
+    delete Selfdetonation2;
 }

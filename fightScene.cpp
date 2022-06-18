@@ -10,10 +10,10 @@ const double pi=acos(-1.0);
 const int frames =30;
 fightScene::fightScene(QWidget *parent,QVector<frontWarShip*>startfront,QVector<backWarShip*>startback,QVector<enemyWarShip*>startEnemy):QWidget(parent)
 {
-    frontwarship.clear();
-    backwarship.clear();
-    enemylist.clear();
-    totalenemy.clear();
+    for(auto v:frontwarship){delete v;v=nullptr;}frontwarship.clear();
+    for(auto v:backwarship){delete v;v=nullptr;}backwarship.clear();
+    for(auto v:totalenemy){delete v;v=nullptr;}totalenemy.clear();
+    for(auto v:enemylist){delete v;v=nullptr;}enemylist.clear();
     for(auto v:startfront)
     {
 
@@ -43,7 +43,78 @@ fightScene::fightScene(QWidget *parent,QVector<frontWarShip*>startfront,QVector<
                 totalenemy.push_back(new standardEnemy(*another));
     }
 
-    init();
+    target = QPoint(300, 337);
+    QVector<cannonBall*>test;
+    this->state=0;
+    test.push_back(new cannonBall(0, 0,100,20,0, nullptr, ":/res/comet.png",80));
+    test.push_back(new cannonBall(0, 0,100,20,pi/6, nullptr, ":/res/comet.png",80));
+    test.push_back(new cannonBall(0, 0,100,20,-pi/6, nullptr, ":/res/comet.png",80));
+    test.push_back(new cannonBall(0, 0,100,20,-pi/12, nullptr, ":/res/comet.png",80));
+    test.push_back(new cannonBall(0, 0,100,20,pi/12, nullptr, ":/res/comet.png",80));
+    frontwarship[0]->setTarget(&target);
+    for (int i = 1; i < frontwarship.size(); i++) {
+        frontwarship[i]->setTarget(&(frontwarship[i - 1]->getlocation()));
+    }
+    frontwarship[0]->setBarrage(test);
+    //三个技能按钮的初始化
+    quitmessagebox = new quitMessageBox(this);
+    QPixmap *plane = new QPixmap(":/res/feiji-available.png");
+    QPixmap *torpedoes = new QPixmap(":/res/yvlei-available.png");
+    QPixmap *navalgun = new QPixmap(":/res/jianpao-available.png");
+    //设置按钮大小
+    *plane = plane->scaled(100, 100, Qt::KeepAspectRatio);
+    *torpedoes = torpedoes->scaled(100, 100, Qt::KeepAspectRatio);
+    *navalgun = navalgun->scaled(100, 100, Qt::KeepAspectRatio);
+    int torpnumber = 0;
+    for (auto v: frontwarship)
+        torpnumber += v->getTorpNumber();
+    int navalnumber = 0;
+    int planenumber=0;
+    for (auto v: backwarship)
+      {
+        battleShip *check = dynamic_cast<battleShip *>(v);
+         if(check!=nullptr)
+        navalnumber += v->getMaxSkill();
+         else
+        planenumber+=v->getMaxSkill();
+    }
+    torpedoesButton = new skillButton(this, torpedoes, "yvlei", torpnumber);
+    torpedoesButton->move(950, 570);
+    navalgunButton = new skillButton(this, navalgun, "jianpao", navalnumber);
+        planeButton = new skillButton(this, plane, "feiji", planenumber);
+            planeButton->move(800, 570);
+    navalgunButton->move(1100, 570);
+    aim=QPixmap("://res/aim");
+    aim=aim.scaled(100, 100, Qt::KeepAspectRatio);
+    updateTimer = new QTimer(this);
+
+    //自律按钮初始化
+    operationbutton = new operationButton(this);
+    //界面设置
+    setFixedSize(1200, 675);
+    setWindowTitle("碧蓝航线");
+    setWindowIcon(QIcon("://res/aa9jv-f80ap-001.ico"));
+    //暂停键
+    QPixmap *pausepix = new QPixmap(":/res/pause.png");
+    pause = new QPushButton(this);
+    pause->resize(pausepix->size());
+    pause->move(1200 - pausepix->width(), 0);
+    pause->setStyleSheet("QPushButton{border-image: url(:/res/pause.png);}");
+    connect(pause, &QPushButton::pressed, this, &fightScene::callquitmessage);
+
+    //角色初始化
+    connect(torpedoesButton, &skillButton::skills, this, &fightScene::torp);
+    connect(planeButton, &skillButton::skills, this, &fightScene::airraid);
+    connect(navalgunButton, &skillButton::skills, this, &fightScene::battleShoot);
+    connect(this,&fightScene::fail,this,&fightScene::close);
+    connect(this,&fightScene::succeed,this,&fightScene::close);
+    delete plane;
+    delete torpedoes;
+    delete navalgun;
+    delete pausepix;
+    isEnding=0;
+    update();
+    updateTimer->start(frames);
 }
 
 void fightScene::drawfront(QPainter&painter,frontWarShip*WarShip,QBrush*black_brush,QBrush*green_brush)
@@ -130,91 +201,23 @@ void fightScene::paintEvent(QPaintEvent *) {
         painter.drawPixmap(v->getX(),v->getY(),v->getPix());
     }
 }
-void fightScene::init() {
-    target = QPoint(300, 337);
-    QVector<cannonBall*>test;
-    this->state=0;
-    test.push_back(new cannonBall(0, 0,100,20,0, nullptr, ":/res/comet.png",80));
-    test.push_back(new cannonBall(0, 0,100,20,pi/6, nullptr, ":/res/comet.png",80));
-    test.push_back(new cannonBall(0, 0,100,20,-pi/6, nullptr, ":/res/comet.png",80));
-    test.push_back(new cannonBall(0, 0,100,20,-pi/12, nullptr, ":/res/comet.png",80));
-    test.push_back(new cannonBall(0, 0,100,20,pi/12, nullptr, ":/res/comet.png",80));
-    frontwarship[0]->setTarget(&target);
-    for (int i = 1; i < frontwarship.size(); i++) {
-        frontwarship[i]->setTarget(&(frontwarship[i - 1]->getlocation()));
-    }
-    frontwarship[0]->setBarrage(test);
-    //三个技能按钮的初始化
-    quitmessagebox = new quitMessageBox(this);
-    QPixmap *plane = new QPixmap(":/res/feiji-available.png");
-    QPixmap *torpedoes = new QPixmap(":/res/yvlei-available.png");
-    QPixmap *navalgun = new QPixmap(":/res/jianpao-available.png");
-    //设置按钮大小
-    *plane = plane->scaled(100, 100, Qt::KeepAspectRatio);
-    *torpedoes = torpedoes->scaled(100, 100, Qt::KeepAspectRatio);
-    *navalgun = navalgun->scaled(100, 100, Qt::KeepAspectRatio);
-    int torpnumber = 0;
-    for (auto v: frontwarship)
-        torpnumber += v->getTorpNumber();
-    int navalnumber = 0;
-    int planenumber=0;
-    for (auto v: backwarship)
-      {
-        battleShip *check = dynamic_cast<battleShip *>(v);
-         if(check!=nullptr)
-        navalnumber += v->getMaxSkill();
-         else
-        planenumber+=v->getMaxSkill();
-    }
-    torpedoesButton = new skillButton(this, torpedoes, "yvlei", torpnumber);
-    torpedoesButton->move(950, 570);
-    navalgunButton = new skillButton(this, navalgun, "jianpao", navalnumber);
-        planeButton = new skillButton(this, plane, "feiji", planenumber);
-            planeButton->move(800, 570);
-    navalgunButton->move(1100, 570);
-    aim=QPixmap("://res/aim");
-    aim=aim.scaled(100, 100, Qt::KeepAspectRatio);
-    updateTimer = new QTimer(this);
 
-    //自律按钮初始化
-    operationbutton = new operationButton(this);
-    //界面设置
-    setFixedSize(1200, 675);
-    setWindowTitle("碧蓝航线");
-    setWindowIcon(QIcon("://res/aa9jv-f80ap-001.ico"));
-    //暂停键
-    QPixmap *pausepix = new QPixmap(":/res/pause.png");
-    pause = new QPushButton(this);
-    pause->resize(pausepix->size());
-    pause->move(1200 - pausepix->width(), 0);
-    pause->setStyleSheet("QPushButton{border-image: url(:/res/pause.png);}");
-    connect(pause, &QPushButton::pressed, this, &fightScene::callquitmessage);
-
-    //角色初始化
-    connect(torpedoesButton, &skillButton::skills, this, &fightScene::torp);
-    connect(planeButton, &skillButton::skills, this, &fightScene::airraid);
-    connect(navalgunButton, &skillButton::skills, this, &fightScene::battleShoot);
-    connect(this,&fightScene::fail,this,&fightScene::close);
-    connect(this,&fightScene::succeed,this,&fightScene::close);
-    delete plane;
-    delete torpedoes;
-    delete navalgun;
-    delete pausepix;
-    isEnding=0;
-    update();
-    updateTimer->start(frames);
-
-}
 void fightScene::callquitmessage() {
     updateTimer->stop();
     quitmessagebox->exec();
     updateTimer->start(frames);
 }
 fightScene::~fightScene() {
-    frontwarship.clear();
-    backwarship.clear();
-    enemylist.clear();
-    totalenemy.clear();
+    for(auto v:frontwarship){delete v;v=nullptr;}frontwarship.clear();
+    for(auto v:backwarship){delete v;v=nullptr;}backwarship.clear();
+    for(auto v:totalenemy){delete v;v=nullptr;}totalenemy.clear();
+    for(auto v:enemylist){delete v;v=nullptr;}enemylist.clear();
+    for(auto v:enemycannon){delete v;v=nullptr;}enemycannon.clear();
+    for(auto v:cannonball){delete v;v=nullptr;}cannonball.clear();
+    for(auto v:airRaid){delete v;v=nullptr;}airRaid.clear();
+    for(auto v:torplist){delete v;v=nullptr;}torplist.clear();
+    for(auto v:battlecannon){delete v;v=nullptr;}battlecannon.clear();
+    for(auto v:aircraft){delete v;v=nullptr;}aircraft.clear();
     delete quitmessagebox;
     delete planeButton;
     delete torpedoesButton;
@@ -384,6 +387,8 @@ void fightScene::shoot() {
         if (!((*it)->check())) {
             *it = nullptr;
             delete *it;
+            delete (*it);
+            *it=nullptr;
             enemycannon.erase(it);
         } else {
             (*it)->move();
@@ -466,6 +471,7 @@ void fightScene::torp() {
                                         35));
     frontWarShip *front = dynamic_cast<frontWarShip *>(torp->getparent());
     front->declineTorpNumber();
+    delete torplist[0];
     torplist[0] = nullptr;
     torplist.erase(torplist.begin());
 }
@@ -531,7 +537,11 @@ void fightScene::collide() {
 
                 (*enemy)->declineHP((*can)->getHurt());
                 if ((*enemy)->getHpRate() == 0)
+                   {
+                    delete (*enemy);
+                    *enemy=nullptr;
                     enemylist.erase(enemy);
+                }
                     break;
             }
 
@@ -541,7 +551,10 @@ void fightScene::collide() {
         }
 
         if (flag1 || (check != nullptr && !check->check()))
-        {cannonball.erase(can);
+        { delete (*can);
+            *can=nullptr;
+
+            cannonball.erase(can);
 
         }
         else
@@ -593,7 +606,10 @@ void fightScene::frontcollide(frontWarShip *Warship) {
         if (Warship->getRect().intersects((*can)->getRect())) {
             times++;
             Warship->declineHP((*can)->getHurt());
-            enemycannon.erase(can);
+            {
+                delete (*can);
+                *can=nullptr;
+                enemycannon.erase(can);}
             if (times == 3)
                 break;
 
@@ -612,10 +628,15 @@ void fightScene::checkDeath() {
                 navalgunButton->declineSkill((*item)->getCurrentSkill());
                 for (QVector<cannonBall *>::iterator can = battlecannon.begin(); can != battlecannon.end();) {
                     if ((*can)->getparent() == *item)
-                        battlecannon.erase(can);
+                    {
+                        delete (*can);
+                        *can=nullptr;
+                        battlecannon.erase(can);}
                     else
                         can++;
                 }
+                delete (*item);
+                *item=nullptr;
                 backwarship.erase(item);
             } else
                 item++;
@@ -625,10 +646,15 @@ void fightScene::checkDeath() {
                 planeButton->declineSkill((*item)->getCurrentSkill());
                 for (QVector<cannonBall *>::iterator can = airRaid.begin(); can != airRaid.end();) {
                     if ((*can)->getparent() == *item)
-                        airRaid.erase(can);
+                    {
+                        delete (*can);
+                        *can=nullptr;
+                        airRaid.erase(can);}
                     else
                         can++;
                 }
+                delete (*item);
+                *item=nullptr;
                 backwarship.erase(item);
             } else
                 item++;
@@ -643,10 +669,16 @@ void fightScene::checkDeath() {
             torpedoesButton->declineSkill((*item)->getCurrentTorpNumber());
             for (QVector<cannonBall *>::iterator can = torplist.begin(); can != torplist.end();) {
                 if ((*can)->getparent() == *item)
+                {
+                    delete (*can);
+                    *can=nullptr;
                     torplist.erase(can);
+                }
                 else
                     can++;
             }
+            delete (*item);
+            *item=nullptr;
             frontwarship.erase(item);
         } else
             item++;
@@ -668,7 +700,8 @@ void fightScene::checkDeath() {
 }
 
 void fightScene::airraid() {
-    enemycannon.clear();
+    for(auto v:enemycannon){delete v;v=nullptr;}enemycannon.clear();
+
     for (auto v: frontwarship) {
         v->addHP(1600*(1-v->getHpRate()));
     }
@@ -719,6 +752,7 @@ void fightScene::battleShoot() {
     cannonball.push_back(new battleCannon(start->getlocation().x(), start->getlocation().y() + 10,
                                           start->torp_hurt(), 50, angle, nullptr, ":/res/battlecannon.png", *end));
     start->decreaseSkill();
+    delete battlecannon[0];
     battlecannon[0] = nullptr;
     battlecannon.erase(battlecannon.begin());
 
@@ -730,6 +764,8 @@ void fightScene::Boundary() {
         if ((*enemy)->getlocation().x() <= 10) {
 
             backwarship[(*enemy)->getlocation().y() / (675.0 / n)]->declineHP(1000 * (*enemy)->getHpRate());
+            delete (*enemy);
+            *enemy=nullptr;
             enemylist.erase(enemy);
         } else
             enemy++;
@@ -748,6 +784,8 @@ void fightScene::check_airCraft() {
                                                               "://res/bombing.png", QPoint(tx + 3, ty), 120));
 
                     }
+                    delete (*item);
+                    *item=nullptr;
                     aircraft.erase(item);
                 } else {
                     (*item)->move();
@@ -770,7 +808,9 @@ void fightScene::check_airCraft() {
                     cannonball.push_back(new cannonBall((*item)->getX(), (*item)->getY() - 10,
                                                         (*item)->getHurt(), 15,
                                                         cal_angle(now, findEnemy(*now)), nullptr, ":/res/torp.png",
-                                                        35));
+                           35));
+                    delete (*item);
+                    *item=nullptr;
                     aircraft.erase(item);
                 } else {
                     (*item)->move();
@@ -819,6 +859,8 @@ void fightScene::checkEnemy() {
                         enemylist.push_back(new humanoidEnemy(*check));
                     else
                         enemylist.push_back(new standardEnemy(*another));
+                    delete (*item);
+                    *item=nullptr;
                     totalenemy.erase(item);
                 } else
                     item++;

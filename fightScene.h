@@ -32,7 +32,6 @@ public:
 
     ~fightScene();
 
-    void init();
 
     void playGame();
 

@@ -11,6 +11,7 @@ public:
     int getMaxSkill();
     bool check();
     void reStart();
+   ~backWarShip();
     protected:
     int skillcd;
     int maxskill;

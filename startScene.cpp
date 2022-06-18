@@ -7,7 +7,7 @@ startScene::startScene(QWidget*parent):QWidget(parent)
     setWindowIcon(QIcon("://res/aa9jv-f80ap-001.ico"));
     update();
 }
-void startScene::mousePressEvent(QMouseEvent *event)
+void startScene::mousePressEvent(QMouseEvent *)
 {
     game=nullptr;
     game=new gameScene(this);

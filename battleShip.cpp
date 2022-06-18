@@ -8,7 +8,7 @@ this->Tachie=this->Tachie.scaled(85,80);
 
 bool battleShip::shoot()
 {
-
+return 0;
 }
 
 void battleShip::move()
@@ -23,4 +23,9 @@ int battleShip::getMax(){
 int battleShip::getCurrent()
 {
     return number_skill;
+}
+
+int battleShip::power_hurt()
+{
+    return (1+power/100.0)*800;
 }

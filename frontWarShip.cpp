@@ -111,4 +111,9 @@ void frontWarShip::reStart()
     current_torp_number = 0;
 }
 
+frontWarShip::~frontWarShip()
+{
+
+}
+
 

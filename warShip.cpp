@@ -58,3 +58,8 @@ void warShip::addHP(int recover)
     else
         currentHP=HP;
 }
+
+warShip::~warShip()
+{
+
+}

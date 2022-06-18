@@ -13,6 +13,7 @@ public:
     int getMax();
 
     int getCurrent();
+     int power_hurt() override;
 
 
 };
