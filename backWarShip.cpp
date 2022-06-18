@@ -38,3 +38,8 @@ void backWarShip::reStart()
     skill_clock=0;
     number_skill=0;
 }
+
+backWarShip::~backWarShip()
+{
+
+}
