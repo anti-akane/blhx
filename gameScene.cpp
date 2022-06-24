@@ -1,4 +1,6 @@
 #include"gameScene.h"
+#include<QDataStream>
+#include<QFile>
 const double pi=acos(-1);
 
 const int startpos_x=100;
@@ -8,6 +10,7 @@ const int gridHeight=100;
 const int row=6;
 const int col=10;
 const int dir[4][2]={{0,-1},{0,1},{-1,0},{1,0}};
+//地图
 int m[20][20]= {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 1, 1, 3, 0, 0, 0, 2, 0},
@@ -22,8 +25,8 @@ gameScene::gameScene(QWidget *parent):QWidget(parent) {
     setFixedSize(1200, 675);
     moveTimer = new QTimer;
     moveTimer->start(16);
-    upgateTimer = new QTimer;
-    upgateTimer->start(450);
+    updateTimer = new QTimer;
+    updateTimer->start(450);
     setWindowTitle("碧蓝航线");
     setWindowIcon(QIcon("://res/aa9jv-f80ap-001.ico"));
     fleetLocation = QPoint(startpos_x - gridHeight / 2, startpos_y - 2 * gridWdith / 3);
@@ -38,6 +41,10 @@ gameScene::gameScene(QWidget *parent):QWidget(parent) {
     movecontroller = 0;
     gameMap = new levelMap(row, col, m);
     quitmessagebox=new quitMessageBox(this);
+    QVector<frontWarShip*>front;
+    QVector<backWarShip*>back;
+    QVector<enemyWarShip*>Investigation;
+    QVector<enemyWarShip*>main;
     initFront();
     initBack();
     initEnemy();
@@ -54,6 +61,7 @@ gameScene::~gameScene() {
 void gameScene::paintEvent(QPaintEvent*) {
     QPainter painter(this);
 
+    //绘制背景
     painter.drawPixmap(0, 0, *backgroud);
     for (int i = 0; i <= col; i++) {
         painter.drawLine(QPoint(startpos_x + i * gridWdith, startpos_y),
@@ -63,6 +71,7 @@ void gameScene::paintEvent(QPaintEvent*) {
         painter.drawLine(QPoint(startpos_x, startpos_y + i * gridHeight),
                          QPoint(startpos_x + col * gridWdith, startpos_y + i * gridHeight));
     }
+    //绘制敌方舰队
     for(int i=1;i<=row;i++)
     {
         for(int j=1;j<=col;j++)
@@ -81,10 +90,10 @@ void gameScene::paintEvent(QPaintEvent*) {
     painter.drawPixmap(startpos_x + 4 * gridWdith, startpos_y + 3 * gridHeight, *wall_1_1);
     painter.drawPixmap(startpos_x + 4 * gridWdith, startpos_y + 5 * gridHeight, *wall_3_1);
     painter.drawPixmap(fleetLocation.x(), fleetLocation.y(), *flagShip);
-
+    //判断是否放结算画面
     if(drawclock>0)
     {
-        painter.drawPixmap(0,0,picture);
+        painter.drawPixmap(0,0,result);
     }
 }
 
@@ -95,6 +104,7 @@ void gameScene::move(int direction) {
         return;
     else
         ismove = 1;
+    //判断立绘朝向
     if (direction == 2)
         flagShip = new QPixmap(":/res/lisailiu(reverse).png");
     if (direction == 3)
@@ -102,6 +112,7 @@ void gameScene::move(int direction) {
     if (!moveTimer->isActive())
         moveTimer->start(16);
     moveTimer->disconnect();
+    //移动
     connect(moveTimer, &QTimer::timeout, [=]() {
         movecontroller++;
         if (movecontroller > 25) {
@@ -121,9 +132,11 @@ void gameScene::move(int direction) {
  void gameScene::keyPressEvent(QKeyEvent *event) {
      if(drawclock>0)
          return;
+        //开始战斗
      if (event->key() == Qt::Key_Z&&!ismove) {
-startFight();
+        startFight();
      }
+     //呼出退出提示框
      if(event->key() == Qt::Key_Escape&&!ismove)
      {
          callquitmessage();
@@ -134,8 +147,9 @@ startFight();
      int fy = (fleetLocation.y() + 60 + 2 * gridHeight / 3) / 100;
     current = new grid(fx, fy,  gameMap->getState(fx,fy));
 
-     upgateTimer->disconnect();
-     connect(upgateTimer, &QTimer::timeout, [&]() {
+     updateTimer->disconnect();
+     connect(updateTimer, &QTimer::timeout, [&]() {
+            //判断是否放结算画面
          if(drawclock>2)
          {
              drawclock=0;
@@ -149,6 +163,7 @@ startFight();
              update();
              return;
          }
+         //由寻路结果判断移动方向
          if (!gamePath.empty()) {
              QVector<grid*>a,b;
 
@@ -194,6 +209,7 @@ startFight();
      grid *end = new grid(tx, ty, gameMap->getState(tx,ty));
      if (!gamePath.empty())
          return;
+     //若点击合法，则根据A*算法寻找合法路径
      if (event->x() >= 100 && event->x() <= 1100 && event->y() >= 40 && event->y() <= 640) {
          gamePath = gameMap->search(current, end);
 
@@ -211,15 +227,18 @@ startFight();
         {
             if(game->getSuccess())
             {
-                picture=QPixmap(":/res/win.png").scaled(1200,675);
+                //若胜利则播放胜利结算图片
+                result=QPixmap(":/res/win.png").scaled(1200,675);
                 for(auto v:front){delete v;v=nullptr;}front.clear();
                 for(auto v:back){delete v;v=nullptr;}back.clear();
+                //继承战斗结束的舰艇状态
                 for(auto v:game->getFront())
                 {
                     v->setTarget(nullptr);
                     front.push_back(new frontWarShip(*v));
 
                 }
+                //清除击败的敌方舰队
                 gameMap->setState(current->getx(),current->gety(), 0);
                 current->setState(0);
                 for(auto v:game->getBack())
@@ -235,7 +254,7 @@ startFight();
             }
             else
             {
-                picture=QPixmap(":/res/fail.png").scaled(1200,675);
+                result=QPixmap(":/res/fail.png").scaled(1200,675);
                 isfail=1;
             }
             drawclock=1;
@@ -244,7 +263,7 @@ startFight();
         game=nullptr;
         this->setFocus();
      moveTimer->disconnect();
-    upgateTimer->start(450);
+    updateTimer->start(450);
     moveTimer->start(16);
 
  }
@@ -252,7 +271,7 @@ startFight();
 void gameScene::closeEvent(QCloseEvent *)
 {
     moveTimer->stop();
-    upgateTimer->stop();
+    updateTimer->stop();
 }
 void gameScene::callquitmessage()
 {
@@ -265,6 +284,7 @@ void gameScene::startFight()
         return;
     if(game!=nullptr)
         return;
+    //判断敌方舰队类型
     if(current->getstate()==2)
     game = new fightScene(this,front,back,Investigation);
     else if(current->getstate()==3)
@@ -272,7 +292,7 @@ void gameScene::startFight()
     else
         return;
     game->show();
-    upgateTimer->stop();
+    updateTimer->stop();
     moveTimer->stop();
     game->setFocus();
     game->playGame();
@@ -295,18 +315,17 @@ void gameScene::initFront()
                                             nullptr,110));
     front.push_back(
             new frontWarShip(3500, 100, 400, 7, 45, 500, 2, QPixmap(":/res/Santiago.png"), QPoint(100, 337),
-                             nullptr,120));
+                            nullptr,120));
        front[0]->setBarrage(test);
        front[1]->setBarrage(test);
        front[2]->setBarrage(test);
-
 }
 
 void gameScene::initBack()
 {
-    back.push_back(new carrierVessel(8000,300,0,0,100,0,QPixmap("://res/unicorn.png"),QPoint(0,100),700,2,400));
+    back.push_back(new carrierVessel(4000,300,0,0,100,0,QPixmap("://res/unicorn.png"),QPoint(0,100),700,2,400));
 back.push_back(new battleShip(8000,700,0,0,1000,0,QPixmap(":/res/Richelieu.png"),QPoint(0,300),1000,1));
- back.push_back(new battleShip(8000,400,0,0,100,0,QPixmap("://res/Hutten.png"),QPoint(0,500),500,1));
+ back.push_back(new battleShip(8000,350,0,0,100,0,QPixmap("://res/Hutten.png"),QPoint(0,500),450,1));
 }
 
 void gameScene::initEnemy()
@@ -316,8 +335,8 @@ void gameScene::initEnemy()
     standardEnemy *enemy4=new standardEnemy(10000, 100, 100, 2, 5, 90, 1000, QPixmap("://res/liangchan-1.png"), QPoint(700, 400));
     standardEnemy *Selfdetonation1=new standardEnemy(1000, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 500));
     standardEnemy *Selfdetonation2=new standardEnemy(1000, 0, 0, 10, 1, 9000, 2000, QPixmap("://res/Self-detonation.png"), QPoint(1200, 150));
-    humanoidEnemy *Yukikaze=new humanoidEnemy(20000, 400, 100, 3, 110, 1000, QPixmap("://res/Yukikaze.png"), QPoint(900, 300));
-    humanoidEnemy *Takao=  new humanoidEnemy(20000, 400, 100, 3, 110, 1000, QPixmap("://res/Takao.png"), QPoint(900, 300));
+    humanoidEnemy *Yukikaze=new humanoidEnemy(20000, 400, 200, 3, 110, 600, QPixmap("://res/Yukikaze.png"), QPoint(900, 300));
+    humanoidEnemy *Takao=  new humanoidEnemy(30000, 400, 200, 3, 110, 600, QPixmap("://res/Takao.png"), QPoint(900, 300));
 
     Investigation.push_back(new standardEnemy(*enemy1));
     Investigation.push_back(new standardEnemy(*enemy2));

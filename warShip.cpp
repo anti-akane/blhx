@@ -2,6 +2,7 @@
 #include"math.h"
 warShip::warShip(int HP,int power,int torp,int speed,int shootcd,int torpcd,QPixmap Tachie,QPoint location)
     :HP(HP),power(power),torp(torp),speed(speed),shootcd(shootcd),torpcd(torpcd),Tachie(Tachie),location(location) {
+    //初始化
     currentHP = HP;
     height = Tachie.height();
     width = Tachie.width();

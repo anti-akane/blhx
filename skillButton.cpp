@@ -6,12 +6,14 @@ skillButton::skillButton(QWidget *parent,QPixmap *pixmap,QString type,int maxski
     this->setStyleSheet("border: 0px");
     resize(pixmap->size());
     setMask(QBitmap(pixmap->mask()));
+    //记录按钮可用和不可用的图标
     available_imagePath = "QPushButton{border-image: url(:/res/";
     available_imagePath += type;
     available_imagePath += "-available.png);};";
     unavailable_imagePath = "QPushButton{border-image: url(:/res/";
     unavailable_imagePath += type;
     unavailable_imagePath += "-unavailable.png);};";
+    //初始为不可用
     setStyleSheet(unavailable_imagePath);
     isDown = 0;
 }
@@ -23,6 +25,7 @@ void skillButton::mouseReleaseEvent(QMouseEvent *) {
     Unleash_skills();
     setEnabled(false);
     isDown = 1;
+    //避免多次重复点击
     QTimer::singleShot(500, this, [=] {
         setEnabled(true);
         isDown = 0;
@@ -32,7 +35,7 @@ void skillButton::mouseReleaseEvent(QMouseEvent *) {
 void skillButton::Unleash_skills() {
 
     if (skillNumber) {
-
+    //若技能数大于0则发动
         skillNumber--;
         emit skills();
     }
@@ -43,6 +46,7 @@ void skillButton::Unleash_skills() {
 
 void skillButton::addSkillNumber()
 {
+    //若技能数大于一则更改图标为可用
     if(skillNumber<maxSkillNubmer)
     {skillNumber++;
     setStyleSheet(available_imagePath);}

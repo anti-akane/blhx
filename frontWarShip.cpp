@@ -5,10 +5,12 @@ frontWarShip::frontWarShip(int hp,int power,int torp,int speed,int shootcd,
                            QPoint location,QPoint*target,int barragecd)
     :warShip(hp,power,torp,speed,shootcd,torpcd,tachie,location),torp_number(tornumber),target(target),barragecd(barragecd) {
     currentHP = HP;
+    //调整立绘和碰撞箱
     (this->Tachie) = tachie.scaled(120, 120, Qt::KeepAspectRatio);
     Rect.setWidth(Tachie.width() / 4);
     Rect.setHeight(Tachie.height() / 4);
     Rect.moveTo(location.x() + Tachie.width() / 4, location.y() + Tachie.height() / 2);
+    //重置技能和射击cd
     shootclock = 0;
     torpclock = 0;
     barrageclock=0;
@@ -16,6 +18,7 @@ frontWarShip::frontWarShip(int hp,int power,int torp,int speed,int shootcd,
 }
 
 bool frontWarShip::shoot() {
+    //每次轮射击触发三轮弹幕
     shootclock++;
     if (shootclock % shootcd == 0) {
         return 1;
@@ -29,6 +32,7 @@ bool frontWarShip::shoot() {
 }
 
 void frontWarShip::move() {
+    //移动方式为朝着目的地按一定速度前进
     int l_x = location.x(), l_y = location.y();
     int t_x = target->x(), t_y = target->y();
     double len = sqrt((l_x - t_x) * (l_x - t_x) + (l_y - t_y) * (l_y - t_y));

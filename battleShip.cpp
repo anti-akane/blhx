@@ -6,11 +6,6 @@ battleShip:: battleShip(int HP, int power, int torp, int speed, int shootcd, int
 this->Tachie=this->Tachie.scaled(85,80);
 }
 
-bool battleShip::shoot()
-{
-return 0;
-}
-
 void battleShip::move()
 {
 
@@ -27,5 +22,6 @@ int battleShip::getCurrent()
 
 int battleShip::power_hurt()
 {
+    //返回炮击伤害
     return (1+power/100.0)*800;
 }

@@ -2,7 +2,7 @@
 backWarShip:: backWarShip(int HP, int power, int torp, int speed, int shootcd, int torpcd, QPixmap Tachie,
                       QPoint location,int skillcd,int maxskill):warShip(HP,power,torp,speed,shootcd,torpcd,Tachie,location),
     skillcd(skillcd),maxskill(maxskill)
-{
+{   //初始技能数量为0
     skill_clock=0;
     number_skill=0;
 }
@@ -35,6 +35,7 @@ void backWarShip::decreaseSkill()
 
 void backWarShip::reStart()
 {
+    //每次战斗开始时重置技能数
     skill_clock=0;
     number_skill=0;
 }

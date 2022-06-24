@@ -1,5 +1,6 @@
 #include"humanoidEnemy.h"
 void humanoidEnemy::move() {
+    //模仿frontWarShip的随机移动
     moveclock++;
     if (moveclock >= 2) {
         moveclock = 0;
@@ -10,6 +11,7 @@ void humanoidEnemy::move() {
     int t_x = target->x(), t_y = target->y();
     double len = sqrt((l_x - t_x) * (l_x - t_x) + (l_y - t_y) * (l_y - t_y));
     if (len <= speed) {
+        //若已到达目的地，则更换目的地
         target->setX(700 + qrand() % 200);
         target->setY(200 + qrand() % 200);
     } else {
@@ -22,12 +24,14 @@ void humanoidEnemy::move() {
 
 humanoidEnemy::humanoidEnemy(int HP,int power,int torp,int speed,int shootcd,int torpcd,QPixmap Tachie,QPoint location)
     :enemyWarShip(HP,power,torp,speed,shootcd,torpcd,Tachie,location) {
+    //调整立绘和碰撞箱
     (this->Tachie) = Tachie.scaled(150, 150, Qt::KeepAspectRatio);
     getRect().setWidth(Tachie.width() * 3 / 4);
     getRect().setHeight(Tachie.height() * 2 / 3);
     height = Tachie.height();
     width = Tachie.width();
     getRect().moveTo(location.x() + width / 8, location.y() + height / 3);
+    //初始化射击cd
     target = new QPoint(this->location);
     moveclock = 0;
     torpclock = 0;

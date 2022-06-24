@@ -1,3 +1,8 @@
+/* * * * * * * * * ** * * * * * * * * *
+ * 前排舰艇类
+ * 继承自warShip类（舰艇类）
+ * 定位为常规打击地方舰艇和吸引对方火力
+ * * * * * * * * * * * * * * * * * * * */
 #ifndef FRONTWARSHIP_H
 #define FRONTWARSHIP_H
 #include<QPixmap>

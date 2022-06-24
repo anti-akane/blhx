@@ -10,6 +10,7 @@ startScene::startScene(QWidget*parent):QWidget(parent)
 void startScene::mousePressEvent(QMouseEvent *)
 {
     game=nullptr;
+    //每次点击则打开关卡界面
     game=new gameScene(this);
     connect(game,&gameScene::quit,this,&startScene::childClose);
     this->clearFocus();
@@ -27,8 +28,6 @@ void startScene::paintEvent(QPaintEvent *)
 void startScene::childClose()
 {
     game->close();
-    game->upgateTimer->stop();
-    game->moveTimer->stop();
         game=nullptr;
 }
 

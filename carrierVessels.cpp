@@ -5,11 +5,6 @@ carrierVessel::carrierVessel(int HP, int power, int torp, int speed, int shootcd
                  skillcd,maxskill) ,avi(avi)
 {
 }
-bool carrierVessel::shoot()
-    {
-return 0;
-    }
-
 void carrierVessel::move()
     {
 
